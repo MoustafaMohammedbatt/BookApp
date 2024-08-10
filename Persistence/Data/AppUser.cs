@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 
-namespace BookApp.Areas.Identity.Data;
+namespace Persistence.Data;
 
 // Add profile data for application users by adding properties to the AppUser class
 public class AppUser : IdentityUser

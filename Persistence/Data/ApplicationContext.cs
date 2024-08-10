@@ -1,9 +1,9 @@
-﻿using BookApp.Areas.Identity.Data;
+﻿
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace BookApp.Data;
+namespace Persistence.Data;
 
 public class ApplicationContext : IdentityDbContext<AppUser>
 {

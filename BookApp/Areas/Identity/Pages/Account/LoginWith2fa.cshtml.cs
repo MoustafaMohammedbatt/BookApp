@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using BookApp.Areas.Identity.Data;
+using Persistence.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 
