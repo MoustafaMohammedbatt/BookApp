@@ -8,5 +8,9 @@ namespace Domain.Entites
 {
     public class Author
     {
+        public int Id { get; set; }
+        public string FullName { get; set; } = null!;
+        public string? Bio { get; set; } 
+        public virtual ICollection<Book>? Books { get; set; }
     }
 }
