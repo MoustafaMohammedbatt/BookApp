@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Persistence.Data;
-
+using Domain.Entites;
 namespace BookApp.Areas.Identity.Pages.Account
 {
     public class ConfirmEmailModel : PageModel

@@ -4,10 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 
-namespace Persistence.Data;
+namespace Domain.Entites;
 
 // Add profile data for application users by adding properties to the AppUser class
 public class AppUser : IdentityUser
 {
 }
-
+ 

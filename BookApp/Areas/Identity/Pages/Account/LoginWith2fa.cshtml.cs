@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using Persistence.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
+using Domain.Entites;
 
 namespace BookApp.Areas.Identity.Pages.Account
 {

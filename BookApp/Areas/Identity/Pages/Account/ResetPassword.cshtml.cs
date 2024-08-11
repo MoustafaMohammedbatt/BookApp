@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-
+using Domain.Entites;
 namespace BookApp.Areas.Identity.Pages.Account
 {
     public class ResetPasswordModel : PageModel

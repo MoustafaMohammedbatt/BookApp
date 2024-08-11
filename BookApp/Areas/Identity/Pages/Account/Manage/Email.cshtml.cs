@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-
+using Domain.Entites;
 namespace BookApp.Areas.Identity.Pages.Account.Manage
 {
     public class EmailModel : PageModel
