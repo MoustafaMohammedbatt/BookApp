@@ -1,6 +1,9 @@
+using BookApp.Repository;
 using Domain.Entites;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Persistence.Data;
 using Persistence.Helpers;
 using Persistence.Repositories;
@@ -18,10 +21,14 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddIdentity<AppUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
+builder.Services.AddIdentity<AppUser, IdentityRole>(options => { options.SignIn.RequireConfirmedAccount = true;  options.User.RequireUniqueEmail = true; })
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultUI()
     .AddDefaultTokenProviders();
+
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
+
+builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 var app = builder.Build();
 
