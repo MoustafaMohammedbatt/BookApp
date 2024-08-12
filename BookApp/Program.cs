@@ -7,6 +7,7 @@ using Microsoft.Extensions.Options;
 using Persistence.Data;
 using Persistence.Helpers;
 using Persistence.Repositories;
+using Safary.Mapping;
 using Service.Abstractions.Interfaces.IRepositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,7 +18,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
