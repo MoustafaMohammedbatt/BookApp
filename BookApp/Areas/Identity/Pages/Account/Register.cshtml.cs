@@ -98,6 +98,18 @@ namespace BookApp.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [Required]  // Add this line
+            [Display(Name = "FirstName")]
+            public string FirstName { get; set; }
+
+            [Required]  // Add this line
+            [Display(Name = "LastName")]
+            public string LastName { get; set; }
+
+            [Required]  // Add this line
+            [Display(Name = "Address")]
+            public string Address { get; set; }
         }
 
 
@@ -114,6 +126,10 @@ namespace BookApp.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
+                user.Address = Input.Address;
+                user.FirstName = Input.FirstName;
+                user.LastName = Input.LastName;
+
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
