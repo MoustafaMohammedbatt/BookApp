@@ -35,16 +35,17 @@ namespace Persistence.Helpers
                     FirstName = "admin",
                     LastName = "user",
                     UserName = "admin",
-                    Email = "admin@BookApp.com",
+                    Email = "admin@gmail.com",
                     Address = "test address",
                     EmailConfirmed = true,
                     AdminAccepted = true,
+                    PasswordHash = "123123123@Zftt"
                 };
 
                 var user = await userManager.FindByEmailAsync(admin.Email);
                 if (user is null)
                 {
-                    await userManager.CreateAsync(admin, "Passw@rd12345678");
+                    await userManager.CreateAsync(admin, "123123123@Zftt");
                     await userManager.AddToRoleAsync(admin, UserRole.Admin);
                 }
             }

@@ -1,4 +1,8 @@
 ﻿using AutoMapper;
+using Domain.Entites;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Shared.DTOs;
+using System.Reflection.Metadata;
 
 namespace Safary.Mapping
 {
@@ -6,7 +10,13 @@ namespace Safary.Mapping
     {
         public MappingProfile()
         {
-           
+            CreateMap<AppUser, RegisterDTO>().ReverseMap();
+            CreateMap<RegisterDTO, AppUser>().ReverseMap();
+            CreateMap<AppUser, SelectListItem>()
+                .ForMember(dest => dest.Value, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.FirstName));
+
+
         }
     }
 }
