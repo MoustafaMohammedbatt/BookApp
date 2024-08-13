@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Entites
 {
-    public class Author
+    public class Author : BaseModel
     {
         public int Id { get; set; }
         public string FullName { get; set; } = null!;

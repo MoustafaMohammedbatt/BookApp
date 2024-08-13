@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Entites
 {
-    public class Rented
+    public class Rented : BaseModel
     {
         public int Id { get; set; }
         public DateTime StartDate { get; set; }

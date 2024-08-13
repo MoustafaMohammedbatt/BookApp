@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Entites
 {
-    public class Cart
+    public class Cart : BaseModel
     {
         public int Id { get; set; }
         public decimal TotalPrice { get; set; }
