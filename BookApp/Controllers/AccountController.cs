@@ -99,6 +99,44 @@ namespace BookApp.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginDTO model)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+                if (result.Succeeded)
+                {
+                    var user = await _userManager.FindByEmailAsync(model.Email);
+                    if (await _userManager.IsInRoleAsync(user, UserRole.Admin))
+                    {
+                        return RedirectToAction("Index", "Admin");
+                    }
+                    else if (await _userManager.IsInRoleAsync(user, UserRole.Reciptionist))
+                    {
+                        return RedirectToAction("Index", "Receptionist");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "User");
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                }
+            }
+
+            return View(model);
+        }
     }
+
 }
+

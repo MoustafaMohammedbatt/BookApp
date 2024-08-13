@@ -7,7 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Seeds\" />
+    <Compile Remove="Seeds\**" />
+    <Content Remove="Seeds\**" />
+    <EmbeddedResource Remove="Seeds\**" />
+    <None Remove="Seeds\**" />
   </ItemGroup>
 
   <ItemGroup>
