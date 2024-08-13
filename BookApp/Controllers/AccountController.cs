@@ -23,13 +23,13 @@ namespace BookApp.Controllers
             _roleManager = roleManager;
         }
 
-        [HttpGet(UserRole.Admin)]
+        [HttpGet("RegisterAsAdmin")]
         public IActionResult RegisterAsAdmin()
         {
             return View();
         }
 
-        [HttpPost(UserRole.Admin)]
+        [HttpPost("RegisterAsAdmin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RegisterAsAdmin(RegisterDTO model)
         {
@@ -61,13 +61,13 @@ namespace BookApp.Controllers
             return View(model);
         }
 
-        [HttpGet(UserRole.Reciptionist)]
+        [HttpGet("RegisterAsReciptionist")]
         public IActionResult RegisterAsReciptionist()
         {
             return View();
         }
 
-        [HttpPost(UserRole.Reciptionist)]
+        [HttpPost("RegisterAsReciptionist")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RegisterAsReciptionist(RegisterDTO model)
         {
