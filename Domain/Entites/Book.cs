@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Filter;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,7 +15,11 @@ namespace Domain.Entites
         public decimal Price { get; set; }
         public int Quantity { get; set; }
         public bool IsAvailable { get; set; }
-        public string? CoverImage {  get; set; }
+        [ValidImageExtension]
+        public string? CoverImage { get; set; }
+        // New property
+        public DateTime PublicationDate { get; set; }
+
         public int AuthorId { get; set; }
         public Author? Author { get; set; }
 

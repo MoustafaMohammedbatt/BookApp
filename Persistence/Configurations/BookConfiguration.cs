@@ -1,11 +1,6 @@
 ﻿using Domain.Entites;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Persistence.Configurations
 {
@@ -18,6 +13,7 @@ namespace Persistence.Configurations
             builder.Property(b => b.Description).IsRequired();
             builder.Property(b => b.Price).HasColumnType("decimal(18,2)");
             builder.Property(b => b.Quantity).IsRequired();
+            builder.Property(b => b.PublicationDate).IsRequired();
             builder.HasOne(b => b.Author)
                    .WithMany(a => a.Books)
                    .HasForeignKey(b => b.AuthorId);
