@@ -1,16 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Domain.Entites;
 using Service.Abstractions.Interfaces.IRepositories;
+using Shared.DTOs;
+using Service.Abstractions.Interfaces.IServises;
 
 namespace BookApp.Controllers
 {
     public class CategoryController : Controller
     {
+        private readonly ICategoryService _categoryService;
         private readonly IUnitOfWork _unitOfWork;
 
-        public CategoryController(IUnitOfWork unitOfWork)
+        public CategoryController(IUnitOfWork unitOfWork, ICategoryService categoryService)
         {
             _unitOfWork = unitOfWork;
+            _categoryService = categoryService;
         }
 
         // GET: Category
@@ -40,15 +43,19 @@ namespace BookApp.Controllers
         // POST: Category/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Description,CoverImage")] Category category)
+        public async Task<IActionResult> Create(UploadCategoryDTO model)
         {
             if (ModelState.IsValid)
             {
-                await _unitOfWork.Categories.Add(category);
-                _unitOfWork.Complete();
+                var result = await _categoryService.UploadCategory(model);
+                if (!string.IsNullOrEmpty(result.Notes))
+                {
+                    ModelState.AddModelError(string.Empty, result.Notes);
+                    return View(model);
+                }
                 return RedirectToAction(nameof(Index));
             }
-            return View(category);
+            return View(model);
         }
 
         // GET: Category/Edit/5
@@ -59,40 +66,39 @@ namespace BookApp.Controllers
             {
                 return NotFound();
             }
-            return View(category);
+
+            var categoryDTO = new UploadCategoryDTO
+            {
+                Id = category.Id,
+                Name = category.Name,
+                Description = category.Description,
+                // Set CoverImage if needed (category.CoverImage)
+            };
+
+            return View(categoryDTO);
         }
 
         // POST: Category/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,CoverImage")] Category category)
+        public async Task<IActionResult> Edit(int id, UploadCategoryDTO model)
         {
-            if (id != category.Id)
+            if (id != model.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                try
+                var result = await _categoryService.UpdateCategory(id, model);
+                if (!string.IsNullOrEmpty(result.Notes))
                 {
-                    _unitOfWork.Categories.Update(category);
-                    _unitOfWork.Complete();
-                }
-                catch
-                {
-                    if (!await CategoryExists(category.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    ModelState.AddModelError(string.Empty, result.Notes);
+                    return View(model);
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(category);
+            return View(model);
         }
 
         // GET: Category/Delete/5
@@ -116,7 +122,6 @@ namespace BookApp.Controllers
             {
                 _unitOfWork.Categories.Remove(category);
                 _unitOfWork.Complete();
-                return RedirectToAction(nameof(Index));
             }
             return RedirectToAction(nameof(Index));
         }

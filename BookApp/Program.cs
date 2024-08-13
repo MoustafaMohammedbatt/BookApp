@@ -1,4 +1,5 @@
 using BookApp.Repository;
+using BookApp.Services;
 using Domain.Entites;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -32,6 +33,7 @@ builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailS
 
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -63,6 +65,6 @@ app.MapControllerRoute(
 app.MapRazorPages();
 
 //Seed Data In DataBase 
-DbInitializer.Seed(app, roleManager, userManager);
+await DbInitializer.Seed(app, roleManager, userManager);
 
 app.Run();
