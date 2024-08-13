@@ -105,6 +105,18 @@ namespace BookApp.Controllers
             return View();
         }
 
+        /*  if (User.IsInRole("Admin"))
+        {
+            ViewData["Layout"] = "~/Views/Shared/_AdminLayout.cshtml";
+        }
+        else if (User.IsInRole("Receptionist"))
+        {
+            ViewData["Layout"] = "~/Views/Shared/_ReceptionistLayout.cshtml";
+        }
+        else
+        {
+            ViewData["Layout"] = "~/Views/Shared/_Layout.cshtml"; // Default layout
+        }*/
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginDTO model)
@@ -117,14 +129,17 @@ namespace BookApp.Controllers
                     var user = await _userManager.FindByEmailAsync(model.Email);
                     if (await _userManager.IsInRoleAsync(user, UserRole.Admin))
                     {
+                        ViewData["Layout"] = "~/Views/Shared/_AdminLayout.cshtml";
                         return RedirectToAction("Index", "Admin");
                     }
                     else if (await _userManager.IsInRoleAsync(user, UserRole.Reciptionist))
                     {
+                        ViewData["Layout"] = "~/Views/Shared/_ReceptionistLayout.cshtml";
                         return RedirectToAction("Index", "Receptionist");
                     }
                     else
                     {
+                        ViewData["Layout"] = "~/Views/Shared/_Layout.cshtml";
                         return RedirectToAction("Index", "User");
                     }
                 }
