@@ -9,6 +9,7 @@ using Persistence.Helpers;
 using Persistence.Repositories;
 using Safary.Mapping;
 using Service.Abstractions.Interfaces.IRepositories;
+using Service.Abstractions.Interfaces.IServises;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,7 +31,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options => { options.SignIn.
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 
 builder.Services.AddTransient<IEmailSender, EmailSender>();
-
+builder.Services.AddScoped<IAuthService, AuthService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
