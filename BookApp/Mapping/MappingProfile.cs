@@ -21,6 +21,10 @@ namespace Safary.Mapping
 
             CreateMap<CategoryDTO, Category>().ReverseMap();
 
+            CreateMap<AuthorDTO, UploadAuthorDTO>().ReverseMap();
+
+            CreateMap<AuthorDTO, Author>().ReverseMap();
+
 
         }
     }

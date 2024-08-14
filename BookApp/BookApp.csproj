@@ -46,6 +46,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\images\category\" />
+    <Folder Include="wwwroot\images\author\" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,53 @@
+﻿@model IEnumerable<Domain.Entites.Author>
+
+<h1>Authors</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FullName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bio)
+            </th>
+            <th>
+                Cover Image
+            </th>
+            <th>
+                Is Deleted
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Bio)
+                </td>
+                <td>
+                    <img src="@Url.Content("~/images/author/" + item.CoverImage)" alt="@item.FullName" style="width:100px; height:auto;" />
+                </td>
+                <td>
+                    <p>@(item.IsDeleted ? "✓" : "✘")</p>
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <form asp-action="ToggleDelete" method="post" style="display:inline;">
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <input type="submit" value=@(item.IsDeleted ? "Restore" : "Delete") class="btn btn-warning" />
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

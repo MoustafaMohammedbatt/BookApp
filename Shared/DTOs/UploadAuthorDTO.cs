@@ -8,14 +8,13 @@ using System.Threading.Tasks;
 
 namespace Shared.DTOs
 {
-    public class UploadCategoryDTO : BaseModelDTO
+    public class UploadAuthorDTO
     {
         public int Id { get; set; }
-        public string Name { get; set; } = null!;
-        public string? Description { get; set; }
+        public string FullName { get; set; } = null!;
+        public string? Bio { get; set; }
 
         [Required(ErrorMessage = "CoverImage is required")]
         public IFormFile CoverImage { get; set; } = null!;
-
     }
 }
