@@ -6,6 +6,7 @@ using Shared.DTOs;
 using Service.Abstractions.Interfaces.IRepositories;
 using Domain.Entites;
 using Service.Abstractions.Interfaces.IServises;
+using System.Reflection.Metadata;
 
 namespace BookApp.Services
 {
@@ -84,6 +85,19 @@ namespace BookApp.Services
             _unitOfWork.Complete();
 
             return new CategoryDTO { Id = category.Id, Name = category.Name, Description = category.Description, CoverImage = category.CoverImage };
+        }
+
+        public async Task<Category?> ToggleDelete(int id)
+        {
+            var category = await _unitOfWork.Categories.GetById(id);
+
+            if (category is null) return null;
+
+            category.IsDeleted = !category.IsDeleted;
+
+            _unitOfWork.Complete();
+
+            return category;
         }
     }
 }

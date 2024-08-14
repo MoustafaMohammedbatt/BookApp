@@ -17,6 +17,9 @@
             <th>
                 Cover Image
             </th>
+            <th>
+                Is Deleted
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -34,9 +37,16 @@
                     <img src="@Url.Content("~/images/category/" + item.CoverImage)" alt="@item.Name" style="width:100px; height:auto;" />
                 </td>
                 <td>
+                    <p>@(item.IsDeleted ? "✓" : "✘")</p>
+				</td>
+                <td>
+                
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <form asp-action="ToggleDelete" method="post" style="display:inline;">
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <input type="submit" value=@(item.IsDeleted ? "Restore" : "Delete") class="btn btn-warning" />
+                    </form>
                 </td>
             </tr>
         }

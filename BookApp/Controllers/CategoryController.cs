@@ -101,28 +101,16 @@ namespace BookApp.Controllers
             return View(model);
         }
 
-        // GET: Category/Delete/5
-        public async Task<IActionResult> Delete(int id)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ToggleDelete(int id)
         {
-            var category = await _unitOfWork.Categories.GetById(id);
+            var category = await _categoryService.ToggleDelete(id);
             if (category == null)
             {
                 return NotFound();
             }
-            return View(category);
-        }
 
-        // POST: Category/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var category = await _unitOfWork.Categories.GetById(id);
-            if (category != null)
-            {
-                _unitOfWork.Categories.Remove(category);
-                _unitOfWork.Complete();
-            }
             return RedirectToAction(nameof(Index));
         }
 
