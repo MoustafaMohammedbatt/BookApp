@@ -1,0 +1,62 @@
+﻿@model IEnumerable<Shared.DTOs.BookDTO>
+
+@{
+    ViewData["Title"] = "Books";
+}
+
+<h1>Books</h1>
+
+<p>
+    <a asp-action="Create">Create New Book</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Cover Image</th>
+            <th>Publication Date</th>
+            <th>Author Id</th>
+            <th>Category Id</th>
+            <th>Language</th>
+            <th>Is Deleted</th>
+            <th>Created On</th>
+            <th>Updated On</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var book in Model)
+        {
+            <tr>
+                <td>@book.Title</td>
+                <td>@book.Description</td>
+                <td>@book.Price</td>
+                <td>@book.Quantity</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(book.CoverImage))
+                    {
+                        <img src="@Url.Content($"~/images/book/{book.CoverImage}")" alt="Cover Image" width="50" height="50" />
+                    }
+                </td>
+                <td>@book.PublicationDate.ToShortDateString()</td>
+                <td>@book.AuthorId</td>
+                <td>@book.CategoryId</td>
+                <td>@book.BookLanguage</td>
+                <td>@book.IsDeleted</td>
+                <td>@book.CreatedOn.ToShortDateString()</td>
+                <td>@book.UpdatedOn?.ToShortDateString()</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@book.Id">Details</a> |
+                    <a asp-action="Edit" asp-route-id="@book.Id">Edit</a> |
+                    <form asp-action="Delete" asp-route-id="@book.Id" method="post" style="display:inline">
+                        <button type="submit" class="btn btn-link">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

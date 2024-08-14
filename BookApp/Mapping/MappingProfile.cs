@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
 using Domain.Entites;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.CodeAnalysis;
 using Shared.DTOs;
-using System.Reflection.Metadata;
 
-namespace Safary.Mapping
+namespace BookApp.Mapping
 {
     public class MappingProfile : Profile
     {
@@ -18,13 +16,16 @@ namespace Safary.Mapping
                 .ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.FirstName));
 
             CreateMap<CategoryDTO, UploadCategoryDTO>().ReverseMap();
-
             CreateMap<CategoryDTO, Category>().ReverseMap();
-
             CreateMap<AuthorDTO, UploadAuthorDTO>().ReverseMap();
-
             CreateMap<AuthorDTO, Author>().ReverseMap();
 
+            CreateMap<Book, BookDTO>();
+            CreateMap<UploadBookDTO, Book>()
+                .ForMember(dest => dest.CoverImage, opt => opt.Ignore()); // Ignore CoverImage
+
+            CreateMap<BookDTO, UploadBookDTO>()
+                .ForMember(dest => dest.CoverImage, opt => opt.Ignore()); // Ignore CoverImage
 
         }
     }
