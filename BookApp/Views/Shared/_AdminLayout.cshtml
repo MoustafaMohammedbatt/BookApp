@@ -48,18 +48,15 @@
                                     Author
                                 </a>
                             </li>
-                            <li>
-                                <a href="#" class="nav-link link-dark">
-                                    <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid" /></svg>
-                                    Settings
-                                </a>
+                          
+                             <li>
+                            <a class="nav-link link-dark"  asp-controller="Account" asp-action="RegisterAsAdmin">Add Admin</a>
+
                             </li>
-                            <li>
-                                <a href="#" class="nav-link link-dark">
-                                    <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle" /></svg>
-                                    Support
-                                </a>
-                            </li>
+                            <li >
+                            <a class="nav-link link-dark"  asp-controller="Account" asp-action="RegisterAsReciptionist">Add Reciptionist</a>
+
+                            </li> 
                         </ul>
                         <hr>
                         <div class="d-flex flex-column mt-auto">
@@ -73,7 +70,13 @@
                                     <li><a class="dropdown-item" href="#">Settings</a></li>
                                     <li><a class="dropdown-item" href="#">Profile</a></li>
                                     <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" href="#">Sign out</a></li>
+
+                                     <li >
+                                    <form id="logoutForm" class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                    <button id="logout" type="submit" class="nav-link btn btn-link text-dark ">Logout</button>
+                                    </form>
+                                    </li> 
+                                  
                                 </ul>
                             </div>
                         </div>
