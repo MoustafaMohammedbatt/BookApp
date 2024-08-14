@@ -1,3 +1,14 @@
 ﻿@{
-    Layout = "_Layout";
+    if (User.IsInRole(UserRole.Admin))
+    {
+        Layout = "_AdminLayout";
+    }
+    else if (User.IsInRole(UserRole.Reciptionist))
+    {
+        Layout = "_ReceptionistLayout";
+    }
+    else
+    {
+        Layout = "_Layout";
+    }
 }
