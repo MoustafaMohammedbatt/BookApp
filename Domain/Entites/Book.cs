@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 
 namespace Domain.Entites
 {
+    public enum Language { Arabic, English, Italian }
+
     public class Book : BaseModel
     {
         public int Id { get; set; }
@@ -17,7 +19,6 @@ namespace Domain.Entites
         public bool IsAvailable { get; set; }
         [ValidImageExtension]
         public string? CoverImage { get; set; }
-        // New property
         public DateTime PublicationDate { get; set; }
 
         public int AuthorId { get; set; }
@@ -26,5 +27,6 @@ namespace Domain.Entites
         public int CategoryId { get; set; }
         public Category? Category { get; set; }
 
+        public Language BookLanguage { get; set; } // Added property
     }
 }

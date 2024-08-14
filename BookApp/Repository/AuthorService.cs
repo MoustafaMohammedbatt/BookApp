@@ -35,7 +35,7 @@ namespace BookApp.Repository
             var author = await _unitOfWork.Authors.GetById(id);
 
             if (author == null)
-                return null;
+                return null!;
 
             if (model.CoverImage != null)
             {

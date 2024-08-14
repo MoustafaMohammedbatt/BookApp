@@ -12,6 +12,7 @@ namespace Domain.Entites
         public int Id { get; set; }
         public string Name { get; set; } = null!;
         public string? Description { get; set; }
+
         [ValidImageExtension]
         public string? CoverImage { get; set; }
         public virtual ICollection<Book>? Books { get; set; }

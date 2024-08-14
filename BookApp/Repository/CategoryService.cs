@@ -57,7 +57,7 @@ namespace BookApp.Services
             var category = await _unitOfWork.Categories.GetById(id);
 
             if (category == null)
-                return null;
+                return null!;
 
             if (model.CoverImage != null)
             {
