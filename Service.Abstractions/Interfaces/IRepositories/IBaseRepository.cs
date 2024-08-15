@@ -10,6 +10,7 @@ namespace Service.Abstractions.Interfaces.IBaseRepository
         IQueryable<T> FilterGetAll(bool withNoTracking = true, string? orderByDirection = OrderBy.Ascending, Expression<Func<T, object>>? orderBy = null);
         IQueryable<T> GetQueryable();
         Task<T?> GetById(int id);
+        Task<T?> GetUserById(string id);
         Task<T?> GetByName(string name);
 
         Task<T?> Find(Expression<Func<T, bool>> predicate);

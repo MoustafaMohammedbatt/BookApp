@@ -10,6 +10,7 @@
             <th>Is Deleted</th>
             <th>Created On</th>
             <th>Admin Accepted</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -20,9 +21,17 @@
                 <td>@user.LastName</td>
                 <td>@user.Address</td>
                 <td>@user.Email</td>
-                <td>@user.IsDeleted</td>
+                <td>@(user.IsDeleted ? "✓" : "✘")</td>
                 <td>@user.CreatedOn</td>
-                <td>@user.AdminAccepted</td>
+                <td>@(user.AdminAccepted ? "✓" : "✘")</td>
+                <td>
+                    <form asp-action="ToggleAdminAccepted" asp-route-id="@user.Id" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-sm btn-primary">@(user.AdminAccepted ? "Reject" : "Accept")</button>
+                    </form>
+                    <form asp-action="ToggleDelete" asp-route-id="@user.Id" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-sm btn-danger">@(user.IsDeleted ? "Restore" : "Delete")</button>
+                    </form>
+                </td>
             </tr>
         }
     </tbody>

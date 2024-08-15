@@ -81,6 +81,7 @@ namespace Persistence.Repositories
         }
 
         public async Task<T?> GetById(int id) => await _context.Set<T>().FindAsync(id);
+        public async Task<T?> GetUserById(string id) => await _context.Set<T>().FindAsync(id);
         public async Task<T?> GetByName(string name) => await _context.Set<T>().FindAsync(name);
 
 
@@ -202,5 +203,6 @@ namespace Persistence.Repositories
         public int Max(Expression<Func<T, bool>> predicate, Expression<Func<T, int>> field) =>
             _context.Set<T>().Any(predicate) ? _context.Set<T>().Where(predicate).Max(field) : 0;
 
+        
     }
 }
