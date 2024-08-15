@@ -34,6 +34,9 @@ namespace BookApp.Mapping
             CreateMap<BookDetailsDTO, UploadBookDTO>().ReverseMap();
             CreateMap<Book, UploadBookDTO>().ForMember(dest => dest.CoverImage, opt => opt.Ignore()); // Ignore CoverImage
 
+
+            CreateMap<AppUser, AppUserDTO>().ReverseMap();
+
         }
     }
 }
