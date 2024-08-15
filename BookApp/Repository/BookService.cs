@@ -2,6 +2,7 @@
 using Service.Abstractions.Interfaces.IRepositories;
 using Shared.DTOs;
 using Domain.Entites;
+using Microsoft.EntityFrameworkCore;
 
 public class BookService : IBookService
 {
@@ -107,4 +108,33 @@ public class BookService : IBookService
 
         return book;
     }
+
+    public async Task<IEnumerable<BookDetailsDTO>> GetAllBook()
+    {
+        var books = await _unitOfWork.Books.FindAll(r => r.Id > 0,
+            include: query => query.Include(b => b.Category).Include(b => b.Author));
+
+        return books.Select(book => new BookDetailsDTO
+        {
+            Id = book.Id,
+            // Add other properties here
+            Title = book.Title,
+            Description = book.Description,
+            Price = book.Price,
+            Quantity = book.Quantity,
+            IsAvailable = book.IsAvailable,
+            CoverImage = book.CoverImage,
+            PublicationDate = book.PublicationDate,
+            CategoryId = book.CategoryId,
+            AuthorId = book.AuthorId,
+            AuthorName = book.Author?.FullName ?? "Unknown",
+            CategoryName = book.Category?.Name ?? "Unknown",
+            BookLanguage = book.BookLanguage,
+            CreatedOn = book.CreatedOn,
+            IsDeleted = book.IsDeleted,
+            UpdatedOn = book.UpdatedOn,
+
+        }).ToList();
+    }
+
 }

@@ -11,6 +11,8 @@ namespace Service.Abstractions.Interfaces.IRepositories
         Task<BookDTO> UpdateBook(int id, UploadBookDTO model);
         Task<Book?> ToggleDelete(int id);
         Task<BookDTO?> GetBookById(int id);
-        Task<IEnumerable<BookDTO>> GetAllBooks();
+        //Task<IEnumerable<BookDTO>> GetAllBooks();
+        Task<IEnumerable<BookDetailsDTO>> GetAllBook();
+
     }
 }

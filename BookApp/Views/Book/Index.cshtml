@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Shared.DTOs.BookDTO>
+﻿@model IEnumerable<Shared.DTOs.BookDetailsDTO>
 
 @{
     ViewData["Title"] = "Books";
@@ -19,8 +19,8 @@
             <th>Quantity</th>
             <th>Cover Image</th>
             <th>Publication Date</th>
-            <th>Author Id</th>
-            <th>Category Id</th>
+            <th>Author</th>
+            <th>Category</th>
             <th>Language</th>
             <th>Is Deleted</th>
             <th>Created On</th>
@@ -43,8 +43,8 @@
                     }
                 </td>
                 <td>@book.PublicationDate.ToShortDateString()</td>
-                <td>@book.AuthorId</td>
-                <td>@book.CategoryId</td>
+                <td>@book.AuthorName</td> <!-- Updated to AuthorName -->
+                <td>@book.CategoryName</td> <!-- Updated to CategoryName -->
                 <td>@book.BookLanguage</td>
                 <td>@book.IsDeleted</td>
                 <td>@book.CreatedOn.ToShortDateString()</td>

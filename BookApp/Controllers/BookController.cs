@@ -19,7 +19,7 @@ namespace BookApp.Controllers
         // GET: Book
         public async Task<IActionResult> Index()
         {
-            var books = await _bookService.GetAllBooks();
+            var books = await _bookService.GetAllBook();
             return View(books);
         }
 

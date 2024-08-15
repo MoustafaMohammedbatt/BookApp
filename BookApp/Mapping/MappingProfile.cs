@@ -27,6 +27,10 @@ namespace BookApp.Mapping
             CreateMap<BookDTO, UploadBookDTO>()
                 .ForMember(dest => dest.CoverImage, opt => opt.Ignore()); // Ignore CoverImage
 
+            //   CreateMap<Book, BookDetailsDTO>()
+            //.ForMember(dest => dest.AuthorName, opt => opt.MapFrom(src => src.Author.FullName))
+            //.ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name));
+         
         }
     }
 }
