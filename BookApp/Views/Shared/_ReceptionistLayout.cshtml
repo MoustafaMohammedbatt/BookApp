@@ -3,21 +3,107 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Receptionist</title>
+    <title>@ViewData["Title"] - Reciption Panel</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-yjzjU3BB5lGQSo3COCML4W0BGUFNmVamnuoJsVXQVRiYB7g6N9yG6r1jKtHZK7EcQfZsh4l0XWlrNkebrtHiIw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/Sidebar.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/BookApp.styles.css" asp-append-version="true" />
 </head>
 <body>
-    <header>
-        <!-- Receptionist-specific navbar or header -->
-    </header>
-    <main role="main" class="pb-3">
-        <h1> Receptionist Page </h1>
-        @RenderBody()
-    </main>
-    <footer>
-        <hr />
-        <p>&copy; 2024 - Receptionist Portal</p>
-    </footer>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+                <!-- Sidebar Toggle Button -->
+                <button class="btn d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <!-- Sidebar Menu -->
+                <div class="collapse d-md-block" id="sidebarMenu">
+                    <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="height: 100vh; width: 100%;">
+                        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+                            <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap" /></svg>
+                            <span class="fs-4">Reciption Dashboard</span>
+                        </a>
+                        <hr>
+                        <ul class="nav nav-pills flex-column mb-auto">
+                            <li class="nav-item">
+                                <a href="#" class="nav-link active" aria-current="page">
+                                    <!-- Replace with the appropriate Bootstrap icon or SVG -->
+                                    <svg class="bi me-2" width="16" height="16"><use xlink:href="#home" /></svg>
+                                    Dashboard
+                                </a>
+                            </li>
+                            @* <li>
+                                <a asp-action="Index" asp-controller="Category" class="nav-link link-dark">
+                                    <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2" /></svg>
+                                    Category
+                                </a>
+                            </li>
+                            <li>
+                                <a asp-action="Index" asp-controller="Author" class="nav-link link-dark">
+                                    <svg class="bi me-2" width="16" height="16"><use xlink:href="#table" /></svg>
+                                    Author
+                                </a>
+                            </li> *@
+
+                        </ul>
+                        <hr>
+                        <div class="d-flex flex-column mt-auto">
+                            <div class="dropdown mt-3">
+                                <a href="#" class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+                                    <strong>Reciption</strong>
+                                </a>
+                                <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser1">
+                                    <li><a class="dropdown-item" href="#">New project...</a></li>
+                                    <li><a class="dropdown-item" href="#">Settings</a></li>
+                                    <li><a class="dropdown-item" href="#">Profile</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+
+                                    <li>
+                                        <form id="logoutForm" class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                            <button id="logout" type="submit" class="nav-link btn btn-link text-dark ">Logout</button>
+                                        </form>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9" id="mainContent">
+                <header>
+                    <!-- Reciption-specific navbar or header -->
+                </header>
+                <main role="main" class="pb-3">
+                    @RenderBody()
+                </main>
+                <footer>
+                    <hr />
+                    <p>&copy; 2024 - Reciption Portal</p>
+                </footer>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('click', function (event) {
+            var sidebarMenu = document.getElementById('sidebarMenu');
+            var mainContent = document.getElementById('mainContent');
+            var toggleButton = document.querySelector('button[data-bs-toggle="collapse"]');
+
+            if (!sidebarMenu.contains(event.target) && !toggleButton.contains(event.target)) {
+                var bsCollapse = new bootstrap.Collapse(sidebarMenu, {
+                    toggle: false
+                });
+                bsCollapse.hide();
+            }
+        });
+    </script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

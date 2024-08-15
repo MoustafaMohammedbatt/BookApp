@@ -15,7 +15,6 @@ namespace Domain.Entites
         public string? ReceptionId { get; set; }
         public AppUser? Reception { get; set; }
 
-        // public virtual ICollection<Book>? Books { get; set; }
         public virtual ICollection<Rented>? Rented { get; set; }
         public virtual ICollection<Sold>? Sold { get; set; }
     }
