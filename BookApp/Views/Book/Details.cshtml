@@ -1,4 +1,4 @@
-﻿@model Shared.DTOs.BookDTO
+﻿@model Shared.DTOs.BookDetailsDTO
 
 @{
     ViewData["Title"] = "Book Details";
@@ -29,10 +29,47 @@
             @Model.Quantity
         </dd>
         <dt class="col-sm-2">
+            Availability
+        </dt>
+        <dd class="col-sm-10">
+            @(Model.IsAvailable ? "Available" : "Not Available")
+        </dd>
+        <dt class="col-sm-2">
+            Cover Image
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.CoverImage != null)
+            {
+                <img src="@Url.Content($"~/images/book/{Model.CoverImage}")" alt="Cover Image" width="50" height="50" />
+            }
+            else
+            {
+                <span>No Cover Image</span>
+            }
+        </dd>
+        <dt class="col-sm-2">
             Publication Date
         </dt>
         <dd class="col-sm-10">
             @Model.PublicationDate.ToShortDateString()
+        </dd>
+        <dt class="col-sm-2">
+            Author
+        </dt>
+        <dd class="col-sm-10">
+            @Model.AuthorName
+        </dd>
+        <dt class="col-sm-2">
+            Category
+        </dt>
+        <dd class="col-sm-10">
+            @Model.CategoryName
+        </dd>
+        <dt class="col-sm-2">
+            Language
+        </dt>
+        <dd class="col-sm-10">
+            @Model.BookLanguage
         </dd>
     </dl>
 </div>

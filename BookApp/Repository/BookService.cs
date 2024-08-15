@@ -3,6 +3,7 @@ using Service.Abstractions.Interfaces.IRepositories;
 using Shared.DTOs;
 using Domain.Entites;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.CodeAnalysis.Operations;
 
 public class BookService : IBookService
 {
@@ -42,7 +43,7 @@ public class BookService : IBookService
 
         var book = _mapper.Map<Book>(model);
         book.CoverImage = fileName;
-
+        book.IsAvailable = book.Quantity > 0;
         await _unitOfWork.Books.Add(book);
         _unitOfWork.Complete();
 
@@ -73,6 +74,7 @@ public class BookService : IBookService
             model.CoverImage.CopyTo(stream);
 
             book.CoverImage = fileName;
+            book.IsAvailable = book.Quantity > 0;
         }
 
         _mapper.Map(model, book);
@@ -84,10 +86,10 @@ public class BookService : IBookService
         return _mapper.Map<BookDTO>(book);
     }
 
-    public async Task<BookDTO?> GetBookById(int id)
+    public async Task<BookDetailsDTO?> GetBookById(int id)
     {
-        var book = await _unitOfWork.Books.GetById(id);
-        return book == null ? null : _mapper.Map<BookDTO>(book);
+        var book = await _unitOfWork.Books.Find(x => x.Id == id, include: query => query.Include(b => b.Category).Include(b => b.Author));
+        return book == null ? null : _mapper.Map<BookDetailsDTO>(book);
     }
 
     public async Task<IEnumerable<BookDTO>> GetAllBooks()
@@ -113,28 +115,9 @@ public class BookService : IBookService
     {
         var books = await _unitOfWork.Books.FindAll(r => r.Id > 0,
             include: query => query.Include(b => b.Category).Include(b => b.Author));
+        return books.Select(book => _mapper.Map<BookDetailsDTO>(book));
 
-        return books.Select(book => new BookDetailsDTO
-        {
-            Id = book.Id,
-            // Add other properties here
-            Title = book.Title,
-            Description = book.Description,
-            Price = book.Price,
-            Quantity = book.Quantity,
-            IsAvailable = book.IsAvailable,
-            CoverImage = book.CoverImage,
-            PublicationDate = book.PublicationDate,
-            CategoryId = book.CategoryId,
-            AuthorId = book.AuthorId,
-            AuthorName = book.Author?.FullName ?? "Unknown",
-            CategoryName = book.Category?.Name ?? "Unknown",
-            BookLanguage = book.BookLanguage,
-            CreatedOn = book.CreatedOn,
-            IsDeleted = book.IsDeleted,
-            UpdatedOn = book.UpdatedOn,
-
-        }).ToList();
     }
 
+   
 }

@@ -20,17 +20,20 @@ namespace BookApp.Mapping
             CreateMap<AuthorDTO, UploadAuthorDTO>().ReverseMap();
             CreateMap<AuthorDTO, Author>().ReverseMap();
 
-            CreateMap<Book, BookDTO>();
+            CreateMap<Book, BookDTO>().ReverseMap();
             CreateMap<UploadBookDTO, Book>()
                 .ForMember(dest => dest.CoverImage, opt => opt.Ignore()); // Ignore CoverImage
 
             CreateMap<BookDTO, UploadBookDTO>()
                 .ForMember(dest => dest.CoverImage, opt => opt.Ignore()); // Ignore CoverImage
 
-            //   CreateMap<Book, BookDetailsDTO>()
-            //.ForMember(dest => dest.AuthorName, opt => opt.MapFrom(src => src.Author.FullName))
-            //.ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name));
-         
+          CreateMap<Book, BookDetailsDTO>()
+         .ForMember(dest => dest.AuthorName, opt => opt.MapFrom(src => src.Author.FullName))
+         .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name));
+
+            CreateMap<BookDetailsDTO, UploadBookDTO>().ReverseMap();
+            CreateMap<Book, UploadBookDTO>().ForMember(dest => dest.CoverImage, opt => opt.Ignore()); // Ignore CoverImage
+
         }
     }
 }

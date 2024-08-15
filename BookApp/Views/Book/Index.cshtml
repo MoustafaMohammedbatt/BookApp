@@ -17,6 +17,7 @@
             <th>Description</th>
             <th>Price</th>
             <th>Quantity</th>
+            <th>IsAvailable</th>
             <th>Cover Image</th>
             <th>Publication Date</th>
             <th>Author</th>
@@ -36,6 +37,8 @@
                 <td>@book.Description</td>
                 <td>@book.Price</td>
                 <td>@book.Quantity</td>
+                <td>@book.IsAvailable</td>
+
                 <td>
                     @if (!string.IsNullOrEmpty(book.CoverImage))
                     {

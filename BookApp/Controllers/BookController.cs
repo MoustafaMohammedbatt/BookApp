@@ -9,11 +9,13 @@ namespace BookApp.Controllers
     {
         private readonly IBookService _bookService;
         private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public BookController(IBookService bookService, IMapper mapper)
+        public BookController(IBookService bookService, IMapper mapper, IUnitOfWork unitOfWork)
         {
             _bookService = bookService;
             _mapper = mapper;
+            _unitOfWork = unitOfWork;
         }
 
         // GET: Book
@@ -60,7 +62,7 @@ namespace BookApp.Controllers
         // GET: Book/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
-            var book = await _bookService.GetBookById(id);
+            var book = await _unitOfWork.Books.GetById(id);
             if (book is null)
             {
                 return NotFound();
