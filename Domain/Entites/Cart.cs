@@ -12,7 +12,10 @@ namespace Domain.Entites
         public decimal TotalPrice { get; set; }
         public string? UserId { get; set; }
         public AppUser? User { get; set; }
-        public virtual ICollection<Book>? Books { get; set; }
+        public string? ReceptionId { get; set; }
+        public AppUser? Reception { get; set; }
+
+        // public virtual ICollection<Book>? Books { get; set; }
         public virtual ICollection<Rented>? Rented { get; set; }
         public virtual ICollection<Sold>? Sold { get; set; }
     }
