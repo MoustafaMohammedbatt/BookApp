@@ -16,8 +16,6 @@ namespace Domain.Entites
         public Book? Book { get; set; }
         public string? UserId { get; set; }
         public AppUser? User { get; set; }
-        public string? ReceptionId { get; set; }
-        public AppUser? Reception { get; set; }
         public int CartId { get; set; }
         public Cart? Cart { get; set; }
     }

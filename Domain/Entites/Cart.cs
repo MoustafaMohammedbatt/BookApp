@@ -10,8 +10,6 @@ namespace Domain.Entites
     {
         public int Id { get; set; }
         public decimal TotalPrice { get; set; }
-        public string? UserId { get; set; }
-        public AppUser? User { get; set; }
         public string? ReceptionId { get; set; }
         public AppUser? Reception { get; set; }
 

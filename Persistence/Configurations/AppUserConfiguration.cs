@@ -15,9 +15,7 @@ namespace Persistence.Configurations
         {
             builder.Property(u => u.FirstName).IsRequired();
             builder.Property(u => u.LastName).IsRequired();
-            builder.HasMany(u => u.CartOrders)
-                   .WithOne(c => c.User)
-                   .HasForeignKey(c => c.UserId);
+            
             builder.HasMany(u => u.RentedItems)
                    .WithOne(r => r.User)
                    .HasForeignKey(r => r.UserId);

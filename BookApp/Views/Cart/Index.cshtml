@@ -1,0 +1,27 @@
+﻿@model IEnumerable<Domain.Entites.Cart>
+
+<h2>Carts</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Total Price</th>
+            <th>Reception</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var cart in Model)
+        {
+            <tr>
+                <td>@cart.Id</td>
+                <td>@cart.TotalPrice</td>
+                <td>@cart.Reception?.Email</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@cart.Id" class="btn btn-primary">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

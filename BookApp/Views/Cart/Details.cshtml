@@ -1,0 +1,77 @@
+﻿@model Domain.Entites.Cart
+
+<h2>Cart Details</h2>
+
+<div>
+    <h4>Cart Information</h4>
+    <div>
+        <strong>ID:</strong> @Model.Id<br />
+        <strong>Total Price:</strong> @Model.TotalPrice<br />
+    </div>
+</div>
+
+<div>
+    <h4>Sold Items</h4>
+    @if (Model.Sold != null && Model.Sold.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Book</th>
+                    <th>Quantity</th>
+                    <th>Purchase Date</th>
+                    <th>User</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var sold in Model.Sold)
+                {
+                    <tr>
+                        <td>@sold.Book?.Title</td>
+                        <td>@sold.Quantity</td>
+                        <td>@sold.PurchaseDate.ToString("d")</td>
+                        <td>@sold.User?.UserName</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No sold items.</p>
+    }
+</div>
+
+<div>
+    <h4>Rented Items</h4>
+    @if (Model.Rented != null && Model.Rented.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Book</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Is Returned</th>
+                    <th>User</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var rented in Model.Rented)
+                {
+                    <tr>
+                        <td>@rented.Book?.Title</td>
+                        <td>@rented.StartDate.ToString("d")</td>
+                        <td>@rented.EndDate.ToString("d")</td>
+                        <td>@rented.IsReturned</td>
+                        <td>@rented.User?.UserName</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No rented items.</p>
+    }
+</div>
