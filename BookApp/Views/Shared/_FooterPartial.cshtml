@@ -1,0 +1,109 @@
+﻿@* Views/Shared/_FooterPartial.cshtml *@
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+<style>
+    .footer .container-fluid {
+        margin-left: 0 !important;
+    }
+
+    .footer ul li {
+        list-style-type: none;
+        margin-bottom: 8px;
+    }
+
+    .footer ul li a {
+        text-decoration: none;
+        color: #333;
+        transition: color 0.3s ease-in-out;
+    }
+
+    .footer ul li a:hover {
+        color: #007bff;
+    }
+
+    .social i {
+        margin-right: 10px;
+        transition: color 0.3s ease-in-out;
+    }
+
+    .social i:hover {
+        color: #007bff;
+    }
+
+    .policy div {
+        margin-right: 15px;
+        cursor: pointer;
+        transition: color 0.3s ease-in-out;
+    }
+
+    .policy div:hover {
+        color: #007bff;
+    }
+</style>
+
+<div class="footer">
+    <div class="container-fluid mt-5">
+        <div class="card bg-white mx-5" style="border: none; box-shadow: none;">
+            <div class="row mb-4">
+                <div class="col-md-4 col-sm-4 col-xs-4">
+                    <div class="footer-text pull-left">
+                        <div class="d-flex">
+                            <h1 class="font-weight-bold mr-2 px-3" style="color:white; background-color:#e0e0e0"> BL </h1>
+                            <h1 style="color: #e0e0e0">Library</h1>
+                        </div>
+                        <p class="card-text">Welcome to BL Library, your go-to resource for managing and borrowing books seamlessly.</p>
+                        <div class="social mt-2 mb-3">
+                            <i class="fa fa-facebook-official fa-lg"></i>
+                            <i class="fa fa-instagram fa-lg"></i>
+                            <i class="fa fa-twitter fa-lg"></i>
+                            <i class="fa fa-linkedin-square fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 col-sm-2 col-xs-2"></div>
+                <div class="col-md-2 col-sm-2 col-xs-2">
+                    <h5 class="heading">Services</h5>
+                    <ul>
+                        <li><a href="#">Book Lending</a></li>
+                        <li><a href="#">Book Reservation</a></li>
+                        <li><a href="#">Online Catalog</a></li>
+                        <li><a href="#">Library Events</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-2 col-sm-2 col-xs-2">
+                    <h5 class="heading">Collections</h5>
+                    <ul class="card-text">
+                        <li><a href="#">Fiction</a></li>
+                        <li><a href="#">Non-Fiction</a></li>
+                        <li><a href="#">Children's Books</a></li>
+                        <li><a href="#">E-Books</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-2 col-sm-2 col-xs-2">
+                    <h5 class="heading">Company</h5>
+                    <ul class="card-text">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Library News</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Careers</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="divider mb-4"></div>
+            <div class="row" style="font-size:10px;">
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                    <div class="pull-left">
+                        <p><i class="fa fa-copyright"></i> 2024 BL Library</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                    <div class="pull-right mr-4 d-flex policy">
+                        <div>Terms of Use</div>
+                        <div>Privacy Policy</div>
+                        <div>Cookie Policy</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
