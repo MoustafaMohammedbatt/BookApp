@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Domain.Entites;
 using Shared.DTOs;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Service.Abstractions.Interfaces.IRepositories
 {
@@ -13,6 +14,11 @@ namespace Service.Abstractions.Interfaces.IRepositories
         Task<BookDetailsDTO?> GetBookById(int id);
         //Task<IEnumerable<BookDTO>> GetAllBooks();
         Task<IEnumerable<BookDetailsDTO>> GetAllBook();
+        Task<IEnumerable<SelectListItem>> GetAllAuthors();
+
+        Task<IEnumerable<SelectListItem>> GetAllCategories();
+    
+
 
     }
 }

@@ -37,8 +37,10 @@ namespace BookApp.Controllers
         }
 
         // GET: Book/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            ViewBag.Authors = await _bookService.GetAllAuthors();
+            ViewBag.Categories = await _bookService.GetAllCategories();
             return View();
         }
 
@@ -69,6 +71,8 @@ namespace BookApp.Controllers
             }
 
             var model = _mapper.Map<UploadBookDTO>(book);
+            ViewBag.Authors = await _bookService.GetAllAuthors();
+            ViewBag.Categories = await _bookService.GetAllCategories();
             return View(model);
         }
 
