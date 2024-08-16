@@ -3,7 +3,7 @@ using Service.Abstractions.Interfaces.IRepositories;
 using Shared.DTOs;
 using Domain.Entites;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.CodeAnalysis.Operations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 public class BookService : IBookService
 {
@@ -118,6 +118,25 @@ public class BookService : IBookService
         return books.Select(book => _mapper.Map<BookDetailsDTO>(book));
 
     }
+    public async Task<IEnumerable<SelectListItem>> GetAllAuthors()
+    {
+        var authors = await _unitOfWork.Authors.GetAll();
+        return authors.Select(author => new SelectListItem
+        {
+            Value = author.Id.ToString(),
+            Text = author.FullName
+        });
+    }
 
-   
+    public async Task<IEnumerable<SelectListItem>> GetAllCategories()
+    {
+        var categories = await _unitOfWork.Categories.GetAll();
+        return categories.Select(category => new SelectListItem
+        {
+            Value = category.Id.ToString(),
+            Text = category.Name
+        });
+    }
+
+
 }

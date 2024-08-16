@@ -45,13 +45,13 @@
 
     <div class="form-group">
         <label asp-for="AuthorId" class="control-label"></label>
-        <input asp-for="AuthorId" class="form-control" />
+        <select asp-for="AuthorId" class="form-control" asp-items="@(ViewBag.Authors as IEnumerable<SelectListItem>)"></select>
         <span asp-validation-for="AuthorId" class="text-danger"></span>
     </div>
 
     <div class="form-group">
         <label asp-for="CategoryId" class="control-label"></label>
-        <input asp-for="CategoryId" class="form-control" />
+        <select asp-for="CategoryId" class="form-control" asp-items="@(ViewBag.Categories as IEnumerable<SelectListItem>)"></select>
         <span asp-validation-for="CategoryId" class="text-danger"></span>
     </div>
 
