@@ -14,6 +14,7 @@
     <h4>Sold Items</h4>
     @if (Model.Sold != null && Model.Sold.Any())
     {
+        <div class="table-responsive">
         <table class="table table-striped table-hover">
             <thead>
                 <tr>
@@ -34,7 +35,8 @@
                     </tr>
                 }
             </tbody>
-        </table>
+			</table>
+		</div>
     }
     else
     {
@@ -46,6 +48,7 @@
     <h4>Rented Items</h4>
     @if (Model.Rented != null && Model.Rented.Any())
     {
+        <div class="table-responsive">
         <table class="table table-striped table-hover">
             <thead>
                 <tr>
@@ -68,7 +71,8 @@
                     </tr>
                 }
             </tbody>
-        </table>
+			</table>
+		</div>
     }
     else
     {
