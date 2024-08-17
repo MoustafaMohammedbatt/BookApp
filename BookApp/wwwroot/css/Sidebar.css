@@ -7,6 +7,7 @@
     z-index: 1030; /* High enough to stay above the content */
     background-color: #f8f9fa; /* Background color for visibility */
     overflow-y: auto; /* To ensure scrollability */
+    transition: left 0.5s ease-in-out; /* Smooth transition */
 }
 
 .collapse:not(.show) {
@@ -17,13 +18,23 @@
     display: block; /* Display sidebar when toggled */
 }
 
-@media (max-width: 767.98px) {
+@media (max-width: 1300px) {
     #sidebarMenu {
         left: -250px; /* Initially hide the sidebar to the left */
-        transition: left 0.3s ease-in-out; /* Smooth transition */
     }
 
         #sidebarMenu.show {
             left: 0; /* Show the sidebar on toggle */
         }
+
+    /* Adjust the toggle button visibility */
+    .btn[data-bs-toggle="collapse"] {
+        display: block; /* Show the toggle button */
+    }
+}
+
+@media (min-width: 1300px) {
+    .btn[data-bs-toggle="collapse"] {
+        display: none; /* Hide the toggle button on larger screens */
+    }
 }
