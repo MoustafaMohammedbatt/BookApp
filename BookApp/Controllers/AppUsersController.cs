@@ -21,12 +21,20 @@ namespace YourNamespace.Controllers
             _appUserService = appUserService;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchEmail)
         {
             var users = await _unitOfWork.ApplicationUsers.GetAll();
+
+            if (!string.IsNullOrEmpty(searchEmail))
+            {
+                users = users.Where(u => u.Email.Contains(searchEmail, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
             var userDtos = _mapper.Map<IEnumerable<AppUserDTO>>(users);
             return View(userDtos);
         }
+
+
 
         public async Task<IActionResult> ToggleAdminAccepted(string id)
         {
