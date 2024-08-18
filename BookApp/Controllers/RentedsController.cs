@@ -46,7 +46,8 @@ namespace BookApp.Controllers
                 };
                 await _unitOfWork.Renteds.Add(rent);
                 _unitOfWork.Complete();
-                return RedirectToAction("Index");
+
+                return RedirectToAction("Edit", "Cart" , new { id = dto.CartId });
             }
 
             ViewBag.Books = await _unitOfWork.Books.GetAll();
