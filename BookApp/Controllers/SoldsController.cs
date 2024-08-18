@@ -22,53 +22,51 @@ namespace BookApp.Controllers
             return View(carts);
         }
 
+        // GET: Solds/Create
         public async Task<IActionResult> Create(int cartId, string userId)
         {
-            // Fetch the list of books from the database
             var books = await _unitOfWork.Books.GetAll();
 
-            // Check if the list is empty or null
-            if (books == null || !books.Any())
+            var viewModel = new SoldCreateViewModel
             {
-                // Handle the case where no books are available
-                ModelState.AddModelError("", "No books available.");
-                return View();
-            }
+                Books = books ?? new List<Book>(), // Ensure Books is never null
+                CartId = cartId,
+                UserId = userId
+            };
 
-            // Populate the ViewBag with the list of books
-            ViewBag.Books = books;
-
-            ViewBag.Cart = cartId;
-            ViewBag.User = userId;
-
-            return View();
+            return View(viewModel);
         }
-
 
         // POST: Solds/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(SoldCreateDTO dto)
+        public async Task<IActionResult> Create(SoldCreateViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                var sold = new Sold
+                foreach (var book in viewModel.Books)
                 {
-                    Quantity = dto.Quantity,
-                    PurchaseDate = DateTime.Now,
-                    BookId = dto.BookId,
-                    CartId = dto.CartId,
-                    UserId = dto.UserId
-                };
+                    if (book.Quantity > 0) // Ensure quantity is greater than zero
+                    {
+                        var sold = new Sold
+                        {
+                            Quantity = book.Quantity,
+                            PurchaseDate = DateTime.Now,
+                            BookId = book.Id,
+                            CartId = viewModel.CartId,
+                            UserId = viewModel.UserId
+                        };
 
-                await _unitOfWork.Solds.Add(sold);
-                _unitOfWork.Complete();
+                        await _unitOfWork.Solds.Add(sold);
+                    }
+                }
 
-                return RedirectToAction("Create", "Renteds", new { userId = dto.UserId, cartId = dto.CartId });
+                 _unitOfWork.Complete();
+
+                return RedirectToAction("Create", "Renteds", new { userId = viewModel.UserId, cartId = viewModel.CartId });
             }
-            ViewBag.Books = await _unitOfWork.Books.GetAll();
-            return View(dto);
+
+            return View(viewModel);
         }
     }
-
 }

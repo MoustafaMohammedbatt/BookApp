@@ -1,5 +1,4 @@
-﻿@model Shared.DTOs.SoldCreateDTO
-@using Domain.Entites
+﻿@model Shared.DTOs.SoldCreateViewModel
 
 @{
     ViewData["Title"] = "Create Sold";
@@ -7,31 +6,36 @@
 
 <h1>Create Sold</h1>
 
-<form asp-action="Create">
-    <div class="form-group">
-        <label for="BookId">Book</label>
-        @if (ViewBag.Books == null || !((IEnumerable<Book>)ViewBag.Books).Any())
-        {
-            <p>No books available for selection.</p>
-        }
-        else
-        {
-            <select id="BookId" name="BookId" class="form-control" asp-for="BookId" asp-items="@(new SelectList(ViewBag.Books, "Id", "Title"))"></select>
-        }
-        <span asp-validation-for="BookId" class="text-danger"></span>
-    </div>
+<form asp-action="Create" method="post">
+    @if (Model.Books == null || !Model.Books.Any())
+    {
+        <p>No books available for selection.</p>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var book in Model.Books)
+            {
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">@book.Title</h5>
+                            <p class="card-text">@book.Description</p>
+                            <input type="hidden" name="Books[@book.Id].Id" value="@book.Id" />
+                            <input type="hidden" name="Books[@book.Id].Title" value="@book.Title" />
+                            <label for="Quantity_@book.Id">Quantity</label>
+                            <input id="Quantity_@book.Id" name="Books[@book.Id].Quantity" type="number" min="0" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
 
-    <div class="form-group">
-        <label for="Quantity">Quantity</label>
-        <input id="Quantity" name="Quantity" class="form-control" asp-for="Quantity" />
-        <span asp-validation-for="Quantity" class="text-danger"></span>
-    </div>
+    <input type="hidden" name="CartId" value="@Model.CartId" />
+    <input type="hidden" name="UserId" value="@Model.UserId" />
 
-    <input type="hidden" id="CartId" name="CartId" value="@ViewBag.Cart" />
-    <input type="hidden" id="UserId" name="UserId" value="@ViewBag.User" />
-    <input type="hidden" id="PurchaseDate" name="PurchaseDate" value="@DateTime.Now" />
-
-    <div class="form-group">
+    <div class="form-group mt-3">
         <input type="submit" value="Create" class="btn btn-primary" />
     </div>
 </form>
