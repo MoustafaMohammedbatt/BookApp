@@ -21,7 +21,7 @@ namespace YourNamespace.Controllers
             _appUserService = appUserService;
         }
 
-        public async Task<IActionResult> Index(string searchEmail)
+        public async Task<IActionResult> Index(string searchEmail, string sortColumn, string sortOrder)
         {
             var users = await _unitOfWork.ApplicationUsers.GetAll();
 
@@ -29,6 +29,14 @@ namespace YourNamespace.Controllers
             {
                 users = users.Where(u => u.Email.Contains(searchEmail, StringComparison.OrdinalIgnoreCase)).ToList();
             }
+
+            // Sorting logic
+            users = sortColumn switch
+            {
+                "FirstName" => sortOrder == "asc" ? users.OrderBy(u => u.FirstName).ToList() : users.OrderByDescending(u => u.FirstName).ToList(),
+                "CreatedOn" => sortOrder == "asc" ? users.OrderBy(u => u.CreatedOn).ToList() : users.OrderByDescending(u => u.CreatedOn).ToList(),
+                _ => users.ToList(),
+            };
 
             var userDtos = _mapper.Map<IEnumerable<AppUserDTO>>(users);
             return View(userDtos);

@@ -1,14 +1,9 @@
 ﻿using Domain.Consts;
-using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using Persistence.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using Service.Abstractions.Interfaces.IBaseRepository;
+using System.Linq.Expressions;
 
 namespace Persistence.Repositories
 {

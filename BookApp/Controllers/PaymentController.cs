@@ -32,15 +32,15 @@ namespace BookApp.Controllers
                 var paymentIntent = await _paymentService.CreatePaymentIntent(amount);
                 return Json(new { clientSecret = paymentIntent.ClientSecret });
             }
-            catch (Exception ex)
+            catch (NullReferenceException ex)
             {
                 // Log exception details
-                return StatusCode(500, new { error = "An error occurred while creating the payment intent." });
+                return StatusCode(500, new { error = $"An error occurred while creating the payment intent.{ex}" });
             }
         }
 
         [HttpPost]
-        public async Task<IActionResult> CompletePayment(string paymentIntentId)
+        public IActionResult CompletePayment(string paymentIntentId)
         {
             // Ideally, you should verify the payment status with Stripe API here
             // For demonstration purposes, we assume the payment was successful
