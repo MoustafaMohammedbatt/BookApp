@@ -49,7 +49,12 @@ namespace BookApp.Repository
 
         public async Task<AppUser> GetUserByEmailAsync(string email)
         {
-            return await  _userManager.FindByEmailAsync(email);
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                throw new Exception($"No user found with email {email}.");
+            }
+            return user;
         }
 
         public async Task<bool> IsUserInRoleAsync(AppUser user, string role)

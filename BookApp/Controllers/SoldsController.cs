@@ -18,7 +18,7 @@ namespace BookApp.Controllers
         // GET: /Cart
         public async Task<IActionResult> Index()
         {
-            var carts = await _unitOfWork.Solds.FindAll(c => c.Id > 0, include: q => q.Include(c => c.Book).Include(c => c.User));
+            var carts = await _unitOfWork.Solds.FindAll(c => c.Id > 0, include: q => q.Include(c => c.Book).Include(c => c.User!));
             return View(carts);
         }
 

@@ -27,7 +27,7 @@ namespace YourNamespace.Controllers
 
             if (!string.IsNullOrEmpty(searchEmail))
             {
-                users = users.Where(u => u.Email.Contains(searchEmail, StringComparison.OrdinalIgnoreCase)).ToList();
+                users = users.Where(u => u.Email!.Contains(searchEmail, StringComparison.OrdinalIgnoreCase)).ToList();
             }
 
             // Sorting logic
