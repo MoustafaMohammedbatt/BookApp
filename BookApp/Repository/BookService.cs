@@ -88,7 +88,7 @@ public class BookService : IBookService
 
     public async Task<BookDetailsDTO?> GetBookById(int id)
     {
-        var book = await _unitOfWork.Books.Find(x => x.Id == id, include: query => query.Include(b => b.Category).Include(b => b.Author));
+        var book = await _unitOfWork.Books.Find(x => x.Id == id, include: query => query.Include(b => b.Category).Include(b => b.Author!));
         return book == null ? null : _mapper.Map<BookDetailsDTO>(book);
     }
 
@@ -114,7 +114,7 @@ public class BookService : IBookService
     public async Task<IEnumerable<BookDetailsDTO>> GetAllBook()
     {
         var books = await _unitOfWork.Books.FindAll(r => r.Id > 0,
-            include: query => query.Include(b => b.Category).Include(b => b.Author));
+            include: query => query.Include(b => b.Category).Include(b => b.Author!));
         return books.Select(book => _mapper.Map<BookDetailsDTO>(book));
 
     }
