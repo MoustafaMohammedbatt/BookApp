@@ -39,7 +39,7 @@ namespace BookApp.Controllers
                 {
                     
                     StartDate= dto.StartDate,
-                    EndDate= dto.EndDate,
+                    EndDate= dto.StartDate.AddDays(7),
                     BookId = dto.BookId,
                     CartId = dto.CartId,
                     UserId = dto.UserId
