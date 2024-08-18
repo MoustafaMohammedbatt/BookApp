@@ -1,16 +1,22 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Domain.Consts;
+using Domain.Entites;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Service.Abstractions.Interfaces.IRepositories;
+using Shared.DTOs;
 
 namespace BookApp.Controllers
 {
     public class CartController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+		private readonly UserManager<AppUser> _userManager;
 
-        public CartController(IUnitOfWork unitOfWork)
+		public CartController(IUnitOfWork unitOfWork, UserManager<AppUser> userManager)
         {
             _unitOfWork = unitOfWork;
+            _userManager = userManager;
         }
 
         // GET: /Cart
@@ -47,5 +53,71 @@ namespace BookApp.Controllers
             
             return View(cart);
         }
+
+		public async Task<IActionResult> Create()
+		{
+            var allUsers = await _unitOfWork.ApplicationUsers.GetAll();
+
+            // Filter users by role in memory
+            var users = new List<AppUser>();
+            foreach (var user in allUsers)
+            {
+                if (await _userManager.IsInRoleAsync(user, UserRole.User))
+                {
+                    users.Add(user);
+                }
+            }
+            ViewBag.Users = users;
+            return View();
+		}
+
+		// POST: /Cart/Create
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Create(CartCreateDTO dto)
+		{
+			if (ModelState.IsValid)
+			{
+				var reciption = await _userManager.GetUserAsync(User);
+				var cart = new Cart
+				{
+					ReceptionId = reciption?.Id
+				};
+
+				await _unitOfWork.Carts.Add(cart);
+			    _unitOfWork.Complete();
+
+                var user = await _userManager.FindByEmailAsync(dto.UserEmail) ;
+                ViewBag.User = user?.Id;
+                ViewBag.Cart = cart.Id;
+                return RedirectToAction("Create", "Solds", new { cartId = cart.Id, userId = user?.Id });
+
+            }
+
+            return View(dto);
+		}
+
+        // GET: /Cart/SearchUsers
+        [HttpGet]
+        public async Task<IActionResult> SearchUsers(string email)
+        {
+            var allUsers = await _unitOfWork.ApplicationUsers.GetAll();
+            var users = new List<AppUser>();
+            foreach (var user in allUsers)
+            {
+                if (await _userManager.IsInRoleAsync(user, UserRole.User))
+                {
+                    users.Add(user);
+                }
+            }
+            var filteredUsers = users
+                .Where(user => user.Email.Contains(email, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+
+            // Return JSON result
+            return Json(filteredUsers.Select(user => new { user.Id, user.Email }));
+        }
+
     }
 }
+

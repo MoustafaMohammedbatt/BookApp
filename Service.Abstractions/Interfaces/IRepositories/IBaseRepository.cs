@@ -12,6 +12,7 @@ namespace Service.Abstractions.Interfaces.IBaseRepository
         Task<T?> GetById(int id);
         Task<T?> GetUserById(string id);
         Task<T?> GetByName(string name);
+        Task<T?> GetByEmail(string email);
 
         Task<T?> Find(Expression<Func<T, bool>> predicate);
         Task<T?> Find(Expression<Func<T, bool>> predicate, string[]? includes = null);
