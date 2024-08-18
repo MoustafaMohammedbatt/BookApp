@@ -20,6 +20,9 @@ namespace Persistence.Configurations
             builder.HasOne(s => s.Cart)
                    .WithMany(c => c.Sold)
                    .HasForeignKey(s => s.CartId);
-        }
+			builder.HasOne(s => s.UserCart)
+				   .WithMany(c => c.Sold)
+				   .HasForeignKey(s => s.UserCartId);
+		}
     }
 }

@@ -15,10 +15,12 @@ public class AppUser : IdentityUser
     public string Address { get; set; } = null!;
     public bool IsDeleted { get; set; }
     public DateTime CreatedOn { get; set; } = DateTime.Now;
-    public bool AdminAccepted { get; set; } 
+    public bool AdminAccepted { get; set; }
+    //public string NationId { get; set; } = null!;
 
-    public virtual ICollection<Cart>? CartOrders { get; set; }
-    public virtual ICollection<Rented>? RentedItems { get; set; }
+	public virtual ICollection<Cart>? CartOrders { get; set; }
+	public virtual ICollection<UserCart>? UserCartOrders { get; set; }
+	public virtual ICollection<Rented>? RentedItems { get; set; }
     public virtual ICollection<Sold>? SelledItems { get; set; }
 
 }
