@@ -138,7 +138,7 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Authors");
+                    b.ToTable("Authors", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entites.Book", b =>
@@ -196,7 +196,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Books");
+                    b.ToTable("Books", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entites.Cart", b =>
@@ -226,7 +226,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("ReceptionId");
 
-                    b.ToTable("Carts");
+                    b.ToTable("Carts", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entites.Category", b =>
@@ -259,7 +259,7 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entites.Rented", b =>
@@ -310,7 +310,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Renteds");
+                    b.ToTable("Renteds", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entites.Sold", b =>
@@ -358,7 +358,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Solds");
+                    b.ToTable("Solds", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entites.UserCart", b =>
@@ -385,7 +385,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserCart");
+                    b.ToTable("UserCart", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

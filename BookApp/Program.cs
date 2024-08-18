@@ -1,5 +1,7 @@
+using BookApp.Mapping;
 using BookApp.Repository;
 using BookApp.Services;
+using Domain.Consts;
 using Domain.Entites;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -7,9 +9,9 @@ using Microsoft.EntityFrameworkCore;
 using Persistence.Data;
 using Persistence.Helpers;
 using Persistence.Repositories;
-using BookApp.Mapping;
 using Service.Abstractions.Interfaces.IRepositories;
 using Service.Abstractions.Interfaces.IServises;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,12 +32,16 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options => { options.SignIn.
 
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 
+builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("PaymentGateway:Stripe"));
+StripeConfiguration.ApiKey = builder.Configuration.GetSection("PaymentGateway:Stripe")["SecretKey"];
+
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IAuthorService, AuthorService>();
 builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<IAppUserService, AppUserService>();
+builder.Services.AddScoped<IPaymentService, PaymentService>();
 
 var app = builder.Build();
 
