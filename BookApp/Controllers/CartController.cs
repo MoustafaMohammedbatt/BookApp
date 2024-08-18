@@ -135,11 +135,14 @@ namespace BookApp.Controllers
             }
 
             decimal total = 0;
+            
             if (cart.Sold!.Any())
             {
                 foreach (var sold in cart.Sold!)
                 {
                     var book = await _unitOfWork.Books.GetById(sold.BookId);
+                     var user = await _unitOfWork.ApplicationUsers.GetUserById(sold.UserId!);
+                    ViewBag.User = user;
                     total += book!.Price * sold.Quantity; // Calculate total based on quantity
                 }
             }
@@ -148,6 +151,8 @@ namespace BookApp.Controllers
                 foreach (var rented in cart.Rented!)
                 {
                     var book = await _unitOfWork.Books.GetById(rented.BookId);
+                    var user = await _unitOfWork.ApplicationUsers.GetUserById(rented.UserId!);
+                    ViewBag.User = user;
                     total += book!.Price; // Add book price for each rented item
                 }
             }

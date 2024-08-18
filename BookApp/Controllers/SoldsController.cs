@@ -29,11 +29,16 @@ namespace BookApp.Controllers
 
             var viewModel = new SoldCreateViewModel
             {
-                Books = books ?? new List<Book>(), // Ensure Books is never null
+                Books = books.Select(b => new BookQuantityDTO
+                {
+                    Id = b.Id,
+                    Title = b.Title,
+                    Quantity = 0 // Initialize quantity to zero
+                }).ToList(),
                 CartId = cartId,
                 UserId = userId
             };
-
+            ViewBag.User = userId;
             return View(viewModel);
         }
 
@@ -44,15 +49,15 @@ namespace BookApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                foreach (var book in viewModel.Books)
+                foreach (var bookDto in viewModel.Books)
                 {
-                    if (book.Quantity > 0) // Ensure quantity is greater than zero
+                    if (bookDto.Quantity > 0) // Ensure quantity is greater than zero
                     {
                         var sold = new Sold
                         {
-                            Quantity = book.Quantity,
+                            Quantity = bookDto.Quantity,
                             PurchaseDate = DateTime.Now,
-                            BookId = book.Id,
+                            BookId = bookDto.Id,
                             CartId = viewModel.CartId,
                             UserId = viewModel.UserId
                         };

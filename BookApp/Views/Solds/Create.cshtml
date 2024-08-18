@@ -14,17 +14,18 @@
     else
     {
         <div class="row">
-            @foreach (var book in Model.Books)
+            @for (int i = 0; i < Model.Books.Count; i++)
             {
+                var book = Model.Books[i];
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">@book.Title</h5>
-                            <p class="card-text">@book.Description</p>
-                            <input type="hidden" name="Books[@book.Id].Id" value="@book.Id" />
-                            <input type="hidden" name="Books[@book.Id].Title" value="@book.Title" />
+                            <p class="card-text">Description here</p>
+                            <input type="hidden" name="Books[@i].Id" value="@book.Id" />
+                            <input type="hidden" name="Books[@i].Title" value="@book.Title" />
                             <label for="Quantity_@book.Id">Quantity</label>
-                            <input id="Quantity_@book.Id" name="Books[@book.Id].Quantity" type="number" min="0" class="form-control" />
+                            <input id="Quantity_@book.Id" name="Books[@i].Quantity" type="number" min="0" class="form-control" />
                         </div>
                     </div>
                 </div>
