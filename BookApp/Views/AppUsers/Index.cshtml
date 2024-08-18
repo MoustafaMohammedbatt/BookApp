@@ -30,13 +30,13 @@
                 </td>
                 <td>
                     <form asp-action="ToggleAdminAccepted" asp-route-id="@user.Id" method="post" style="display:inline;">
-                        <button type="submit" class="btn btn-sm btn-primary">@(user.AdminAccepted ? "Reject" : "Accept")</button>
+                            <button type="submit" class="btn btn-outline-primary">@(user.AdminAccepted ? "Reject" : "Accept")</button>
                     </form>
                 </td>
                 <td>@(user.IsDeleted ? "✓" : "✘")</td>
                 <td>
                     <form asp-action="ToggleDelete" asp-route-id="@user.Id" method="post" style="display:inline;">
-                        <button type="submit" class="btn btn-sm btn-danger">@(user.IsDeleted ? "Restore" : "Delete")</button>
+                            <button type="submit" class="btn btn-outline-danger">@(user.IsDeleted ? "Restore" : "Delete")</button>
                     </form>
                 </td>
             </tr>
