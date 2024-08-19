@@ -1,0 +1,133 @@
+﻿@{
+    // Injecting the PayPal Client ID into the script URL
+}
+
+<script src="https://www.paypal.com/sdk/js?client-id=@(ViewBag.PaypalClientId)&currency=USD"></script>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <!-- Include Bootstrap CSS for styling -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css">
+    <style>
+        .container {
+            max-width: 600px;
+            margin-top: 20px;
+        }
+
+        .card {
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .form-label {
+            font-weight: bold;
+        }
+
+        .alert-dismissible .btn-close {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card mx-auto">
+            <h2 class="text-center mb-5">Complete Your Order</h2>
+            <div class="form-group mb-3">
+                <label for="totalAmount" class="form-label">Total Amount ($)</label>
+                <input class="form-control" type="number" id="totalAmount" step="0.01" />
+            </div>
+            <br />
+            <div id="notification-container"></div>
+            <div id="paypal-button-container"></div>
+        </div>
+    </div>
+
+    <!-- Include Bootstrap JS for alerts and other components -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+    <script>
+        paypal.Buttons({
+            async createOrder() {
+                try {
+                    const response = await fetch("@Url.Action("CreateOrder", "Checkout")", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            amount: document.getElementById("totalAmount").value
+                        })
+                    });
+
+                    const order = await response.json();
+
+                    if (!order.Id) {
+                        throw new Error("Order ID not received from server.");
+                    }
+
+                    return order.Id;
+                } catch (error) {
+                    console.error("Create Order Error:", error);
+                    throw error;
+                }
+            },
+
+            async onApprove(data) {
+                const response = await fetch("@Url.Action("CompleteOrder", "Checkout")", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        orderID: data.orderID
+                    })
+                })
+
+                const details = await response.json();
+                if (details === "success") {
+                    document.getElementById("notification-container").innerHTML = `
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <strong>The order is created successfully!</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    `;
+                } else {
+                    document.getElementById("notification-container").innerHTML = `
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>Failed to create the order!</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    `;
+                }
+            },
+
+            onCancel(data) {
+                document.getElementById("notification-container").innerHTML = `
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Payment Cancelled!</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>`;
+            },
+
+            onError(err) {
+                document.getElementById("notification-container").innerHTML = `
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Payment Error: ${err.message}</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>`;
+            }
+        }).render('#paypal-button-container');
+
+    </script>
+</body>
+</html>
