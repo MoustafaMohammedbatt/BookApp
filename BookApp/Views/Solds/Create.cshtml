@@ -6,7 +6,7 @@
 
 <h1>Create Sold</h1>
 
-<form asp-action="Create" method="post" id="soldForm">
+<form asp-action="Create" method="post">
     @if (Model.Books == null || !Model.Books.Any())
     {
         <p>No books available for selection.</p>
@@ -25,7 +25,7 @@
                             <input type="hidden" name="Books[@i].Id" value="@book.Id" />
                             <input type="hidden" name="Books[@i].Title" value="@book.Title" />
                             <label for="Quantity_@book.Id">Quantity</label>
-                            <input id="Quantity_@book.Id" name="Books[@i].Quantity" type="number" min="0" class="form-control quantity-input" placeholder="Enter quantity or leave empty" />
+                            <input id="Quantity_@book.Id" name="Books[@i].Quantity" type="number" min="0" class="form-control" />
                         </div>
                     </div>
                 </div>
@@ -42,21 +42,6 @@
 </form>
 
 @section Scripts {
-    <script>
-        document.getElementById('soldForm').addEventListener('submit', function (e) {
-            // Get all quantity input fields
-            var quantities = document.querySelectorAll('.quantity-input');
-
-            // Iterate over all quantity inputs and check their values
-            quantities.forEach(function (input, index) {
-                if (!input.value || parseInt(input.value) <= 0) {
-                    // Remove the hidden fields for books with quantity <= 0 or empty
-                    input.closest('.card').remove();
-                }
-            });
-        });
-    </script>
-
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }

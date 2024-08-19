@@ -66,7 +66,7 @@ namespace BookApp.Controllers
                     }
                 }
 
-                 _unitOfWork.Complete();
+                _unitOfWork.Complete();
 
                 return RedirectToAction("Create", "Renteds", new { userId = viewModel.UserId, cartId = viewModel.CartId });
             }
