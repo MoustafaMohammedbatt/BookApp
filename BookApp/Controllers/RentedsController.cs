@@ -73,6 +73,33 @@ namespace BookApp.Controllers
 
             return View(viewModel);
         }
+        // POST: Renteds/ToggleReturned/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ToggleReturned(int id)
+        {
+            var rented = await _unitOfWork.Renteds.GetById(id);
+            if (rented == null)
+            {
+                return NotFound();
+            }
+
+            rented.IsReturned = !rented.IsReturned;
+            _unitOfWork.Complete();
+
+            return RedirectToAction(nameof(ReceptionRent));
+        }
+        // GET: Renteds/ReceptionRent
+        public async Task<IActionResult> ReceptionRent()
+        {
+            var renteds = await _unitOfWork.Renteds.FindAll(
+                c => c.Id > 0,
+                include: q => q.Include(c => c.Book).Include(c => c.User)
+            );
+
+            return View(renteds);
+        }
+
 
     }
 }

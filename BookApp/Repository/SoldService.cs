@@ -18,10 +18,10 @@ namespace BookApp.Repository
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<SoldCreateDTO>> GetAllSoldsAsync()
+        public async Task<IEnumerable<SoldDTO>> GetAllSoldsAsync()
         {
             var solds = await _unitOfWork.Solds.FindAll(s => s.Id > 0, include: s => s.Include(s => s.Book).Include(s => s.User!));
-            return solds.Select(s => _mapper.Map<SoldCreateDTO>(s));
+            return solds.Select(_mapper.Map<SoldDTO>).ToList();
         }
 
         public async Task<SoldCreateViewModel> PrepareSoldCreateViewModelAsync(int cartId, string userId)
