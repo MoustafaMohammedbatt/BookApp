@@ -53,6 +53,8 @@ namespace BookApp.Mapping
                 .ForMember(dest => dest.Book, opt => opt.Ignore())
                 .ForMember(dest => dest.User, opt => opt.Ignore());
 
+            CreateMap<SoldDTO, Sold>().ReverseMap();
+
         }
     }
 }
