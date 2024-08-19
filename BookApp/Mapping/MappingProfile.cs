@@ -28,14 +28,30 @@ namespace BookApp.Mapping
                 .ForMember(dest => dest.CoverImage, opt => opt.Ignore()); // Ignore CoverImage
 
           CreateMap<Book, BookDetailsDTO>()
-         .ForMember(dest => dest.AuthorName, opt => opt.MapFrom(src => src.Author.FullName))
-         .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name));
+         .ForMember(dest => dest.AuthorName, opt => opt.MapFrom(src => src.Author!.FullName))
+         .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category!.Name));
 
             CreateMap<BookDetailsDTO, UploadBookDTO>().ReverseMap();
             CreateMap<Book, UploadBookDTO>().ForMember(dest => dest.CoverImage, opt => opt.Ignore()); // Ignore CoverImage
 
-
             CreateMap<AppUser, AppUserDTO>().ReverseMap();
+
+            // New mappings for Sold and related DTOs
+            CreateMap<Sold, SoldCreateDTO>().ReverseMap();
+              
+
+            CreateMap<SoldCreateViewModel, Sold>()
+                .ForMember(dest => dest.PurchaseDate, opt => opt.MapFrom(src => DateTime.Now))
+                .ForMember(dest => dest.Quantity, opt => opt.Ignore())
+                .ForMember(dest => dest.BookId, opt => opt.Ignore());
+
+            CreateMap<Book, BookQuantityDTO>()
+                .ForMember(dest => dest.Quantity, opt => opt.Ignore());
+
+            // Reverse mappings
+            CreateMap<SoldCreateDTO, Sold>()
+                .ForMember(dest => dest.Book, opt => opt.Ignore())
+                .ForMember(dest => dest.User, opt => opt.Ignore());
 
         }
     }

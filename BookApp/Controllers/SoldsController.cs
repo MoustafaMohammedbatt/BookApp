@@ -1,43 +1,32 @@
-﻿using Domain.Entites;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Service.Abstractions.Interfaces.IRepositories;
+﻿using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
 using Shared.DTOs;
+using Service.Abstractions.Interfaces.IServises;
 
 namespace BookApp.Controllers
 {
     public class SoldsController : Controller
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly ISoldService _soldService;
+        private readonly IMapper _mapper;
 
-        public SoldsController(IUnitOfWork unitOfWork)
+        public SoldsController(ISoldService soldService, IMapper mapper)
         {
-            _unitOfWork = unitOfWork;
+            _soldService = soldService;
+            _mapper = mapper;
         }
 
-        // GET: /Cart
+        // GET: Solds
         public async Task<IActionResult> Index()
         {
-            var carts = await _unitOfWork.Solds.FindAll(c => c.Id > 0, include: q => q.Include(c => c.Book).Include(c => c.User!));
-            return View(carts);
+            var solds = await _soldService.GetAllSoldsAsync();
+            return View(solds);
         }
 
         // GET: Solds/Create
         public async Task<IActionResult> Create(int cartId, string userId)
         {
-            var books = await _unitOfWork.Books.GetAll();
-
-            var viewModel = new SoldCreateViewModel
-            {
-                Books = books.Select(b => new BookQuantityDTO
-                {
-                    Id = b.Id,
-                    Title = b.Title,
-                    Quantity = 0 // Initialize quantity to zero
-                }).ToList(),
-                CartId = cartId,
-                UserId = userId
-            };
+            var viewModel = await _soldService.PrepareSoldCreateViewModelAsync(cartId, userId);
             ViewBag.User = userId;
             return View(viewModel);
         }
@@ -49,28 +38,12 @@ namespace BookApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                foreach (var bookDto in viewModel.Books)
+                var result = await _soldService.CreateSoldAsync(viewModel);
+                if (result)
                 {
-                    if (bookDto.Quantity > 0) // Ensure quantity is greater than zero
-                    {
-                        var sold = new Sold
-                        {
-                            Quantity = bookDto.Quantity,
-                            PurchaseDate = DateTime.Now,
-                            BookId = bookDto.Id,
-                            CartId = viewModel.CartId,
-                            UserId = viewModel.UserId
-                        };
-
-                        await _unitOfWork.Solds.Add(sold);
-                    }
+                    return RedirectToAction("Create", "Renteds", new { userId = viewModel.UserId, cartId = viewModel.CartId });
                 }
-
-                _unitOfWork.Complete();
-
-                return RedirectToAction("Create", "Renteds", new { userId = viewModel.UserId, cartId = viewModel.CartId });
             }
-
             return View(viewModel);
         }
     }
