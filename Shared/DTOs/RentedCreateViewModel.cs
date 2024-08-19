@@ -8,7 +8,7 @@ namespace Shared.DTOs
 {
     public class RentedCreateViewModel
     {
-        public List<BookDTO> Books { get; set; } = new List<BookDTO>();
+        public List<BookRentDTO> Books { get; set; } = new List<BookRentDTO>();
         public int CartId { get; set; }
         public string UserId { get; set; }
     }

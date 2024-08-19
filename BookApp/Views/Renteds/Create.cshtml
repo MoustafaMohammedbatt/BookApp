@@ -1,24 +1,50 @@
-﻿@model Shared.DTOs.RentedCreateDTO
+﻿@model Shared.DTOs.RentedCreateViewModel
 
 @{
     ViewData["Title"] = "Create Rented";
 }
 
-<h2>Create Rented</h2>
+<h1>Create Rented</h1>
 
-<form asp-action="Create">
-    <div class="form-group">
-        <label asp-for="StartDate" class="control-label"></label>
-        <input asp-for="StartDate" class="form-control" />
-    </div>
-    
-    <div class="form-group">
-        <label asp-for="BookId" class="control-label"></label>
-        <select asp-for="BookId" class="form-control" asp-items="@(new SelectList(ViewBag.Books, "Id", "Title"))"></select>
-    </div>
-    <input type="hidden" asp-for="UserId" />
-    <input type="hidden" asp-for="CartId" />
-    <div class="form-group">
+<form asp-action="Create" method="post">
+    @if (Model.Books == null || !Model.Books.Any())
+    {
+        <p>No books available for selection.</p>
+    }
+    else
+    {
+        <div class="row">
+            @for (int i = 0; i < Model.Books.Count; i++)
+            {
+                var book = Model.Books[i];
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">@book.Title</h5>
+                            <p class="card-text">Description here</p>
+                            <input type="hidden" name="Books[@i].Id" value="@book.Id" />
+                            <input type="hidden" name="Books[@i].Title" value="@book.Title" />
+                            <div class="form-group">
+                                <label for="StartDate_@book.Id">Start Date</label>
+                                <input id="StartDate_@book.Id" name="Books[@i].StartDate" type="date" value="null" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+    <input type="hidden" name="CartId" value="@Model.CartId" />
+    <input type="hidden" name="UserId" value="@Model.UserId" />
+
+    <div class="form-group mt-3">
         <input type="submit" value="Create" class="btn btn-primary" />
     </div>
 </form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -21,39 +21,58 @@ namespace BookApp.Controllers
             var carts = await _unitOfWork.Renteds.FindAll(c => c.Id > 0, include: q => q.Include(c => c.Book).Include(c=>c.User));
             return View(carts);
         }
+        // GET: Renteds/Create
         [HttpGet]
-        public async Task<IActionResult> Create(string userId, int cartId)
+        public async Task<IActionResult> Create(int cartId, string userId)
         {
+            var books = await _unitOfWork.Books.GetAll();
+
+            var viewModel = new RentedCreateViewModel
+            {
+                Books = books.Select(b => new BookRentDTO
+                {
+                    Id = b.Id,
+                    Title = b.Title,
+                    StartDate = null // Initialize start date to null
+                }).ToList(),
+                CartId = cartId,
+                UserId = userId
+            };
             ViewBag.User = userId;
-            ViewBag.Cart = cartId;
-            ViewBag.Books = await _unitOfWork.Books.GetAll();
-            return View();
+            return View(viewModel);
         }
 
+        // POST: Renteds/Create
         [HttpPost]
-        public async Task<IActionResult> Create(RentedCreateDTO dto)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(RentedCreateViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                var rent = new Rented
+                foreach (var bookDto in viewModel.Books)
                 {
-                    
-                    StartDate= dto.StartDate,
-                    EndDate= dto.StartDate.AddDays(7),
-                    BookId = dto.BookId,
-                    CartId = dto.CartId,
-                    UserId = dto.UserId
-                };
-                await _unitOfWork.Renteds.Add(rent);
+                    if (bookDto.StartDate.HasValue) // Ensure a start date is entered
+                    {
+                        var rented = new Rented
+                        {
+                            StartDate = bookDto.StartDate.Value,
+                            EndDate = bookDto.StartDate.Value.AddDays(7),
+                            BookId = bookDto.Id,
+                            CartId = viewModel.CartId,
+                            UserId = viewModel.UserId
+                        };
+
+                        await _unitOfWork.Renteds.Add(rented);
+                    }
+                }
+
                 _unitOfWork.Complete();
 
-                return RedirectToAction("Edit", "Cart" , new { id = dto.CartId });
+                return RedirectToAction("Edit", "Cart", new { id = viewModel.CartId });
             }
 
-            ViewBag.Books = await _unitOfWork.Books.GetAll();
-            return View(dto);
+            return View(viewModel);
         }
-
 
     }
 }
