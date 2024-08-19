@@ -43,6 +43,7 @@ builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<IAppUserService, AppUserService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<ISoldService, SoldService>();
+builder.Services.AddScoped<IRentService, RentService>();
 
 
 var app = builder.Build();
