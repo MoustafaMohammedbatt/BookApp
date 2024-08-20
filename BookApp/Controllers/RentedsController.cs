@@ -18,7 +18,7 @@ namespace BookApp.Controllers
         // GET: /Cart
         public async Task<IActionResult> Index()
         {
-            var carts = await _unitOfWork.Renteds.FindAll(c => c.Id > 0, include: q => q.Include(c => c.Book).Include(c=>c.User));
+            var carts = await _unitOfWork.Renteds.FindAll(c => c.Id > 0, include: q => q.Include(c => c.Book).Include(c=>c.User!));
             return View(carts);
         }
         // GET: Renteds/Create
@@ -68,7 +68,7 @@ namespace BookApp.Controllers
 
                 _unitOfWork.Complete();
 
-                return RedirectToAction("Edit", "Cart", new { id = viewModel.CartId });
+                return RedirectToAction("ConfirmCart", "Cart", new { id = viewModel.CartId });
             }
 
             return View(viewModel);
@@ -94,7 +94,7 @@ namespace BookApp.Controllers
         {
             var renteds = await _unitOfWork.Renteds.FindAll(
                 c => c.Id > 0,
-                include: q => q.Include(c => c.Book).Include(c => c.User)
+                include: q => q.Include(c => c.Book).Include(c => c.User!)
             );
 
             return View(renteds);

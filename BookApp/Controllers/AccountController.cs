@@ -83,17 +83,17 @@ namespace BookApp.Controllers
                     if (await _authService.IsUserInRoleAsync(user, UserRole.Admin))
                     {
                         ViewData["Layout"] = "~/Views/Shared/_AdminLayout.cshtml";
-                        return RedirectToAction("Index", "Admin");
+                        return RedirectToAction("Index", "Home");
                     }
                     else if (await _authService.IsUserInRoleAsync(user, UserRole.Reciptionist))
                     {
                         ViewData["Layout"] = "~/Views/Shared/_ReceptionistLayout.cshtml";
-                        return RedirectToAction("Index", "Receptionist");
+                        return RedirectToAction("Index", "Home");
                     }
                     else
                     {
                         ViewData["Layout"] = "~/Views/Shared/_Layout.cshtml";
-                        return RedirectToAction("Index", "User");
+                        return RedirectToAction("Index", "Home");
                     }
                 }
                 else

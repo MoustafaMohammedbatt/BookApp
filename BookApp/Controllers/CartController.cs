@@ -126,7 +126,7 @@ namespace BookApp.Controllers
         }
 
         // GET: /Cart/Edit/5
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> ConfirmCart(int id)
         {
             var cart = await _unitOfWork.Carts.Find(c => c.Id == id, include: q => q.Include(c => c.Sold).Include(c => c.Rented!));
             if (cart == null)
@@ -167,7 +167,7 @@ namespace BookApp.Controllers
         // POST: /Cart/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Cart cart)
+        public async Task<IActionResult> ConfirmCart(Cart cart)
         {
             if (ModelState.IsValid)
             {

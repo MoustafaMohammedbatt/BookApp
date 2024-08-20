@@ -32,10 +32,6 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options => { options.SignIn.
 
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 
-//builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("PayPalSettings"));
-
-builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("PaymentGateway:Stripe"));
-StripeConfiguration.ApiKey = builder.Configuration.GetSection("PaymentGateway:Stripe")["SecretKey"];
 
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.AddScoped<IAuthService, AuthService>();
