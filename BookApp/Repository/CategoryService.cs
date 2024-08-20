@@ -7,6 +7,7 @@ using Service.Abstractions.Interfaces.IRepositories;
 using Domain.Entites;
 using Service.Abstractions.Interfaces.IServises;
 using System.Reflection.Metadata;
+using AutoMapper;
 
 namespace BookApp.Services
 {
@@ -16,11 +17,14 @@ namespace BookApp.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly string[] _allowedFileExtensions = { ".jpg", ".jpeg", ".png" };
         private const long _maxAllowedSizeFile = 5 * 1024 * 1024; // 5 MB
+        private readonly IMapper _mapper;
 
-        public CategoryService(IWebHostEnvironment webHostEnvironment, IUnitOfWork unitOfWork)
+
+        public CategoryService(IWebHostEnvironment webHostEnvironment, IUnitOfWork unitOfWork , IMapper mapper)
         {
             _webHostEnvironment = webHostEnvironment;
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task<CategoryDTO> UploadCategory(UploadCategoryDTO model)
@@ -39,14 +43,16 @@ namespace BookApp.Services
             using var stream = File.Create(path);
             model.CoverImage.CopyTo(stream);
 
-            var category = new Category
+            var category = new CategoryDTO
             {
                 Name = model.Name,
                 Description = model.Description,
                 CoverImage = fileName
             };
 
-            await _unitOfWork.Categories.Add(category);
+            var categoryMap = _mapper.Map<Category>(category);
+
+            await _unitOfWork.Categories.Add(categoryMap);
             _unitOfWork.Complete();
 
             return new CategoryDTO { Id = category.Id, Name = category.Name, Description = category.Description, CoverImage = category.CoverImage };
