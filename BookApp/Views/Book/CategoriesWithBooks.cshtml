@@ -3,28 +3,32 @@
 <div class="container mt-4">
     @foreach (var categoryWithBooks in Model)
     {
-        <div class="category mb-5">
-            <h3 class="text-primary">@categoryWithBooks.CategoryName</h3>
-            <div class="row">
-                @foreach (var book in categoryWithBooks.Books)
-                {
-                    <div class="col-md-4 mb-4">
-                        <div class="card h-100 shadow-sm">
-                            <img src="@Url.Content($"~/images/book/{book.CoverImage}")" class="card-img-top" alt="Cover image of @book.Title" style="height: 200px; object-fit: cover;">
-                            <div class="card-body">
-                                <h5 class="card-title">@book.Title</h5>
-                                <p class="card-text text-muted">By @book.AuthorName</p>
-                                <p class="card-text">@book.Description</p>
-                                <p class="card-text"><strong>Price:</strong> @book.Price.ToString("C")</p>
-                                <p class="card-text"><strong>Language:</strong> @book.BookLanguage.ToString()</p>
-                            </div>
-                            <div class="card-footer text-muted">
-                                Published on @book.PublicationDate.ToString("MMMM dd, yyyy")
+        if (categoryWithBooks.Books.Count() > 0)
+        {
+            <div class="category mb-5">
+                <h3 class="text-primary"> @categoryWithBooks.CategoryName</h3>
+                <div class="row">
+                    @foreach (var book in categoryWithBooks.Books)
+                    {
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100 shadow-sm">
+                                <img src="@Url.Content($"~/images/book/{book.CoverImage}")" class="card-img-top" alt="Cover image of @book.Title" style="height: 200px; object-fit: cover;">
+                                <div class="card-body">
+                                    <h5 class="card-title">@book.Title</h5>
+                                    <p class="card-text text-muted">By @book.AuthorName</p>
+                                    <p class="card-text">@book.Description</p>
+                                    <p class="card-text"><strong>Price:</strong> @book.Price.ToString("C")</p>
+                                    <p class="card-text"><strong>Language:</strong> @book.BookLanguage.ToString()</p>
+                                </div>
+                                <div class="card-footer text-muted">
+                                    Published on @book.PublicationDate.ToString("MMMM dd, yyyy")
+                                </div>
                             </div>
                         </div>
-                    </div>
-                }
+                    }
+                </div>
             </div>
-        </div>
+        }
+        
     }
 </div>
