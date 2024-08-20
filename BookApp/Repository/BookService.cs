@@ -137,6 +137,11 @@ public class BookService : IBookService
             Text = category.Name
         });
     }
+    public async Task<IEnumerable<BookDetailsDTO>> GetBooksByCategory(int categoryId)
+    {
+        var books = await _unitOfWork.Books.FindAll(b => b.CategoryId == categoryId , include: query => query.Include(b => b.Category).Include(b => b.Author!));
+        return _mapper.Map<IEnumerable<BookDetailsDTO>>(books);
+    }
 
 
 }

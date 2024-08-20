@@ -105,5 +105,40 @@ namespace BookApp.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+
+        public async Task<IActionResult> GetByCategory(int categoryId)
+        {
+            // Fetch the books that belong to the selected category
+            var books = await _bookService.GetBooksByCategory(categoryId);
+
+            // Check if the category has any books
+            if (books == null || !books.Any())
+            {
+                return NotFound();
+            }
+            // Pass the books to the view
+            return View(books);
+        }
+
+        public async Task<IActionResult> CategoriesWithBooks()
+        {
+            var categories = await _unitOfWork.Categories.GetAll();
+
+            var categoriesWithBooks = new List<CategoryWithBooksViewModel>();
+
+            foreach (var category in categories)
+            {
+                var books = await _bookService.GetBooksByCategory(category.Id);
+                categoriesWithBooks.Add(new CategoryWithBooksViewModel
+                {
+                    CategoryName = category.Name,
+                    Books = books
+                });
+            }
+
+            return View(categoriesWithBooks);
+        }
+
+
     }
 }
