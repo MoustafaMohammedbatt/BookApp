@@ -106,45 +106,11 @@ namespace BookApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-   
-        public async Task<IActionResult> CategoriesWithBooks()
-        {
-            var categories = await _unitOfWork.Categories.GetAll();
 
-            var categoriesWithBooks = new List<CategoryWithBooksViewModel>();
+        public async Task<IActionResult> CategoriesWithBooks() => View(await _bookService.GetBooksWithCategories());
+        public async Task<IActionResult> BooksByCategory(int categoryId) => View(await _bookService.SeeAllBooksByCategory(categoryId));
 
-            foreach (var category in categories)
-            {
-                var books = await _bookService.GetBooksByCategory(category.Id);
-                categoriesWithBooks.Add(new CategoryWithBooksViewModel
-                {
-                    Id = category.Id,
-                    CategoryName = category.Name,
-                    Books = books
-                });
-            }
-
-            return View(categoriesWithBooks);
-        }
-		public async Task<IActionResult> BooksByCategory(int categoryId)
-		{
-			var category = await _unitOfWork.Categories.GetById(categoryId);
-			if (category == null)
-			{
-				return NotFound();
-			}
-
-			var books = await _bookService.GetBooksByCategory(categoryId);
-
-			var model = new CategoryWithBooksViewModel
-			{
-                Id=category.Id,
-				CategoryName = category.Name,
-				Books = books
-			};
-
-			return View(model);
-		}
+		
 
 
 	}

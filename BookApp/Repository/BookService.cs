@@ -4,6 +4,7 @@ using Shared.DTOs;
 using Domain.Entites;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc;
 
 public class BookService : IBookService
 {
@@ -143,5 +144,42 @@ public class BookService : IBookService
         return _mapper.Map<IEnumerable<BookDetailsDTO>>(books);
     }
 
+    public async Task<CategoryWithBooksViewModel> SeeAllBooksByCategory(int categoryId)
+    {
+        var category = await _unitOfWork.Categories.GetById(categoryId);
+        if (category == null)
+        {
+            throw new NullReferenceException();
+        }
 
+        var books = await GetBooksByCategory(categoryId);
+
+        var model = new CategoryWithBooksViewModel
+        {
+            Id = category.Id,
+            CategoryName = category.Name,
+            Books = books
+        };
+        return model;
+
+    }
+
+    public async Task<IEnumerable<CategoryWithBooksViewModel>> GetBooksWithCategories()
+    {
+        var categories = await _unitOfWork.Categories.GetAll();
+
+        var categoriesWithBooks = new List<CategoryWithBooksViewModel>();
+
+        foreach (var category in categories)
+        {
+            var books = await GetBooksByCategory(category.Id);
+            categoriesWithBooks.Add(new CategoryWithBooksViewModel
+            {
+                Id = category.Id,
+                CategoryName = category.Name,
+                Books = books
+            });
+        }
+        return categoriesWithBooks;
+    }
 }

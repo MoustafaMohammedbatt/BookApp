@@ -19,6 +19,7 @@ namespace Service.Abstractions.Interfaces.IRepositories
         Task<IEnumerable<SelectListItem>> GetAllCategories();
 
         Task<IEnumerable<BookDetailsDTO>> GetBooksByCategory(int categoryId);
-
+        Task<CategoryWithBooksViewModel> SeeAllBooksByCategory(int categoryId); 
+        Task<IEnumerable<CategoryWithBooksViewModel>> GetBooksWithCategories();
     }
 }
