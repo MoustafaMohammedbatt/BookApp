@@ -17,7 +17,7 @@ namespace Shared.DTOs
 
         [Required(ErrorMessage = "CoverImage is required")]
         public IFormFile CoverImage { get; set; } = null!;
-        public Language BookLanguage { get; set; }
+        public Language Language { get; set; }
 
     }
 }

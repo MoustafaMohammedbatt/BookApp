@@ -19,18 +19,19 @@ namespace BookApp.Controllers
         // GET: Category
         public async Task<IActionResult> Index()
         {
-            var categories = await _unitOfWork.Categories.GetAll();
+            var categories = await _categoryService.GetAll();
             return View(categories);
         }
 
         // GET: Category/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var category = await _unitOfWork.Categories.GetById(id);
+            var category = await _categoryService.GetById(id);
             if (category == null)
             {
                 return NotFound();
             }
+
             return View(category);
         }
 

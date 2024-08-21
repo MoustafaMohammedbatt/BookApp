@@ -14,7 +14,7 @@ namespace Shared.DTOs
         public string? Description { get; set; }
         public string? CoverImage { get; set; }
         public string? Notes { get; set; } // Optional field for messages or notes.
-        public Language BookLanguage { get; set; }
+        public Language Language { get; set; }
 
     }
 }

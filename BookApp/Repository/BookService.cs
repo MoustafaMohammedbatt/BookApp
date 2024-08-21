@@ -95,7 +95,7 @@ public class BookService : IBookService
     public async Task<IEnumerable<BookDTO>> GetAllBooks()
     {
         var books = await _unitOfWork.Books.GetAll();
-        return books.Select(book => _mapper.Map<BookDTO>(book));
+        return books.Select( _mapper.Map<BookDTO>);
     }
 
     public async Task<Book?> ToggleDelete(int id)
@@ -115,7 +115,7 @@ public class BookService : IBookService
     {
         var books = await _unitOfWork.Books.FindAll(r => r.Id > 0,
             include: query => query.Include(b => b.Category).Include(b => b.Author!));
-        return books.Select(book => _mapper.Map<BookDetailsDTO>(book));
+        return books.Select(_mapper.Map<BookDetailsDTO>);
 
     }
     public async Task<IEnumerable<SelectListItem>> GetAllAuthors()

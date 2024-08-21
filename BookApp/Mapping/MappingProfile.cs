@@ -17,6 +17,7 @@ namespace BookApp.Mapping
 
             CreateMap<CategoryDTO, UploadCategoryDTO>().ReverseMap();
             CreateMap<CategoryDTO, Category>().ReverseMap();
+
             CreateMap<AuthorDTO, UploadAuthorDTO>().ReverseMap();
             CreateMap<AuthorDTO, Author>().ReverseMap();
 

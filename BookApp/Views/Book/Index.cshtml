@@ -22,7 +22,6 @@
             <th>Publication Date</th>
             <th>Author</th>
             <th>Category</th>
-            <th>Language</th>
             <th>Is Deleted</th>
             <th>Created On</th>
             <th>Updated On</th>
@@ -50,7 +49,7 @@
                 <td>@book.PublicationDate.ToShortDateString()</td>
                 <td>@book.AuthorName</td> <!-- Updated to AuthorName -->
                 <td>@book.CategoryName</td> <!-- Updated to CategoryName -->
-                <td>@book.BookLanguage</td>
+                
                 <td>@book.IsDeleted</td>
                 <td>@book.CreatedOn.ToShortDateString()</td>
                 <td>@book.UpdatedOn?.ToShortDateString()</td>

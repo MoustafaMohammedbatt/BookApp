@@ -17,7 +17,7 @@ namespace Domain.Entites
         [ValidImageExtension]
         public string? CoverImage { get; set; }
         public virtual ICollection<Book>? Books { get; set; }
-        public Language BookLanguage { get; set; } // Added property
+        public Language Language { get; set; } // Added property
 
     }
 }

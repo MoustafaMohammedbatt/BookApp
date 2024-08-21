@@ -8,6 +8,7 @@ using Domain.Entites;
 using Service.Abstractions.Interfaces.IServises;
 using System.Reflection.Metadata;
 using AutoMapper;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace BookApp.Services
 {
@@ -47,7 +48,9 @@ namespace BookApp.Services
             {
                 Name = model.Name,
                 Description = model.Description,
-                CoverImage = fileName
+                CoverImage = fileName,
+                Language = model.Language,
+                
             };
 
             var categoryMap = _mapper.Map<Category>(category);
@@ -55,7 +58,7 @@ namespace BookApp.Services
             await _unitOfWork.Categories.Add(categoryMap);
             _unitOfWork.Complete();
 
-            return new CategoryDTO { Id = category.Id, Name = category.Name, Description = category.Description, CoverImage = category.CoverImage };
+            return new CategoryDTO { Id = category.Id, Name = category.Name, Description = category.Description, CoverImage = category.CoverImage , Language = category.Language };
         }
 
         public async Task<CategoryDTO> UpdateCategory(int id, UploadCategoryDTO model)
@@ -81,19 +84,21 @@ namespace BookApp.Services
                 using var stream = File.Create(path);
                 model.CoverImage.CopyTo(stream);
 
-                category.CoverImage = fileName;
-            }
+				category.CoverImage = fileName;
+			}
 
-            category.Name = model.Name;
-            category.Description = model.Description;
+			category.Name = model.Name;
+			category.Description = model.Description;
+            category.Language = model.Language;
 
-            _unitOfWork.Categories.Update(category);
-            _unitOfWork.Complete();
+			_unitOfWork.Categories.Update(category);
+			_unitOfWork.Complete();
 
-            return new CategoryDTO { Id = category.Id, Name = category.Name, Description = category.Description, CoverImage = category.CoverImage };
-        }
+            return new CategoryDTO { Id = category.Id, Name = category.Name, Description = category.Description, CoverImage = category.CoverImage, Language= category.Language};
 
-        public async Task<Category?> ToggleDelete(int id)
+		}
+
+		public async Task<Category?> ToggleDelete(int id)
         {
             var category = await _unitOfWork.Categories.GetById(id);
 
@@ -104,6 +109,23 @@ namespace BookApp.Services
             _unitOfWork.Complete();
 
             return category;
+        }
+
+        public async Task<CategoryDTO?> GetById(int id)
+        {
+            var category = await _unitOfWork.Categories.GetById(id);
+            if (category == null)
+            {
+                throw new NullReferenceException();
+            }
+            var categoryMap = _mapper.Map<CategoryDTO>(category);
+            return categoryMap;
+        }
+
+        public async Task<IEnumerable<CategoryDTO>> GetAll()
+        {
+            var category = await _unitOfWork.Categories.GetAll();
+            return category.Select(_mapper.Map<CategoryDTO>);
         }
     }
 }

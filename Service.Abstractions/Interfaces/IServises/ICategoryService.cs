@@ -14,5 +14,7 @@ namespace Service.Abstractions.Interfaces.IServises
         Task<CategoryDTO> UploadCategory(UploadCategoryDTO model);
         Task<CategoryDTO> UpdateCategory(int id, UploadCategoryDTO model);
         Task<Category?> ToggleDelete(int id);
+        Task<CategoryDTO?> GetById(int id);
+        Task<IEnumerable<CategoryDTO>> GetAll();
     }
 }
