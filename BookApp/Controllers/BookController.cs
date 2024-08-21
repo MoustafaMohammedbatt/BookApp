@@ -2,6 +2,7 @@
 using Service.Abstractions.Interfaces.IRepositories;
 using Shared.DTOs;
 using AutoMapper;
+using System.Drawing.Printing;
 
 namespace BookApp.Controllers
 {
@@ -10,6 +11,7 @@ namespace BookApp.Controllers
         private readonly IBookService _bookService;
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
+
 
         public BookController(IBookService bookService, IMapper mapper, IUnitOfWork unitOfWork)
         {
@@ -24,6 +26,15 @@ namespace BookApp.Controllers
             var books = await _bookService.GetAllBook();
             return View(books);
         }
+
+        public async Task<IActionResult> UserBooks()
+        {
+            var books = await _bookService.GetAllBook();
+            return View(books);
+        }
+
+
+
 
         // GET: Book/Details/5
         public async Task<IActionResult> Details(int id)
