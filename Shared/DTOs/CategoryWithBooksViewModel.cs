@@ -8,6 +8,7 @@ namespace Shared.DTOs
 {
     public class CategoryWithBooksViewModel
     {
+        public int Id { get; set; }
         public string CategoryName { get; set; } = null!;
         public IEnumerable<BookDetailsDTO> Books { get; set; } = new List<BookDetailsDTO>();
     }

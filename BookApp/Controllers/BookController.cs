@@ -118,6 +118,7 @@ namespace BookApp.Controllers
                 var books = await _bookService.GetBooksByCategory(category.Id);
                 categoriesWithBooks.Add(new CategoryWithBooksViewModel
                 {
+                    Id = category.Id,
                     CategoryName = category.Name,
                     Books = books
                 });
@@ -125,7 +126,26 @@ namespace BookApp.Controllers
 
             return View(categoriesWithBooks);
         }
+		public async Task<IActionResult> BooksByCategory(int categoryId)
+		{
+			var category = await _unitOfWork.Categories.GetById(categoryId);
+			if (category == null)
+			{
+				return NotFound();
+			}
+
+			var books = await _bookService.GetBooksByCategory(categoryId);
+
+			var model = new CategoryWithBooksViewModel
+			{
+                Id=category.Id,
+				CategoryName = category.Name,
+				Books = books
+			};
+
+			return View(model);
+		}
 
 
-    }
+	}
 }
