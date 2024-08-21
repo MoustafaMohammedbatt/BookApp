@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Entites
 {
-    public enum Language { Arabic, English, Italian }
+    
 
     public class Book : BaseModel
     {
@@ -27,6 +27,6 @@ namespace Domain.Entites
         public int CategoryId { get; set; }
         public Category? Category { get; set; }
 
-        public Language BookLanguage { get; set; } // Added property
+       
     }
 }

@@ -20,7 +20,7 @@ namespace Shared.DTOs
         public DateTime PublicationDate { get; set; }
         public int AuthorId { get; set; }
         public int CategoryId { get; set; }
-        public Language BookLanguage { get; set; }
+        
     }
 
 }

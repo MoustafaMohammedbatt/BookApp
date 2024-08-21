@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Domain.Entites;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -16,6 +17,7 @@ namespace Shared.DTOs
 
         [Required(ErrorMessage = "CoverImage is required")]
         public IFormFile CoverImage { get; set; } = null!;
+        public Language BookLanguage { get; set; }
 
     }
 }

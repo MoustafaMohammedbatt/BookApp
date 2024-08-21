@@ -21,6 +21,6 @@ namespace Shared.DTOs
         public int CategoryId { get; set; }
         public string AuthorName { get; set; } = null!;
         public string CategoryName { get; set; } = null!;
-        public Language BookLanguage { get; set; }
+        
     }
 }

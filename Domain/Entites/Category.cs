@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Entites
 {
+    public enum Language { Arabic, English, Italian }
     public class Category : BaseModel
     {
         public int Id { get; set; }
@@ -16,6 +17,7 @@ namespace Domain.Entites
         [ValidImageExtension]
         public string? CoverImage { get; set; }
         public virtual ICollection<Book>? Books { get; set; }
+        public Language BookLanguage { get; set; } // Added property
 
     }
 }
