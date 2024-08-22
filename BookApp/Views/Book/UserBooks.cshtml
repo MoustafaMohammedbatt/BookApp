@@ -26,7 +26,7 @@
                         </div>
                         <div class="price-and-button">
                             <p class="card-text mb-0"><strong>Price:</strong> <span class="text-success">@book.Price.ToString("C")</span></p>
-                            <a href="@Url.Action("Details", "Books", new { id = book.Id })" class="btn details-btn">Details</a>
+                            <a href="@Url.Action("Details", "Book", new { id = book.Id })" class="btn details-btn">Details</a>
                         </div>
                         <div class="book-info">
                             <p>Published on @book.PublicationDate.ToString("MMMM dd, yyyy")</p>
