@@ -1,76 +1,88 @@
-﻿@model Shared.DTOs.BookDetailsDTO
+﻿@using Microsoft.AspNetCore.Identity
+@model Shared.DTOs.BookDetailsDTO
 
 @{
     ViewData["Title"] = "Book Details";
 }
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
 
-<h1>Book Details</h1>
+@functions {
+    public async Task<bool> IsUserAdmin()
+    {
+        try
+        {
+            var user = await UserManager.GetUserAsync(User);
+            return await UserManager.IsInRoleAsync(user!, UserRole.Admin);
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+}
 
-<div>
-    <h4>@Model.Title</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            Description
-        </dt>
-        <dd class="col-sm-10">
-            @Model.Description
-        </dd>
-        <dt class="col-sm-2">
-            Price
-        </dt>
-        <dd class="col-sm-10">
-            @Model.Price
-        </dd>
-        <dt class="col-sm-2">
-            Quantity
-        </dt>
-        <dd class="col-sm-10">
-            @Model.Quantity
-        </dd>
-        <dt class="col-sm-2">
-            Availability
-        </dt>
-        <dd class="col-sm-10">
-            @(Model.IsAvailable ? "Available" : "Not Available")
-        </dd>
-        <dt class="col-sm-2">
-            Cover Image
-        </dt>
-        <dd class="col-sm-10">
+<div class="container mt-4">
+    <div class="row">
+        <!-- Book Cover Image on the Left -->
+        <div class="col-md-4 text-center">
             @if (Model.CoverImage != null)
             {
-                <img src="@Url.Content($"~/images/book/{Model.CoverImage}")" alt="Cover Image" width="50" height="50" />
+                <img src="@Url.Content($"~/images/book/{Model.CoverImage}")" alt="Cover Image" class="img-fluid rounded" style="max-width: 100%; height: auto;" />
             }
             else
             {
-                <span>No Cover Image</span>
+                <div class="rounded bg-secondary text-white d-flex align-items-center justify-content-center" style="width: 100%; height: auto;">
+                    No Cover Image
+                </div>
             }
-        </dd>
-        <dt class="col-sm-2">
-            Publication Date
-        </dt>
-        <dd class="col-sm-10">
-            @Model.PublicationDate.ToShortDateString()
-        </dd>
-        <dt class="col-sm-2">
-            Author
-        </dt>
-        <dd class="col-sm-10">
-            @Model.AuthorName
-        </dd>
-        <dt class="col-sm-2">
-            Category
-        </dt>
-        <dd class="col-sm-10">
-            @Model.CategoryName
-        </dd>
-        
-        
-    </dl>
+        </div>
+
+        <!-- Book Details on the Right -->
+        <div class="col-md-8 text-right" style="color: #c3ae85; font-size: 1.2rem;">
+            <h1 class="font-weight-bold" style="color: #c3ae85;">@Model.Title</h1>
+            <h4 style="color: #c3ae85;">@Model.AuthorName</h4>
+            <hr style="border-color: #c3ae85;" />
+
+            <!-- Category, Publication Date, Availability -->
+            <div class="mb-2">
+                @Model.CategoryName
+            </div>
+            <div class="mb-2">
+                @Model.PublicationDate.ToShortDateString()
+            </div>
+            <div class="mb-2">
+                @((Model.IsAvailable ? "Available" : "Not Available"))
+            </div>
+            <hr style="border-color: #c3ae85;" />
+
+            <!-- Description -->
+            <div class="mb-2">
+                @Model.Description 
+            </div>
+
+            <!-- Price in a Rounded Colored Label -->
+            <div class="mt-3">
+                <span class="badge badge-pill badge-success" style="font-size: 1.2rem; background-color: #c3ae85; color: white;">@Model.Price </span>
+            </div>
+            @if ( ! await IsUserAdmin())
+            {
+                <div class="mt-3">
+                    <button class="btn btn-success" style="background-color: #c3ae85; border-color: #c3ae85; font-size: 1.2rem;">
+                        Add to Cart
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
 </div>
 
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Edit</a> |
-    <a asp-action="Index" class="btn btn-outline-info">Back to List</a>
-</div>
+
+
+@if (await IsUserAdmin())
+{
+    <div class="mt-4 text-right">
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-secondary" style="color: #c3ae85; border-color: #c3ae85;">Edit</a> |
+        <a asp-action="Index" class="btn btn-outline-secondary" style="color: #c3ae85; border-color: #c3ae85;">Back to List</a>
+    </div>
+}
