@@ -8,6 +8,6 @@ namespace Shared.DTOs
 {
 	public class CartCreateDTO
 	{
-		public string UserEmail { get; set; }
+		public string UserEmail { get; set; } = null!;
 	}
 }

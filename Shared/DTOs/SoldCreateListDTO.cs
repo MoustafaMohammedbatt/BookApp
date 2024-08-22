@@ -8,8 +8,8 @@ namespace Shared.DTOs
 {
     public class SoldCreateListDTO
     {
-        public IEnumerable<BookListDto> Books { get; set; }
+        public IEnumerable<BookListDto>? Books { get; set; }
         public int CartId { get; set; }
-        public string UserId { get; set; }
+        public string? UserId { get; set; }
     }
 }

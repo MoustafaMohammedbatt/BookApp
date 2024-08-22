@@ -12,6 +12,6 @@ namespace Shared.DTOs
         public DateTime PurchaseDate { get; set; } = DateTime.Now;  
         public int BookId { get; set; }
         public int CartId { get; set; }
-        public string UserId { get; set; }
+        public string? UserId { get; set; }
     }
 }

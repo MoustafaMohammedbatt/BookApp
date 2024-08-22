@@ -12,7 +12,7 @@ namespace Shared.DTOs
             public DateTime StartDate { get; set; }
            
             public int BookId { get; set; }
-            public string UserId { get; set; }
+            public string UserId { get; set; } = null!;
             public int CartId { get; set; }
         }
 

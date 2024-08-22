@@ -11,6 +11,6 @@ namespace Shared.DTOs
     {
         public List<BookQuantityDTO> Books { get; set; } = new List<BookQuantityDTO>();
         public int CartId { get; set; }
-        public string UserId { get; set; }
+        public string? UserId { get; set; }
     }
 }
