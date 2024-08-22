@@ -55,7 +55,6 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\images\category\" />
-    <Folder Include="wwwroot\images\author\" />
     <Folder Include="wwwroot\images\book\" />
   </ItemGroup>
 
