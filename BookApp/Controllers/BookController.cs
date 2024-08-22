@@ -32,8 +32,11 @@ namespace BookApp.Controllers
             var books = await _bookService.GetAllBook();
             return View(books);
         }
-
-
+        public async Task<IActionResult> UserBooksSearch(string searchString)
+        {
+            var books = await _bookService.SearchBooks(searchString);
+            return PartialView("_BookListPartial", books);
+        }
 
 
         // GET: Book/Details/5

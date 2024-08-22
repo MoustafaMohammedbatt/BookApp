@@ -1,0 +1,26 @@
+﻿@model IEnumerable<Shared.DTOs.BookDetailsDTO>
+
+@foreach (var book in Model)
+{
+    <div class="col">
+        <div class="card book-card h-100 shadow-sm rounded-3">
+            <div class="position-relative">
+                <img src="@Url.Content($"~/images/book/{book.CoverImage}")" class="card-img-top rounded-top" alt="Cover image of @book.Title">
+            </div>
+            <div class="card-body d-flex flex-column">
+                <div class="book-info">
+                    <h5 class="card-title text-dark">@book.Title</h5>
+                    <p class="card-text text-muted small mb-2">By @book.AuthorName</p>
+                    <p class="card-text book-description">@book.Description</p>
+                </div>
+                <div class="price-and-button">
+                    <p class="card-text mb-0"><strong>Price:</strong> <span class="text-success">@book.Price.ToString("C")</span></p>
+                    <a href="@Url.Action("Details", "Books", new { id = book.Id })" class="btn details-btn">Details</a>
+                </div>
+                <div class="book-info">
+                    <p>Published on @book.PublicationDate.ToString("MMMM dd, yyyy")</p>
+                </div>
+            </div>
+        </div>
+    </div>
+}

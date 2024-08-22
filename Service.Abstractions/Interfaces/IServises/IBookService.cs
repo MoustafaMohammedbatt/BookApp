@@ -21,5 +21,8 @@ namespace Service.Abstractions.Interfaces.IRepositories
         Task<IEnumerable<BookDetailsDTO>> GetBooksByCategory(int categoryId);
         Task<CategoryWithBooksViewModel> SeeAllBooksByCategory(int categoryId); 
         Task<IEnumerable<CategoryWithBooksViewModel>> GetBooksWithCategories();
+        Task<IEnumerable<BookDetailsDTO>> SearchBooks(string searchString);
+
+
     }
 }

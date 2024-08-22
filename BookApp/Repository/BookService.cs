@@ -183,6 +183,16 @@ public class BookService : IBookService
         return categoriesWithBooks;
     }
 
+    public async Task<IEnumerable<BookDetailsDTO>> SearchBooks(string searchString)
+    {
+        var books = await _unitOfWork.Books.FindAll(b =>
+            string.IsNullOrEmpty(searchString) || b.Title.Contains(searchString) || 
+            b.Author!.FullName.Contains(searchString) || b.Category!.Name.Contains(searchString) ,
+            include: query => query.Include(b => b.Category).Include(b => b.Author!));
+
+        return books.Select(_mapper.Map<BookDetailsDTO>);
+    }
+
 
 
 
