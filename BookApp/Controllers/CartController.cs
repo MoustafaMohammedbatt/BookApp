@@ -125,7 +125,6 @@ namespace BookApp.Controllers
             return Json(filteredUsers.Select(user => new { user.Id, user.Email }));
         }
 
-        // GET: /Cart/Edit/5
         public async Task<IActionResult> ConfirmCart(int id)
         {
             var cart = await _unitOfWork.Carts.Find(c => c.Id == id, include: q => q.Include(c => c.Sold).Include(c => c.Rented!));
@@ -135,34 +134,62 @@ namespace BookApp.Controllers
             }
 
             decimal total = 0;
-            
+
+            // Update quantities and calculate total
             if (cart.Sold!.Any())
             {
                 foreach (var sold in cart.Sold!)
                 {
                     var book = await _unitOfWork.Books.GetById(sold.BookId);
-                     var user = await _unitOfWork.ApplicationUsers.GetUserById(sold.UserId!);
-                    ViewBag.User = user;
-                    total += book!.Price * sold.Quantity; // Calculate total based on quantity
+                    if (book != null)
+                    {
+                        var user = await _unitOfWork.ApplicationUsers.GetUserById(sold.UserId!);
+                        ViewBag.User = user;
+                        total += book.Price * sold.Quantity; // Calculate total based on quantity
+
+                        // Decrease book quantity
+                        book.Quantity -= sold.Quantity;
+                        if (book.Quantity <= 0)
+                        {
+                            book.Quantity = 0;
+                            book.IsAvailable = false;
+                        } // Ensure quantity doesn't go negative
+
+                        _unitOfWork.Books.Update(book);
+                    }
                 }
             }
+
             if (cart.Rented!.Any())
             {
                 foreach (var rented in cart.Rented!)
                 {
                     var book = await _unitOfWork.Books.GetById(rented.BookId);
-                    var user = await _unitOfWork.ApplicationUsers.GetUserById(rented.UserId!);
-                    ViewBag.User = user;
-                    total += book!.Price; // Add book price for each rented item
+                    if (book != null)
+                    {
+                        var user = await _unitOfWork.ApplicationUsers.GetUserById(rented.UserId!);
+                        ViewBag.User = user;
+                        total += book.Price; // Add book price for each rented item
+
+                        // Decrease book quantity
+                        book.Quantity -= 1; // Each rented item decreases quantity by 1
+                        if (book.Quantity <= 0)
+                        { book.Quantity = 0;
+                            book.IsAvailable = false;
+                        } // Ensure quantity doesn't go negative
+                        _unitOfWork.Books.Update(book);
+                    }
                 }
             }
 
-            cart.TotalPrice = total; // Update cart's TotalPrice
+            // Update cart's total price
+            cart.TotalPrice = total;
             _unitOfWork.Carts.Update(cart);
             _unitOfWork.Complete();
 
             return View(cart);
         }
+
 
         // POST: /Cart/Edit
         [HttpPost]
@@ -171,7 +198,8 @@ namespace BookApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                var existingCart = await _unitOfWork.Carts.Find(c => c.Id == cart.Id);
+                var existingCart = await _unitOfWork.Carts.Find(c => c.Id == cart.Id, include: q => q.Include(c => c.Sold).Include(c => c.Rented!));
+
                 if (existingCart == null)
                 {
                     return NotFound();
@@ -179,8 +207,9 @@ namespace BookApp.Controllers
 
                 // Update the total price from the cart entity
                 existingCart.TotalPrice = cart.TotalPrice;
-
                 _unitOfWork.Carts.Update(existingCart);
+
+                
                 _unitOfWork.Complete();
 
                 return RedirectToAction("Index");

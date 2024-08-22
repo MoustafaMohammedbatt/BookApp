@@ -45,8 +45,8 @@ namespace BookApp.Repository
                     var sold = _mapper.Map<Sold>(viewModel);
                     sold.Quantity = bookDto.Quantity;
                     sold.BookId = bookDto.Id;
-
                     await _unitOfWork.Solds.Add(sold);
+
                 }
             }
 

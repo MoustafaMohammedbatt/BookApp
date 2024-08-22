@@ -18,7 +18,7 @@ namespace BookApp.Controllers
         // GET: /Cart
         public async Task<IActionResult> Index()
         {
-            var carts = await _unitOfWork.Renteds.FindAll(c => c.Id > 0, include: q => q.Include(c => c.Book).Include(c=>c.User!));
+            var carts = await _unitOfWork.Renteds.FindAll(c => c.Id > 0, include: q => q.Include(c => c.Book).Include(c => c.User!));
             return View(carts);
         }
         // GET: Renteds/Create
@@ -80,8 +80,14 @@ namespace BookApp.Controllers
         {
             var rented = await _unitOfWork.Renteds.GetById(id);
             if (rented == null)
-            {
                 return NotFound();
+
+            var book = await _unitOfWork.Books.GetById(rented.BookId);
+            if (book != null)
+            {
+                book.Quantity += 1;
+                book.IsAvailable = true;
+                _unitOfWork.Books.Update(book);
             }
 
             rented.IsReturned = !rented.IsReturned;

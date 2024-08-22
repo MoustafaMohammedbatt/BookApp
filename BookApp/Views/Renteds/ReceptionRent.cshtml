@@ -17,16 +17,17 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>@item.Book.Title</td>
-                <td>@item.User.UserName</td>
+                <td>@item.Book!.Title</td>
+                <td>@item.User!.UserName</td>
                 <td>@item.StartDate.ToShortDateString()</td>
                 <td>@item.EndDate.ToShortDateString()</td>
-                <td>@(item.IsReturned ? "Yes" : "No")</td>
+                <td>@(item.IsReturned ? "✓" : "✘")</td>
                 <td>
                     <form asp-action="ToggleReturned" method="post">
                         <input type="hidden" name="id" value="@item.Id" />
-                        <button type="submit" class="btn btn-sm @(item.IsReturned ? "btn-secondary" : "btn-primary")">
-                            @(item.IsReturned ? "Mark as Not Returned" : "Mark as Returned")
+                        <button type="submit" class="btn btn-sm @(item.IsReturned ? "btn-secondary" : "btn-primary")"
+                        @(item.IsReturned ? "disabled" : "")>
+                            @(item.IsReturned ? "Returned" : "Mark as Returned")
                         </button>
                     </form>
                 </td>
