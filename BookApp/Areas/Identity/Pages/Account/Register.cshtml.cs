@@ -32,6 +32,7 @@ namespace BookApp.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
 
+
         public RegisterModel(
             UserManager<AppUser> userManager,
             IUserStore<AppUser> userStore,
@@ -149,8 +150,9 @@ namespace BookApp.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    var emailBody = await GetEmailBodyAsync(callbackUrl);
+                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email", emailBody);
+
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
@@ -193,6 +195,13 @@ namespace BookApp.Areas.Identity.Pages.Account
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
             return (IUserEmailStore<AppUser>)_userStore;
+        }
+
+        private async Task<string> GetEmailBodyAsync(string confirmationLink)
+        {
+            var templatePath = "wwwroot/email-templates/ConfirmEmail.html";
+            var template = await System.IO.File.ReadAllTextAsync(templatePath);
+            return template.Replace("{ConfirmationLink}", HtmlEncoder.Default.Encode(confirmationLink));
         }
     }
 }
