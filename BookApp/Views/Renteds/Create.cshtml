@@ -4,44 +4,53 @@
     ViewData["Title"] = "Create Rented";
 }
 
-<h1>Create Rented</h1>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow-lg" style="border-radius: 15px; background-color: #f7f2e7; border: 1px solid #c3ae85;">
+                <div class="card-body">
+                    <h1 class="card-title text-center" style="color: #c3ae85;">Create Rented</h1>
 
-<form asp-action="Create" method="post">
-    @if (Model.Books == null || !Model.Books.Any())
-    {
-        <p>No books available for selection.</p>
-    }
-    else
-    {
-        <div class="row">
-            @for (int i = 0; i < Model.Books.Count; i++)
-            {
-                var book = Model.Books[i];
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">@book.Title</h5>
-                            <p class="card-text">Description here</p>
-                            <input type="hidden" name="Books[@i].Id" value="@book.Id" />
-                            <input type="hidden" name="Books[@i].Title" value="@book.Title" />
-                            <div class="form-group">
-                                <label for="StartDate_@book.Id">Start Date</label>
-                                <input id="StartDate_@book.Id" name="Books[@i].StartDate" type="date" value="null" class="form-control" />
+                    <form asp-action="Create" method="post">
+                        @if (Model.Books == null || !Model.Books.Any())
+                        {
+                            <p class="text-center" style="color: #c3ae85;">No books available for selection.</p>
+                        }
+                        else
+                        {
+                            <div class="row">
+                                @for (int i = 0; i < Model.Books.Count; i++)
+                                {
+                                    var book = Model.Books[i];
+                                    <div class="col-12 col-sm-6 col-md-4 col-lg-2 mb-4 d-flex align-items-stretch">
+                                        <div class="card w-100" style="border: 1px solid #c3ae85; border-radius: 10px;">
+                                            <div class="card-body">
+                                                <h5 class="card-title" style="color: #c3ae85;">@book.Title</h5>
+                                                <input type="hidden" name="Books[@i].Id" value="@book.Id" />
+                                                <input type="hidden" name="Books[@i].Title" value="@book.Title" />
+                                                <div class="form-group">
+                                                    <label for="StartDate_@book.Id" style="color: #c3ae85;">Start Date</label>
+                                                    <input id="StartDate_@book.Id" name="Books[@i].StartDate" type="date" class="form-control" style="border: 1px solid #c3ae85; border-radius: 5px;" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
                             </div>
+                        }
+
+                        <input type="hidden" name="CartId" value="@Model.CartId" />
+                        <input type="hidden" name="UserId" value="@Model.UserId" />
+
+                        <div class="form-group text-center mt-4">
+                            <input type="submit" value="Create" class="btn btn-outline-warning" style="background-color: #c3ae85; color: white; border-radius: 10px; padding: 10px 20px; border: none;" />
                         </div>
-                    </div>
+                    </form>
                 </div>
-            }
+            </div>
         </div>
-    }
-
-    <input type="hidden" name="CartId" value="@Model.CartId" />
-    <input type="hidden" name="UserId" value="@Model.UserId" />
-
-    <div class="form-group mt-3">
-        <input type="submit" value="Create" class="btn btn-primary" />
     </div>
-</form>
+</div>
 
 @section Scripts {
     @{
