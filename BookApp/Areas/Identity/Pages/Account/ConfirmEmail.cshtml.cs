@@ -1,35 +1,32 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-#nullable disable
-
-using System;
-using System.Linq;
+﻿using System;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using Persistence.Data;
 using Domain.Entites;
+using System.Text.Encodings.Web;
+
 namespace BookApp.Areas.Identity.Pages.Account
 {
     public class ConfirmEmailModel : PageModel
     {
         private readonly UserManager<AppUser> _userManager;
+        private readonly IEmailSender _emailSender;
+        private const string TemplatePath = "wwwroot/email-templates/ConfirmEmail.html";
 
-        public ConfirmEmailModel(UserManager<AppUser> userManager)
+        public ConfirmEmailModel(UserManager<AppUser> userManager, IEmailSender emailSender)
         {
             _userManager = userManager;
+            _emailSender = emailSender;
+            StatusMessage = string.Empty;
         }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         [TempData]
         public string StatusMessage { get; set; }
+
         public async Task<IActionResult> OnGetAsync(string userId, string code)
         {
             if (userId == null || code == null)
@@ -45,8 +42,27 @@ namespace BookApp.Areas.Identity.Pages.Account
 
             code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
             var result = await _userManager.ConfirmEmailAsync(user, code);
-            StatusMessage = result.Succeeded ? "Thank you for confirming your email." : "Error confirming your email.";
+            StatusMessage = "Thank you for confirming your email.";
+
+            if (result.Succeeded)
+            {
+                var confirmationLink = Url.Page(
+                    "/Account/ConfirmEmail",
+                    pageHandler: null,
+                    values: new { userId = user.Id, code },
+                    protocol: Request.Scheme);
+
+                var emailBody = await GetEmailBodyAsync(confirmationLink!);
+                await _emailSender.SendEmailAsync(user.Email!, "Confirm your email", emailBody);
+            }
+
             return Page();
+        }
+
+        private async Task<string> GetEmailBodyAsync(string confirmationLink)
+        {
+            var template = await System.IO.File.ReadAllTextAsync(TemplatePath);
+            return template.Replace("{ConfirmationLink}", HtmlEncoder.Default.Encode(confirmationLink));
         }
     }
 }
