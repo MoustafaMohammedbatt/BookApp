@@ -33,7 +33,7 @@
     }
 }
 
-@media (min-width: 1300px) {
+@media (min-width: 900px) {
     .btn[data-bs-toggle="collapse"] {
         display: none; /* Hide the toggle button on larger screens */
     }

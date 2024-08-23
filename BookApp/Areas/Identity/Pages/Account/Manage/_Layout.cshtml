@@ -1,5 +1,5 @@
 ﻿@{
-    if (ViewData.TryGetValue("ParentLayout", out var parentLayout) && parentLayout !=  null)
+    if (ViewData.TryGetValue("ParentLayout", out var parentLayout) && parentLayout != null)
     {
         Layout = parentLayout.ToString();
     }
@@ -9,17 +9,26 @@
     }
 }
 
-<h1>Manage your account</h1>
-
-<div>
-    <h2>Change your account settings</h2>
-    <hr />
-    <div class="row">
-        <div class="col-md-3">
-            <partial name="_ManageNav" />
-        </div>
-        <div class="col-md-9">
-            @RenderBody()
+<div class="container mt-5">
+    <h1 class="text-center" style="color: #c3ae85; font-weight: bold;">Manage Your Account</h1>
+    <div class="mt-4">
+        <h2 class="text-center" style="color: #c3ae85;">Change Your Account Settings</h2>
+        <hr style="border-top: 2px solid #c3ae85;" />
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card shadow-lg" style="border-radius: 15px; background-color: #f7f2e7; border: 1px solid #c3ae85;">
+                    <div class="card-body">
+                        <partial name="_ManageNav" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="card shadow-lg" style="border-radius: 15px; background-color: #f7f2e7; border: 1px solid #c3ae85;">
+                    <div class="card-body">
+                        @RenderBody()
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
