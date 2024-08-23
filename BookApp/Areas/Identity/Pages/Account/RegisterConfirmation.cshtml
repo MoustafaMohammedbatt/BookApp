@@ -12,22 +12,9 @@
                     <h1>@ViewData["Title"]</h1>
                 </div>
                 <div class="card-body">
-                    @if (Model.DisplayConfirmAccountLink)
-                    {
-                        <p>
-                            This app does not currently have a real email sender registered, see <a href="https://aka.ms/aspaccountconf" class="text-decoration-none" style="color: #c3ae85;">these docs</a> for how to configure a real email sender.
-                            Normally this would be emailed:
-                            <div class="card-footer text-center">
-                                <a id="confirm-link" href="@Model.EmailConfirmationUrl" class="text-decoration-none btn" style="background-color: #c3ae85; color: white;">Click here to confirm your account</a>
-                                <div />
-                        </p>
-                    }
-                    else
-                    {
-                        <p>
-                            Please check your email to confirm your account.
-                        </p>
-                    }
+                    <p>
+                        Please check your email to confirm your account. A confirmation link has been sent to the email address you provided during registration.
+                    </p>
                 </div>
                 <div class="card-footer text-center">
                     <a href="/Account/Login" class="btn" style="background-color: #c3ae85; color: white;">Go to Login</a>

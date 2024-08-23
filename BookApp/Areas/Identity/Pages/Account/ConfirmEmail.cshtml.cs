@@ -58,7 +58,6 @@ namespace BookApp.Areas.Identity.Pages.Account
 
             return Page();
         }
-
         private async Task<string> GetEmailBodyAsync(string confirmationLink)
         {
             var template = await System.IO.File.ReadAllTextAsync(TemplatePath);

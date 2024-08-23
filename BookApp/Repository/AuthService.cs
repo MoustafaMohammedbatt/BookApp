@@ -31,7 +31,6 @@ namespace BookApp.Repository
 
             var user = _mapper.Map<AppUser>(model);
             user.UserName = model.Email;
-            user.EmailConfirmed = true;
             var result = await _userManager.CreateAsync(user, model.Password);
 
             if (result.Succeeded)

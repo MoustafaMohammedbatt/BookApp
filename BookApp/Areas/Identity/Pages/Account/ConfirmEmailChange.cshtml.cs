@@ -27,7 +27,7 @@ namespace BookApp.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnGetAsync(string userId, string email, string code)
         {
-            if (userId == null || email == null || code == null)
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(code))
             {
                 return RedirectToPage("/Index");
             }
@@ -55,7 +55,9 @@ namespace BookApp.Areas.Identity.Pages.Account
 
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Thank you for confirming your email change.";
+
             return Page();
         }
+
     }
 }
