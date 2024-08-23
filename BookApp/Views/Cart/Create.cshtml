@@ -4,20 +4,30 @@
     ViewData["Title"] = "Create Cart";
 }
 
-<h1>Create Cart</h1>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg" style="border-radius: 15px; background-color: #f7f2e7; border: 1px solid #c3ae85;">
+                <div class="card-body">
+                    <h1 class="card-title text-center" style="color: #c3ae85;">Create Cart</h1>
 
-<form asp-action="Create">
-    <div class="form-group">
-        <label for="userEmail">User Email</label>
-        <input id="userEmail" name="UserEmail" class="form-control" />
-        <div id="userResults" class="dropdown-menu"></div> <!-- Dropdown to show search results -->
-        <input type="hidden" id="selectedUserId" name="UserId" /> <!-- Hidden input to store selected UserId -->
-        <span asp-validation-for="UserEmail" class="text-danger"></span>
+                    <form asp-action="Create">
+                        <div class="form-group position-relative">
+                            <label for="userEmail" style="color: #c3ae85; text-align : center">User Email</label>
+                            <input placeholder="Enter Exists Users " id="userEmail" name="UserEmail" class="form-control" style="border: 1px solid #c3ae85; border-radius: 10px;" />
+                            <div id="userResults" class="dropdown-menu" style="width: 100%; border: 1px solid #c3ae85; border-radius: 10px;"></div> <!-- Dropdown to show search results -->
+                            <input type="hidden" style="color :black" id="selectedUserId" name="UserId" /> <!-- Hidden input to store selected UserId -->
+                            <span asp-validation-for="UserEmail" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mt-3 text-center">
+                            <input type="submit" value="Create" class="btn btn-outline-warning" style="background-color: #c3ae85; color: white; border-radius: 10px; padding: 10px 20px; border: none;" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="form-group">
-        <input type="submit" value="Create" class="btn btn-primary" />
-    </div>
-</form>
+</div>
 
 @section Scripts {
     @{
@@ -29,7 +39,7 @@
         $(document).ready(function () {
             $('#userEmail').on('input', function () {
                 var email = $(this).val();
-                if (email.length >= 1) { // Start search after typing at least 3 characters
+                if (email.length >= 1) { // Start search after typing at least 1 character
                     $.ajax({
                         url: '@Url.Action("SearchUsers")', // Calls the SearchUsers action
                         type: 'GET',
@@ -37,13 +47,13 @@
                         success: function (data) {
                             var resultsHtml = '';
                             data.forEach(function (user) {
-                                resultsHtml += '<div class="user-result dropdown-item" data-id="' + user.id + '">' + user.email + '</div>';
+                                resultsHtml += '<div class="user-result dropdown-item" data-id="' + user.id + '" style="color: #c3ae85;">' + user.email + '</div>';
                             });
                             $('#userResults').html(resultsHtml).show(); // Display results in dropdown
                         }
                     });
                 } else {
-                    $('#userResults').hide(); // Hide results if input length is less than 3
+                    $('#userResults').hide(); // Hide results if input length is less than 1
                 }
             });
 

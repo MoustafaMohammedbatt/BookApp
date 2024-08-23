@@ -1,100 +1,109 @@
 ﻿@model Domain.Entites.Cart
 
 @{
-    ViewData["Title"] = "ConfirmCart Cart";
+    ViewData["Title"] = "Confirm Cart";
 }
 
-<h2>Edit Cart</h2>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg" style="border-radius: 15px; background-color: #f7f2e7; border: 1px solid #c3ae85;">
+                <div class="card-body">
+                    <h2 class="card-title text-center" style="color: #c3ae85;">Edit Cart</h2>
 
-<form asp-action="ConfirmCart" method="post">
-    <input type="hidden" asp-for="Id" />
+                    <form asp-action="ConfirmCart" method="post">
+                        <input type="hidden" asp-for="Id" />
 
-    <div>
-        <h4>Cart Information</h4>
-        <div>
-            <strong>ID:</strong> @Model.Id<br />
-            <strong>Total Price:</strong> @Model.TotalPrice<br />
+                        <div class="mb-4">
+                            <h4 style="color: #c3ae85;">Cart Information</h4>
+                            <div style="background-color: #e8e0d4; padding: 10px; border-radius: 10px;">
+                                <strong>ID:</strong> @Model.Id<br />
+                                <strong>Total Price:</strong> @Model.TotalPrice
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <h4 style="color: #c3ae85;">Sold Items</h4>
+                            @if (Model.Sold != null && Model.Sold.Any())
+                            {
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover align-middle">
+                                        <thead style="background-color:#c3ae85; color: white;">
+                                            <tr>
+                                                <th>Book</th>
+                                                <th>Quantity</th>
+                                                <th>Purchase Date</th>
+                                                <th>User</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var sold in Model.Sold)
+                                            {
+                                                <tr>
+                                                    <td>@sold.Book?.Title</td>
+                                                    <td>@sold.Quantity</td>
+                                                    <td>@sold.PurchaseDate.ToString("d")</td>
+                                                    <td>@sold.User?.UserName</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            }
+                            else
+                            {
+                                <p style="color: #c3ae85;">No sold items.</p>
+                            }
+                        </div>
+
+                        <div class="mb-4">
+                            <h4 style="color: #c3ae85;">Rented Items</h4>
+                            @if (Model.Rented != null && Model.Rented.Any())
+                            {
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover align-middle">
+                                        <thead style="background-color:#c3ae85; color: white;">
+                                            <tr>
+                                                <th>Book</th>
+                                                <th>Start Date</th>
+                                                <th>End Date</th>
+                                                <th>Is Returned</th>
+                                                <th>User</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var rented in Model.Rented)
+                                            {
+                                                <tr>
+                                                    <td>@rented.Book?.Title</td>
+                                                    <td>@rented.StartDate.ToString("d")</td>
+                                                    <td>@rented.EndDate.ToString("d")</td>
+                                                    <td>@(rented.IsReturned ? "✓" : "✘")</td>
+                                                    <td>@rented.User?.UserName</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            }
+                            else
+                            {
+                                <p style="color: #c3ae85;">No rented items.</p>
+                            }
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="TotalPrice" class="control-label" style="color: #c3ae85;">Total Price</label>
+                            <input asp-for="TotalPrice" class="form-control" style="border: 1px solid #c3ae85; border-radius: 10px;" />
+                            <span asp-validation-for="TotalPrice" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group text-center mt-4">
+                            <input type="submit" value="Save" class="btn btn-outline-warning" style="background-color: #c3ae85; color: white; border-radius: 10px; padding: 10px 20px; border: none;" />
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
-
-    <div>
-        <h4>Sold Items</h4>
-        @if (Model.Sold != null && Model.Sold.Any())
-        {
-            <div class="table-responsive">
-                <table class="table table-striped table-hover">
-                    <thead style="background-color:orange">
-                        <tr>
-                            <th>Book</th>
-                            <th>Quantity</th>
-                            <th>Purchase Date</th>
-                            <th>User</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var sold in Model.Sold)
-                        {
-                            <tr>
-                                <td>@sold.Book?.Title</td>
-                                <td>@sold.Quantity</td>
-                                <td>@sold.PurchaseDate.ToString("d")</td>
-                                <td>@sold.User?.UserName</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        }
-        else
-        {
-            <p>No sold items.</p>
-        }
-    </div>
-
-    <div>
-        <h4>Rented Items</h4>
-        @if (Model.Rented != null && Model.Rented.Any())
-        {
-            <div class="table-responsive">
-                <table class="table table-striped table-hover">
-                    <thead style="background-color:orange">
-                        <tr>
-                            <th>Book</th>
-                            <th>Start Date</th>
-                            <th>End Date</th>
-                            <th>Is Returned</th>
-                            <th>User</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var rented in Model.Rented)
-                        {
-                            <tr>
-                                <td>@rented.Book?.Title</td>
-                                <td>@rented.StartDate.ToString("d")</td>
-                                <td>@rented.EndDate.ToString("d")</td>
-                                <td>@rented.IsReturned</td>
-                                <td>@rented.User?.UserName</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        }
-        else
-        {
-            <p>No rented items.</p>
-        }
-    </div>
-
-    <div class="form-group">
-        <label asp-for="TotalPrice" class="control-label"></label>
-        <input asp-for="TotalPrice" class="form-control" />
-        <span asp-validation-for="TotalPrice" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <input type="submit" value="Save" class="btn btn-primary" />
-    </div>
-</form>
-
+</div>
