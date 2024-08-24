@@ -1,0 +1,156 @@
+﻿<style>
+    body {
+        background: #eee;
+    }
+
+    .custom-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+        .custom-header h1:first-child {
+            font-weight: bold !important;
+            margin-right: 8px;
+            padding: 0 12px;
+            color: white;
+            background-color: #c3ae85;
+        }
+
+        .custom-header h1:last-child {
+            color: #c3ae85;
+        }
+
+    .custom-card {
+        border: none;
+        position: relative;
+        overflow: hidden;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+        .custom-card:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background-color: #E1BEE7;
+            transform: scaleY(1);
+            transition: all 0.5s;
+            transform-origin: bottom;
+        }
+
+        .custom-card:after {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background-color: #c3ae85;
+            transform: scaleY(0);
+            transition: all 0.5s;
+            transform-origin: bottom;
+        }
+
+        .custom-card:hover::after {
+            transform: scaleY(1);
+        }
+
+    .custom-fonts {
+        font-size: 11px;
+    }
+
+    .custom-social-list {
+        display: flex;
+        list-style: none;
+        justify-content: center;
+        padding: 0;
+    }
+
+        .custom-social-list li {
+            padding: 10px;
+            color: #c3ae85;
+            font-size: 19px;
+        }
+
+    .custom-buttons button:nth-child(1) {
+        border: 1px solid #c3ae85 !important;
+        color: #c3ae85;
+        height: 40px;
+    }
+
+        .custom-buttons button:nth-child(1):hover {
+            border: 1px solid #c3ae85 !important;
+            color: #fff;
+            height: 40px;
+            background-color: #c3ae85;
+        }
+
+    .custom-buttons button:nth-child(2) {
+        border: 1px solid #c3ae85 !important;
+        background-color: #c3ae85;
+        color: #fff;
+        height: 40px;
+    }
+</style>
+
+<div class="container-fluid mt-5">
+    <div class="row d-flex justify-content-center">
+        <!-- Card 1 - Aly Hani -->
+        <div class="col-md-5 mb-4">
+            <div class="custom-card p-3 py-4">
+                <div class="text-center">
+                    <img src="~/images/author/Ali.jpg" width="120" class="">
+                </div>
+                <div class="text-center mt-3">
+                    <h5 class="mt-2 mb-0">Aly Hani</h5>
+                    <span>Team Leader, Fullstack .NET Developer, Next.js</span>
+                    <div class="px-4 mt-1">
+                        <p class="custom-fonts">"Very easy this was to integrate. If you care for your time, I hands down would go with this."</p>
+                    </div>
+                    <ul class="custom-social-list">
+                        <li><i class="fa fa-facebook"></i></li>
+                        <li><i class="fa fa-dribbble"></i></li>
+                        <li><i class="fa fa-instagram"></i></li>
+                        <li><i class="fa fa-linkedin"></i></li>
+                        <li><i class="fa fa-google"></i></li>
+                    </ul>
+                    <div class="custom-buttons">
+                        <button class="btn btn-outline-primary px-4">Message</button>
+                        <button class="btn btn-primary px-4 ms-3">Contact</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2 - Mostafa Mohammed -->
+        <div class="col-md-5 mb-4">
+            <div class="custom-card p-3 py-4">
+                <div class="text-center">
+                    <img src="~/images/author/btt.jpg" width="120" class="circle">
+                </div>
+                <div class="text-center mt-3">
+                    <h5 class="mt-2 mb-0">Mostafa Mohammed</h5>
+                    <span>Fullstack .NET Developer, Next.js</span>
+                    <div class="px-4 mt-1">
+                        <p class="custom-fonts">"Solid foundation for any project. Designing with Figma components that can be easily translated to the utility classes of Tailwind CSS is a huge timesaver!"</p>
+                    </div>
+                    <ul class="custom-social-list">
+                        <li><i class="fa fa-facebook"></i></li>
+                        <li><i class="fa fa-dribbble"></i></li>
+                        <li><i class="fa fa-instagram"></i></li>
+                        <li><i class="fa fa-linkedin"></i></li>
+                        <li><i class="fa fa-google"></i></li>
+                    </ul>
+                    <div class="custom-buttons">
+                        <button class="btn btn-outline-primary px-4">Message</button>
+                        <button class="btn btn-primary px-4 ms-3">Contact</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
