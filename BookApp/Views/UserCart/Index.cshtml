@@ -1,34 +1,98 @@
 ﻿@model  UserCartDto
+<style>
+    .cart-container {
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin: 20px auto;
+        max-width: 800px;
+    }
 
-<h2>Your Cart</h2>
+        .cart-container h2 {
+            color: #c3ae85;
+            text-align: center;
+        }
 
-@if ( Model == null || Model.SoldItems == null || !Model.SoldItems.Any() )
-{
-    <p>No items in Cart</p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Book</th>
-                <th>Quantity</th>
-                <th>Price</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.SoldItems)
-            {
-                <tr>
-                    <td>@item.BookTitle</td>
-                    <td>@item.Quantity</td>
-                    <td>@item.Quantity * @item.Price</td>
-                </tr>
+        .cart-container table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        .cart-container th, .cart-container td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .cart-container th {
+            background-color: #c3ae85;
+            color: white;
+        }
+
+        .cart-container tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .cart-container h3 {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .cart-container .btn-primary {
+            display: block;
+            width: 100%;
+            max-width: 200px;
+            margin: 20px auto;
+            background-color: #c3ae85;
+            border-color: #c3ae85;
+        }
+
+            .cart-container .btn-primary:hover {
+                background-color: #a89c7d;
+                border-color: #a89c7d;
             }
-        </tbody>
-    </table>
 
-    <h3>Total: @Model.TotalPrice</h3>
+        .cart-container .no-items-message {
+            text-align: center;
+            color: #333;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+</style>
 
-    <a href="@Url.Action("Checkout", "UserCart")" class="btn btn-primary">Checkout</a>
-}
+<div class="cart-container">
+    <h2>Your Cart</h2>
+
+    @if (Model == null || Model.SoldItems == null || !Model.SoldItems.Any())
+    {
+        <p class="no-items-message">No items in Cart</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Book</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.SoldItems)
+                {
+                    <tr>
+                        <td>@item.BookTitle</td>
+                        <td>@item.Quantity</td>
+                        <td>@item.Quantity * @item.Price</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <h3>Total: @Model.TotalPrice</h3>
+
+        <a href="@Url.Action("Checkout", "UserCart")" class="btn btn-primary">Checkout</a>
+    }
+</div>
