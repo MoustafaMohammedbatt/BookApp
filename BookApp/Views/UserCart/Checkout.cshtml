@@ -1,0 +1,34 @@
+﻿@model CheckoutViewModel
+
+<h2>Checkout</h2>
+<form asp-action="Checkout" method="post">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Book</th>
+                <th>Quantity</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.SoldItems!)
+            {
+                <tr>
+                    <td>@item.BookTitle</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.Quantity * @item.Price</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="form-group">
+        <label for="PaymentMethod">Payment Method</label>
+        <select asp-for="PaymentMethod" class="form-control">
+            <option value="Delivery">Delivery</option>
+            <option value="Online">Online</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Complete Payment</button>
+</form>

@@ -20,6 +20,7 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
     public DbSet<Rented> Renteds { get; set; }
     public DbSet<Cart> Carts { get; set; }
     public DbSet<Author> Authors { get; set; }
+    public DbSet<UserCart> UserCarts { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder builder)

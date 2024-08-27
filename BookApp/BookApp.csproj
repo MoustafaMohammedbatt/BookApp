@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="Views\UserCart\AddToCart.cshtml" />
     <Content Remove="wwwroot\images\logo\QariFavIcon.png" />
   </ItemGroup>
 
@@ -59,6 +60,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Views\UserCart\AddToCart.cshtml" />
     <None Include="wwwroot\images\logo\QariFavIcon.png" />
   </ItemGroup>
 
@@ -68,6 +70,11 @@
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Views\Shared\_BookListPartial.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\UserCart\AddToCart.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\UserCart\AddToCart.cshtml" />
   </ItemGroup>
 
 </Project>

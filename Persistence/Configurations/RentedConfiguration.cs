@@ -21,9 +21,6 @@ namespace Persistence.Configurations
             builder.HasOne(r => r.Cart)
                    .WithMany(c => c.Rented)
                    .HasForeignKey(r => r.CartId);
-			builder.HasOne(r => r.UserCart)
-				   .WithMany(c => c.Rented)
-				   .HasForeignKey(r => r.UserCartId);
 
 		}
     }

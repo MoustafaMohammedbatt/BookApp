@@ -2,12 +2,6 @@
 using Persistence.Data;
 using Service.Abstractions.Interfaces.IBaseRepository;
 using Service.Abstractions.Interfaces.IRepositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Persistence.Repositories
 {
@@ -31,6 +25,8 @@ namespace Persistence.Repositories
         public IBaseRepository<Author> Authors => new BaseRepository<Author>(_context);
 
         public IBaseRepository<Cart> Carts => new BaseRepository<Cart>(_context);
+        public IBaseRepository<UserCart> UserCarts => new BaseRepository<UserCart>(_context);
+
 
         public int Complete()
         {

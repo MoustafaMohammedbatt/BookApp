@@ -10,6 +10,7 @@ using Persistence.Data;
 using Persistence.Helpers;
 using Persistence.Repositories;
 using Service.Abstractions.Interfaces.IRepositories;
+using Service.Abstractions.Interfaces.IServices;
 using Service.Abstractions.Interfaces.IServises;
 using Stripe;
 
@@ -42,6 +43,9 @@ builder.Services.AddScoped<IAppUserService, AppUserService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<ISoldService, SoldService>();
 builder.Services.AddScoped<IRentService, RentService>();
+builder.Services.AddScoped<IUserCartService, UserCartService>();
+builder.Services.AddHttpContextAccessor();
+
 
 
 var app = builder.Build();

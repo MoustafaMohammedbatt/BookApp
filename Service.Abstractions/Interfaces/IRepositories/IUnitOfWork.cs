@@ -12,6 +12,8 @@ namespace Service.Abstractions.Interfaces.IRepositories
         IBaseRepository<Rented> Renteds { get; }
         IBaseRepository<Author> Authors { get; }
         IBaseRepository<Cart> Carts { get; }
+        IBaseRepository<UserCart> UserCarts { get; }
+
 
         int Complete();
     }

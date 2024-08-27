@@ -18,7 +18,5 @@ namespace Domain.Entites
         public AppUser? User { get; set; }
         public int? CartId { get; set; }
         public Cart? Cart { get; set; }
-		public int? UserCartId { get; set; }
-		public UserCart? UserCart { get; set; }
 	}
 }

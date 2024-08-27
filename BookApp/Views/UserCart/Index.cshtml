@@ -1,0 +1,34 @@
+﻿@model  UserCartDto
+
+<h2>Your Cart</h2>
+
+@if ( Model == null || Model.SoldItems == null || !Model.SoldItems.Any() )
+{
+    <p>No items in Cart</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Book</th>
+                <th>Quantity</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.SoldItems)
+            {
+                <tr>
+                    <td>@item.BookTitle</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.Quantity * @item.Price</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h3>Total: @Model.TotalPrice</h3>
+
+    <a href="@Url.Action("Checkout", "UserCart")" class="btn btn-primary">Checkout</a>
+}
