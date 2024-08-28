@@ -14,7 +14,7 @@ namespace Shared.DTOs
         public string? UserId { get; set; }
         public PaymentMethod PaymentMethod { get; set; }
         public PaymentStatus PaymentStatus { get; set; }
-        public List<SoldUserDto>? SoldItems { get; set; }
+        public List<Sold>? Sold { get; set; }
     }
 
 }

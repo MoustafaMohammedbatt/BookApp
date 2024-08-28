@@ -1,4 +1,5 @@
 ﻿using Domain.Consts;
+using Domain.Entites;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Abstractions.Interfaces.IRepositories;
@@ -36,6 +37,14 @@ namespace BookApp.Controllers
             var userId = GetUserId();
             var userCart = await _userCartService.GetUserCartAsync(userId);
 
+            if (userCart.Sold!.Count > 0)
+            {
+                foreach (var item in userCart.Sold)
+                {
+                    item.Book = await _unitOfWork.Books.GetById(item.BookId);
+                }
+            }
+
             return View(userCart);
         }
 
@@ -45,7 +54,7 @@ namespace BookApp.Controllers
             var model = new AddBookToCartDto
             {
                 BookId = bookId,
-                Quantity = 1 ,// default quantity
+                Quantity = 1, // default quantity
                 UserId = GetUserId()
             };
             return View(model);
@@ -54,20 +63,23 @@ namespace BookApp.Controllers
         // POST: UserCart/AddToCart
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddToCart(AddBookToCartDto model)
+        public async Task<IActionResult> AddToCart(AddBookToCartDto dto)
         {
-            if (!ModelState.IsValid)
+            if (dto.Quantity < 1)
             {
-                return View(model);
+                ModelState.AddModelError("Quantity", "Quantity must be at least 1.");
+                return RedirectToAction("Details", "Books", new { id = dto.BookId });
             }
 
-            var userId = GetUserId();
-            model.UserId = userId;
+            // Ensure UserId is set correctly
+            dto.UserId = GetUserId();
 
-            await _userCartService.AddBookToUserCartAsync(model);
+            await _userCartService.AddBookToUserCartAsync(dto);
 
             return RedirectToAction(nameof(Index));
         }
+
+
 
         // GET: UserCart/Checkout
         public async Task<IActionResult> Checkout()

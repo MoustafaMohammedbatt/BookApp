@@ -65,7 +65,7 @@
 <div class="cart-container">
     <h2>Your Cart</h2>
 
-    @if (Model == null || Model.SoldItems == null || !Model.SoldItems.Any())
+    @if (Model == null )
     {
         <p class="no-items-message">No items in Cart</p>
     }
@@ -80,12 +80,12 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.SoldItems)
+                @foreach (var item in Model.Sold)
                 {
                     <tr>
-                        <td>@item.BookTitle</td>
+                        <td>@item.Book!.Title</td>
                         <td>@item.Quantity</td>
-                        <td>@item.Quantity * @item.Price</td>
+                        <td>@(item.Quantity * item.Book.Price) </td>
                     </tr>
                 }
             </tbody>

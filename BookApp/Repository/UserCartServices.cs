@@ -59,6 +59,7 @@ namespace BookApp.Repository
             {
                 userCart.Sold?.Add(new Sold
                 {
+                    UserId = addBookToCartDto.UserId,
                     BookId = addBookToCartDto.BookId,
                     Quantity = addBookToCartDto.Quantity,
                     PurchaseDate = DateTime.Now
