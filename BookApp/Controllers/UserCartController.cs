@@ -1,12 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Domain.Consts;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Service.Abstractions.Interfaces.IRepositories;
 using Service.Abstractions.Interfaces.IServices;
 using Shared.DTOs;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace BookApp.Controllers
 {
+    [Authorize(Roles = UserRole.User)]  
+
     public class UserCartController : Controller
     {
         private readonly IUserCartService _userCartService;

@@ -46,6 +46,11 @@ builder.Services.AddScoped<IRentService, RentService>();
 builder.Services.AddScoped<IUserCartService, UserCartService>();
 builder.Services.AddHttpContextAccessor();
 
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = $"/Account/Login";
+});
+
 
 
 var app = builder.Build();
