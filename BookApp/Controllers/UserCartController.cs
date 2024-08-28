@@ -45,7 +45,8 @@ namespace BookApp.Controllers
             var model = new AddBookToCartDto
             {
                 BookId = bookId,
-                Quantity = 1 // default quantity
+                Quantity = 1 ,// default quantity
+                UserId = GetUserId()
             };
             return View(model);
         }

@@ -2,8 +2,8 @@
 {
     public enum PaymentMethod { Delivery , Online }
 	public enum PaymentStatus { Pending, Completed, Failed }
-	public class UserCart
-	{
+	public class UserCart : BaseModel
+	{ 
 		public int Id { get; set; }
 		public decimal TotalPrice { get; set; }
 		public string? UserId { get; set; }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Shared.DTOs
 {
-    public class UserCartDto
+    public class UserCartDto : BaseModel
     {
         public int Id { get; set; }
         public decimal TotalPrice { get; set; }
