@@ -71,6 +71,7 @@
     }
     else
     {
+        
         <table class="table">
             <thead>
                 <tr>
@@ -80,7 +81,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.Sold)
+                @foreach (var item in Model.Sold!)
                 {
                     <tr>
                         <td>@item.Book!.Title</td>
@@ -91,7 +92,7 @@
             </tbody>
         </table>
 
-        <h3>Total: @Model.TotalPrice</h3>
+        <h3>Total: @ViewBag.Total</h3>
 
         <a href="@Url.Action("Checkout", "UserCart")" class="btn btn-primary">Checkout</a>
     }

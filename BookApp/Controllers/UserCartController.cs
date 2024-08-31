@@ -36,15 +36,16 @@ namespace BookApp.Controllers
         {
             var userId = GetUserId();
             var userCart = await _userCartService.GetUserCartAsync(userId);
-
+            decimal total = 0;
             if (userCart.Sold!.Count > 0)
             {
                 foreach (var item in userCart.Sold)
                 {
                     item.Book = await _unitOfWork.Books.GetById(item.BookId);
+                    total += item.Book!.Price * item.Quantity;
                 }
             }
-
+            ViewBag.Total = total;
             return View(userCart);
         }
 
