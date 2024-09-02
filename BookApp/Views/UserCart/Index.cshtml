@@ -1,4 +1,5 @@
-﻿@model  UserCartDto
+﻿@model UserCartDto
+
 <style>
     .cart-container {
         background-color: #fff;
@@ -60,24 +61,49 @@
             font-size: 16px;
             margin-top: 20px;
         }
+
+    .quantity-controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+        .quantity-controls button {
+            border: none;
+            background-color: #c3ae85;
+            color: white;
+            padding: 6px 10px;
+            cursor: pointer;
+        }
+
+        .quantity-controls input {
+            text-align: center;
+            width: 50px;
+            border: 1px solid #ddd;
+            margin: 0 5px;
+        }
+
+        .quantity-controls button:hover {
+            background-color: #a89c7d;
+        }
 </style>
 
 <div class="cart-container">
     <h2>Your Cart</h2>
 
-    @if (Model == null )
+    @if (Model == null || !Model.Sold!.Any())
     {
         <p class="no-items-message">No items in Cart</p>
     }
     else
     {
-        
         <table class="table">
             <thead>
                 <tr>
                     <th>Book</th>
                     <th>Quantity</th>
                     <th>Price</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -85,8 +111,20 @@
                 {
                     <tr>
                         <td>@item.Book!.Title</td>
-                        <td>@item.Quantity</td>
-                        <td>@(item.Quantity * item.Book.Price) </td>
+                        <td>
+                            <div class="quantity-controls">
+                                <button type="button" class="btn-minus" data-sold-id="@item.Id">-</button>
+                                <input type="number" value="@item.Quantity" readonly />
+                                <button type="button" class="btn-plus" data-sold-id="@item.Id">+</button>
+                            </div>
+                        </td>
+                        <td>@(item.Quantity * item.Book.Price)</td>
+                        <td>
+                            <form asp-action="DeleteItem" method="post" class="d-inline">
+                                <input type="hidden" name="soldId" value="@item.Id" />
+                                <button type="submit" class="btn btn-sm btn-danger"> x </button>
+                            </form>
+                        </td>
                     </tr>
                 }
             </tbody>
@@ -97,3 +135,45 @@
         <a href="@Url.Action("Checkout", "UserCart")" class="btn btn-primary">Checkout</a>
     }
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.btn-minus').forEach(button => {
+            button.addEventListener('click', function () {
+                const soldId = this.getAttribute('data-sold-id');
+                let quantityInput = this.nextElementSibling;
+                let newQuantity = parseInt(quantityInput.value) - 1;
+                if (newQuantity > 0) {
+                    quantityInput.value = newQuantity;
+                    updateQuantity(soldId, newQuantity);
+                }
+            });
+        });
+
+        document.querySelectorAll('.btn-plus').forEach(button => {
+            button.addEventListener('click', function () {
+                const soldId = this.getAttribute('data-sold-id');
+                let quantityInput = this.previousElementSibling;
+                let newQuantity = parseInt(quantityInput.value) + 1;
+                quantityInput.value = newQuantity;
+                updateQuantity(soldId, newQuantity);
+            });
+        });
+    });
+
+    function updateQuantity(soldId, newQuantity) {
+        fetch('@Url.Action("UpdateQuantity", "UserCart")', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': '@(ViewData["__RequestVerificationToken"] ?? "")'
+            },
+            body: `soldId=${soldId}&newQuantity=${newQuantity}`
+        }).then(response => {
+            if (response.ok) {
+                location.reload(); // Reload the page to reflect the updated quantity and total price
+            }
+        }).catch(error => console.error('Error updating quantity:', error));
+    }
+</script>

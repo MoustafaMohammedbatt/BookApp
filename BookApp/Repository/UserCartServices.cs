@@ -95,7 +95,28 @@ namespace BookApp.Repository
                 BookTitle = s.Book?.Title ?? string.Empty
             });
         }
+        public async Task DeleteCartItemAsync(int soldId)
+        {
+            var soldItem = await _unitOfWork.Solds.Find(b => b.Id == soldId );
 
+            if (soldItem != null)
+            {
+                _unitOfWork.Solds.Remove(soldItem);
+                _unitOfWork.Complete();
+            }
+        }
+
+        public async Task UpdateCartItemQuantityAsync(int soldId, int newQuantity)
+        {
+            var soldItem = await _unitOfWork.Solds.Find(b => b.Id == soldId);
+
+            if (soldItem != null && newQuantity > 0)
+            {
+                soldItem.Quantity = newQuantity;
+                _unitOfWork.Solds.Update(soldItem);
+                _unitOfWork.Complete();
+            }
+        }
         public async Task<bool> CompletePaymentAsync(CompletePaymentDto completePaymentDto)
         {
             if (completePaymentDto == null)

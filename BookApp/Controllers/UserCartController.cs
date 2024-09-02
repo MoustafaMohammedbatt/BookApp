@@ -1,5 +1,4 @@
 ﻿using Domain.Consts;
-using Domain.Entites;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Abstractions.Interfaces.IRepositories;
@@ -9,20 +8,18 @@ using System.Security.Claims;
 
 namespace BookApp.Controllers
 {
-    [Authorize(Roles = UserRole.User)]  
-
+    [Authorize(Roles = UserRole.User)]
     public class UserCartController : Controller
     {
         private readonly IUserCartService _userCartService;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly IUnitOfWork _unitOfWork;   
+        private readonly IUnitOfWork _unitOfWork;
 
         public UserCartController(IUserCartService userCartService, IHttpContextAccessor httpContextAccessor , IUnitOfWork unitOfWork)
         {
             _userCartService = userCartService;
             _httpContextAccessor = httpContextAccessor;
             _unitOfWork = unitOfWork;
-
         }
 
         private string GetUserId()
@@ -37,6 +34,7 @@ namespace BookApp.Controllers
             var userId = GetUserId();
             var userCart = await _userCartService.GetUserCartAsync(userId);
             decimal total = 0;
+
             if (userCart.Sold!.Count > 0)
             {
                 foreach (var item in userCart.Sold)
@@ -74,78 +72,37 @@ namespace BookApp.Controllers
 
             // Ensure UserId is set correctly
             dto.UserId = GetUserId();
-
             await _userCartService.AddBookToUserCartAsync(dto);
 
             return RedirectToAction(nameof(Index));
         }
 
-
-
-        // GET: UserCart/Checkout
-        public async Task<IActionResult> Checkout()
-        {
-            var userId = GetUserId();
-            var soldItems = await _userCartService.GetSoldItemsAsync(userId);
-
-            if (soldItems == null || !soldItems.Any())
-            {
-                // Handle the case where there are no items to checkout
-                return RedirectToAction("Error", "Home");
-            }
-
-            var model = new CheckoutViewModel
-            {
-                SoldItems = soldItems
-            };
-
-            return View(model);
-        }
-
-        // POST: UserCart/Checkout
+        // POST: UserCart/UpdateQuantity
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Checkout(CheckoutViewModel model)
+        public async Task<IActionResult> UpdateQuantity(int soldId, int newQuantity)
         {
-            if (!ModelState.IsValid)
+            if (newQuantity < 1)
             {
-                return View(model);
+                ModelState.AddModelError("Quantity", "Quantity must be at least 1.");
+            }
+            else
+            {
+                await _userCartService.UpdateCartItemQuantityAsync(soldId, newQuantity);
             }
 
-            var userId = GetUserId();
-
-            if (string.IsNullOrWhiteSpace(model.PaymentMethod.ToString()))
-            {
-                ModelState.AddModelError(nameof(model.PaymentMethod), "Payment method is required.");
-                return View(model);
-            }
-
-            var completePaymentDto = new CompletePaymentDto
-            {
-                UserId = userId,
-                PaymentMethod = model.PaymentMethod
-            };
-
-            var paymentSuccess = await _userCartService.CompletePaymentAsync(completePaymentDto);
-
-            if (!paymentSuccess)
-            {
-                return RedirectToAction("PaymentFailed");
-            }
-
-            return RedirectToAction("PaymentSuccess");
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: UserCart/PaymentSuccess
-        public IActionResult PaymentSuccess()
+        // POST: UserCart/DeleteItem
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteItem(int soldId)
         {
-            return View();
+            await _userCartService.DeleteCartItemAsync(soldId);
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: UserCart/PaymentFailed
-        public IActionResult PaymentFailed()
-        {
-            return View();
-        }
+     
     }
 }

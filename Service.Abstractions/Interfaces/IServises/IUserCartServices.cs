@@ -9,6 +9,9 @@ namespace Service.Abstractions.Interfaces.IServices
         Task AddBookToUserCartAsync(AddBookToCartDto addBookToCartDto);
         Task<IEnumerable<SoldUserDto>> GetSoldItemsAsync(string userId);
         Task<bool> CompletePaymentAsync(CompletePaymentDto completePaymentDto);
+        Task UpdateCartItemQuantityAsync(int soldId, int newQuantity);
+        Task DeleteCartItemAsync(int soldId);
+
     }
 
 }
