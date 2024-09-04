@@ -3,6 +3,7 @@ using Service.Abstractions.Interfaces.IRepositories;
 using Shared.DTOs;
 using AutoMapper;
 using System.Drawing.Printing;
+using Service.Abstractions.Interfaces.IServises;
 
 namespace BookApp.Controllers
 {
@@ -11,13 +12,15 @@ namespace BookApp.Controllers
         private readonly IBookService _bookService;
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ISoldService _soldService;
 
 
-        public BookController(IBookService bookService, IMapper mapper, IUnitOfWork unitOfWork)
+        public BookController(IBookService bookService, IMapper mapper, IUnitOfWork unitOfWork , ISoldService soldService)
         {
             _bookService = bookService;
             _mapper = mapper;
             _unitOfWork = unitOfWork;
+            _soldService = soldService;
         }
 
         // GET: Book
@@ -124,8 +127,26 @@ namespace BookApp.Controllers
         public async Task<IActionResult> CategoriesWithBooks() => View(await _bookService.GetBooksWithCategories());
         public async Task<IActionResult> BooksByCategory(int categoryId) => View(await _bookService.SeeAllBooksByCategory(categoryId));
 
-		
+        // POST: UserCart/IncreaseQuantity
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> IncreaseQuantity(int soldId)
+        {
+            await _soldService.IncreaseQuantity(soldId);
+            return RedirectToAction(nameof(Index));
+        }
+
+        // POST: UserCart/DecreaseQuantity
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DecreaseQuantity(int soldId)
+        {
+            var soldItem = await _soldService.DecreaseQuantity(soldId);
+            return RedirectToAction(nameof(Index));
+        }
 
 
-	}
+
+
+    }
 }

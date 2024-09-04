@@ -70,7 +70,7 @@ namespace BookApp.Controllers
             if (dto.Quantity < 1)
             {
                 ModelState.AddModelError("Quantity", "Quantity must be at least 1.");
-                return RedirectToAction("Details", "Books", new { id = dto.BookId });
+                return RedirectToAction("Details", "Book", new { id = dto.BookId });
             }
 
             // Ensure UserId is set correctly
