@@ -53,5 +53,31 @@ namespace BookApp.Repository
             _unitOfWork.Complete();
             return true;
         }
+
+
+        public async Task<Sold?> IncreaseQuantity(int id)
+        {
+            var cart = await _unitOfWork.Solds.GetById(id);
+
+            if (cart is null) return null;
+
+            cart.Quantity ++;
+
+            _unitOfWork.Complete();
+
+            return cart;
+        }
+        public async Task<Sold?> DecreaseQuantity(int id)
+        {
+            var cart = await _unitOfWork.Solds.GetById(id);
+
+            if (cart is null) return null;
+
+            cart.Quantity--;
+
+            _unitOfWork.Complete();
+
+            return cart;
+        }
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Abstractions.Interfaces.IRepositories;
 using Service.Abstractions.Interfaces.IServices;
+using Service.Abstractions.Interfaces.IServises;
 using Shared.DTOs;
 using System.Security.Claims;
 
@@ -12,14 +13,16 @@ namespace BookApp.Controllers
     public class UserCartController : Controller
     {
         private readonly IUserCartService _userCartService;
+        private readonly ISoldService _soldService;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IUnitOfWork _unitOfWork;
 
-        public UserCartController(IUserCartService userCartService, IHttpContextAccessor httpContextAccessor , IUnitOfWork unitOfWork)
+        public UserCartController(IUserCartService userCartService, IHttpContextAccessor httpContextAccessor , IUnitOfWork unitOfWork , ISoldService soldService)
         {
             _userCartService = userCartService;
             _httpContextAccessor = httpContextAccessor;
             _unitOfWork = unitOfWork;
+            _soldService = soldService;
         }
 
         private string GetUserId()
@@ -90,9 +93,8 @@ namespace BookApp.Controllers
             {
                 await _userCartService.UpdateCartItemQuantityAsync(soldId, newQuantity);
             }
-
-            return RedirectToAction(nameof(Index));
-        }
+            return RedirectToAction(nameof(Index)); // Redirect back to the cart view
+        } 
 
         // POST: UserCart/DeleteItem
         [HttpPost]
@@ -103,6 +105,31 @@ namespace BookApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-     
+        // POST: UserCart/IncreaseQuantity
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> IncreaseQuantity(int soldId)
+        {
+            await _soldService.IncreaseQuantity(soldId);
+            return RedirectToAction(nameof(Index));
+        }
+
+        // POST: UserCart/DecreaseQuantity
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DecreaseQuantity(int soldId)
+        {
+            var soldItem = await _soldService.DecreaseQuantity(soldId);
+
+            // If quantity is reduced to 0, remove the item from the cart
+            if (soldItem != null && soldItem.Quantity == 0)
+            {
+                await _userCartService.DeleteCartItemAsync(soldId);
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+
     }
 }

@@ -113,9 +113,15 @@
                         <td>@item.Book!.Title</td>
                         <td>
                             <div class="quantity-controls">
-                                <button type="button" class="btn-minus" data-sold-id="@item.Id">-</button>
-                                <input type="number" value="@item.Quantity" readonly />
-                                <button type="button" class="btn-plus" data-sold-id="@item.Id">+</button>
+                                <form asp-action="DecreaseQuantity" asp-controller="UserCart" method="post" class="d-inline">
+                                    <input type="hidden" name="soldId" value="@item.Id" />
+                                    <button type="submit" class="btn-minus">-</button>
+                                </form>
+                                <input type="number" value="@item.Quantity" disabled />
+                                <form asp-action="IncreaseQuantity" asp-controller="UserCart" method="post" class="d-inline">
+                                    <input type="hidden" name="soldId" value="@item.Id" />
+                                    <button type="submit" class="btn-plus">+</button>
+                                </form>
                             </div>
                         </td>
                         <td>@(item.Quantity * item.Book.Price)</td>
@@ -135,45 +141,3 @@
         <a href="@Url.Action("Checkout", "UserCart")" class="btn btn-primary">Checkout</a>
     }
 </div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('.btn-minus').forEach(button => {
-            button.addEventListener('click', function () {
-                const soldId = this.getAttribute('data-sold-id');
-                let quantityInput = this.nextElementSibling;
-                let newQuantity = parseInt(quantityInput.value) - 1;
-                if (newQuantity > 0) {
-                    quantityInput.value = newQuantity;
-                    updateQuantity(soldId, newQuantity);
-                }
-            });
-        });
-
-        document.querySelectorAll('.btn-plus').forEach(button => {
-            button.addEventListener('click', function () {
-                const soldId = this.getAttribute('data-sold-id');
-                let quantityInput = this.previousElementSibling;
-                let newQuantity = parseInt(quantityInput.value) + 1;
-                quantityInput.value = newQuantity;
-                updateQuantity(soldId, newQuantity);
-            });
-        });
-    });
-
-    function updateQuantity(soldId, newQuantity) {
-        fetch('@Url.Action("UpdateQuantity", "UserCart")', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'X-Requested-With': 'XMLHttpRequest',
-                'X-CSRF-TOKEN': '@(ViewData["__RequestVerificationToken"] ?? "")'
-            },
-            body: `soldId=${soldId}&newQuantity=${newQuantity}`
-        }).then(response => {
-            if (response.ok) {
-                location.reload(); // Reload the page to reflect the updated quantity and total price
-            }
-        }).catch(error => console.error('Error updating quantity:', error));
-    }
-</script>
