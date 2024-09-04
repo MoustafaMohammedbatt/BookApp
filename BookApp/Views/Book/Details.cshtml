@@ -39,87 +39,57 @@
         </div>
 
         <!-- Book Details on the Right -->
-        <div class="col-md-8 text-right" style="color: #c3ae85; font-size: 1.2rem;">
+        <div class="col-md-8" style="color: #c3ae85; font-size: 1.2rem;">
             <h1 class="font-weight-bold" style="color: #c3ae85;">@Model.Title</h1>
             <h4 style="color: #c3ae85;">@Model.AuthorName</h4>
             <hr style="border-color: #c3ae85;" />
 
             <!-- Category, Publication Date, Availability -->
             <div class="mb-2">
-                @Model.CategoryName
+                <strong>Category:</strong> @Model.CategoryName
             </div>
             <div class="mb-2">
-                @Model.PublicationDate.ToShortDateString()
+                <strong>Publication Date:</strong> @Model.PublicationDate.ToShortDateString()
             </div>
             <div class="mb-2">
-                @((Model.IsAvailable ? $"Available {Model.Quantity} Books" : "Not Available"))
+                <strong>Availability:</strong> @((Model.IsAvailable ? $"Available {Model.Quantity} Books" : "Not Available"))
             </div>
             <hr style="border-color: #c3ae85;" />
 
             <!-- Description -->
             <div class="mb-2">
-                @Model.Description
-            </div>
-
-            <!-- Price in a Rounded Colored Label -->
-            <div class="mt-3">
-                <span class="badge badge-pill badge-success" style="font-size: 1.2rem; background-color: #c3ae85; color: white;">@Model.Price ".LE"</span>
+                <strong>Description:</strong> @Model.Description
             </div>
 
             @if (!await IsUserAdmin())
             {
-                <div class="mt-3">
-                    <form asp-action="AddToCart" asp-controller="UserCart" method="post" onsubmit="return validateQuantity()">
-                        <input type="hidden" name="BookId" value="@Model.Id" />
-                        <input type="hidden" id="AvailableQuantity" value="@Model.Quantity" />
-                        <div class="form-group">
-                            <label for="Quantity">Quantity</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <button type="button" class="btn btn-outline-secondary"  onclick="decrementQuantity()">-</button>
-                                </div>
-                                <input type="number" id="Quantity" name="Quantity" value="1" class="form-control text-center" min="1" style="max-width: 60px;" />
-                                <div class="input-group-append">
-                                    <button type="button" class="btn btn-outline-secondary" onclick="incrementQuantity()">+</button>
-                                </div>
+                <div class="mt-3 d-flex justify-content-between align-items-center">
+                    <!-- Quantity -->
+                    <div class="form-group mb-0">
+                        <label for="Quantity"><strong>Quantity:</strong></label>
+                        <div class="input-group" style="max-width: 160px;">
+                            <div class="input-group-prepend">
+                                <button type="button" class="btn" style="background-color: #c3ae85;" onclick="decrementQuantity()">-</button>
+                            </div>
+                            <input type="number" id="Quantity" name="Quantity" value="1" class="form-control text-center" min="1" style="max-width: 60px;" />
+                            <div class="input-group-append">
+                                <button type="button" class="btn" style="background-color: #c3ae85;" onclick="incrementQuantity()">+</button>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-success" style="background-color: #c3ae85; border-color: #c3ae85; font-size: 1.2rem;">
-                            Add to Cart
-                        </button>
-                    </form>
+                    </div>
 
-                    <script type="text/javascript">
-                        function validateQuantity() {
-                            var availableQuantity = parseInt(document.getElementById("AvailableQuantity").value);
-                            var enteredQuantity = parseInt(document.getElementById("Quantity").value);
+                    <!-- Price and Add to Cart Button -->
+                    <div>
+                        <span class="badge badge-pill badge-success" style="font-size: 1.2rem; background-color: #c3ae85; color: white;">@Model.Price .LE</span>
 
-                            if (enteredQuantity > availableQuantity) {
-                                alert("Quantity entered exceeds available stock.");
-                                return false;
-                            }
-                            return true;
-                        }
-
-                        function incrementQuantity() {
-                            var quantityInput = document.getElementById("Quantity");
-                            var availableQuantity = parseInt(document.getElementById("AvailableQuantity").value);
-                            var currentValue = parseInt(quantityInput.value);
-
-                            if (currentValue < availableQuantity) {
-                                quantityInput.value = currentValue + 1;
-                            }
-                        }
-
-                        function decrementQuantity() {
-                            var quantityInput = document.getElementById("Quantity");
-                            var currentValue = parseInt(quantityInput.value);
-
-                            if (currentValue > 1) {
-                                quantityInput.value = currentValue - 1;
-                            }
-                        }
-                    </script>
+                        <form asp-action="AddToCart" asp-controller="UserCart" method="post" class="d-inline" onsubmit="return validateQuantity()">
+                            <input type="hidden" name="BookId" value="@Model.Id" />
+                            <input type="hidden" id="AvailableQuantity" value="@Model.Quantity" />
+                            <button type="submit" class="btn btn-success ml-2" style="background-color: #c3ae85; border-color: #c3ae85; font-size: 1.2rem;">
+                                Add to Cart
+                            </button>
+                        </form>
+                    </div>
                 </div>
             }
         </div>
@@ -133,3 +103,35 @@
         <a asp-action="Index" class="btn btn-outline-secondary" style="color: #c3ae85; border-color: #c3ae85;">Back to List</a>
     </div>
 }
+
+<script type="text/javascript">
+    function validateQuantity() {
+        var availableQuantity = parseInt(document.getElementById("AvailableQuantity").value);
+        var enteredQuantity = parseInt(document.getElementById("Quantity").value);
+
+        if (enteredQuantity > availableQuantity) {
+            alert("Quantity entered exceeds available stock.");
+            return false;
+        }
+        return true;
+    }
+
+    function incrementQuantity() {
+        var quantityInput = document.getElementById("Quantity");
+        var availableQuantity = parseInt(document.getElementById("AvailableQuantity").value);
+        var currentValue = parseInt(quantityInput.value);
+
+        if (currentValue < availableQuantity) {
+            quantityInput.value = currentValue + 1;
+        }
+    }
+
+    function decrementQuantity() {
+        var quantityInput = document.getElementById("Quantity");
+        var currentValue = parseInt(quantityInput.value);
+
+        if (currentValue > 1) {
+            quantityInput.value = currentValue - 1;
+        }
+    }
+</script>
