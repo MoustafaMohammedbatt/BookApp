@@ -44,6 +44,8 @@ builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<ISoldService, SoldService>();
 builder.Services.AddScoped<IRentService, RentService>();
 builder.Services.AddScoped<IUserCartService, UserCartService>();
+builder.Services.AddScoped<IPaymentFormService, PaymentFormService>();
+
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.ConfigureApplicationCookie(options =>
