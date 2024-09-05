@@ -26,8 +26,8 @@ namespace Persistence.Repositories
 
         public IBaseRepository<Cart> Carts => new BaseRepository<Cart>(_context);
         public IBaseRepository<UserCart> UserCarts => new BaseRepository<UserCart>(_context);
-        public IBaseRepository<PaymentForm> PaymentsForm => new BaseRepository<PaymentForm>(_context);
 
+        public IBaseRepository<PaymentForm> PaymentForms => new BaseRepository<PaymentForm>(_context);
 
         public int Complete()
         {

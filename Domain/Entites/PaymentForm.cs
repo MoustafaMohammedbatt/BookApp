@@ -19,6 +19,8 @@ namespace Domain.Entites
         [Required(ErrorMessage = Errors.RequiredField)]
         [RegularExpression(RegexPatterns.MobileNumber, ErrorMessage = Errors.InvalidMobileNumber)]
         public string PhoneNumber { get; set; } = null!;
+        [Required(ErrorMessage = Errors.RequiredField)]
+        public decimal TotalPrice { get; set; } 
         public PaymentMethod PaymentMethod { get; set; }
         public string? AppUserId { get; set; }
         public AppUser? AppUser { get; set; }
