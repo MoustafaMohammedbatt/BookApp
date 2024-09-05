@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Domain.Entites;
+using Microsoft.EntityFrameworkCore;
 using Service.Abstractions.Interfaces.IRepositories;
 using Service.Abstractions.Interfaces.IServises;
 using Shared.DTOs;
@@ -25,10 +26,11 @@ namespace BookApp.Repository
             paymentForm.AppUserId = user.Id;
 
             decimal totalPrice = 0;
-            var cart = await _unitOfWork.UserCarts.Find(c => c.UserId == user.Id);
+            var cart = await _unitOfWork.UserCarts.Find(c => c.UserId == user.Id , include: c=> c.Include(c => c.Sold!));
             foreach (var item in cart!.Sold!)
             {
-                totalPrice += item.Book!.Price * item.Quantity;
+                var book = await _unitOfWork.Books.Find(c => c.Id == item.BookId);
+                totalPrice += book!.Price * item.Quantity;
             }
             paymentForm.TotalPrice = totalPrice ;
             await _unitOfWork.PaymentForms.Add(paymentForm);
