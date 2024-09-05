@@ -1,6 +1,4 @@
-﻿
-
-namespace Domain.Entites
+﻿namespace Domain.Entites
 {
     public class BaseModel
     {

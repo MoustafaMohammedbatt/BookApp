@@ -21,6 +21,7 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
     public DbSet<Cart> Carts { get; set; }
     public DbSet<Author> Authors { get; set; }
     public DbSet<UserCart> UserCarts { get; set; }
+    public DbSet<PaymentForm> paymentForms { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder builder)

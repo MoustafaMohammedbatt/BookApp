@@ -1,22 +1,32 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Domain.Consts;
+using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
-namespace Domain.Entites;
-
-// Add profile data for application users by adding properties to the AppUser class
-public class AppUser : IdentityUser
+namespace Domain.Entites
 {
-    public string FirstName { get; set; } = null!;
-    public string LastName { get; set; } = null!;
-    public string Address { get; set; } = null!;
-    public bool IsDeleted { get; set; }
-    public DateTime CreatedOn { get; set; } = DateTime.Now;
-    public bool AdminAccepted { get; set; }
-    //public string NationId { get; set; } = null!;
 
-	public virtual ICollection<Cart>? CartOrders { get; set; }
-	public virtual ICollection<UserCart>? UserCartOrders { get; set; }
-	public virtual ICollection<Rented>? RentedItems { get; set; }
-    public virtual ICollection<Sold>? SelledItems { get; set; }
+    public class AppUser : IdentityUser
+    {
+        [Required(ErrorMessage = Errors.RequiredField)]
+        [RegularExpression(RegexPatterns.CharactersOnly_Eng, ErrorMessage = Errors.OnlyEnglishLetters)]
+        public string FirstName { get; set; } = null!;
+
+        [Required(ErrorMessage = Errors.RequiredField)]
+        [RegularExpression(RegexPatterns.CharactersOnly_Eng, ErrorMessage = Errors.OnlyEnglishLetters)]
+        public string LastName { get; set; } = null!;
+
+        [Required(ErrorMessage = Errors.RequiredField)]
+        [MaxLength(200, ErrorMessage = Errors.MaxLength)]
+        public string Address { get; set; } = null!;
+
+        public bool IsDeleted { get; set; }
+        public DateTime CreatedOn { get; set; } = DateTime.Now;
+        public bool AdminAccepted { get; set; }
+
+        public virtual ICollection<Cart>? CartOrders { get; set; }
+        public virtual ICollection<UserCart>? UserCartOrders { get; set; }
+        public virtual ICollection<Rented>? RentedItems { get; set; }
+        public virtual ICollection<Sold>? SelledItems { get; set; }
+    }
 
 }
- 
