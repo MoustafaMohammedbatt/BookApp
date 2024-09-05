@@ -21,11 +21,20 @@ namespace BookApp.Repository
         {
             var user = await _unitOfWork.ApplicationUsers.Find(u => u.Email == userEmail);
             if (user == null) throw new Exception("User not found");
-            var cart =await _unitOfWork.UserCarts.Find(c => c.UserId == user.Id);
             var paymentForm = _mapper.Map<PaymentForm>(paymentFormDto);
             paymentForm.AppUserId = user.Id;
-            paymentForm.TotalPrice =cart!.TotalPrice;
+
+            decimal totalPrice = 0;
+            var cart = await _unitOfWork.UserCarts.Find(c => c.UserId == user.Id);
+            foreach (var item in cart!.Sold!)
+            {
+                totalPrice += item.Book!.Price * item.Quantity;
+            }
+            paymentForm.TotalPrice = totalPrice ;
             await _unitOfWork.PaymentForms.Add(paymentForm);
+            cart.TotalPrice = totalPrice;
+            _unitOfWork.UserCarts.Update(cart);
+
             try
             {
                 _unitOfWork.Complete();
