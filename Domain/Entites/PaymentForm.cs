@@ -3,6 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Entites
 {
+    public enum PaymentMethod { Delivery, Online }
+
     public class PaymentForm : BaseModel
     {
         public int Id { get; set; }
@@ -17,7 +19,7 @@ namespace Domain.Entites
         [Required(ErrorMessage = Errors.RequiredField)]
         [RegularExpression(RegexPatterns.MobileNumber, ErrorMessage = Errors.InvalidMobileNumber)]
         public string PhoneNumber { get; set; } = null!;
-
+        public PaymentMethod PaymentMethod { get; set; }
         public string? AppUserId { get; set; }
         public AppUser? AppUser { get; set; }
     }

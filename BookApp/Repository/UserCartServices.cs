@@ -131,7 +131,6 @@ namespace BookApp.Repository
                 return false;
             }
 
-            userCart.PaymentMethod = completePaymentDto.PaymentMethod;
             userCart.PaymentStatus = PaymentStatus.Completed;
 
             _unitOfWork.UserCarts.Update(userCart);
