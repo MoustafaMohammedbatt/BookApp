@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Domain.Entites
 {
     public enum PaymentMethod { Delivery, Online }
+    public enum PaymentStatus { Pending, Completed, Failed }
 
     public class PaymentForm : BaseModel
     {
@@ -22,6 +23,8 @@ namespace Domain.Entites
         [Required(ErrorMessage = Errors.RequiredField)]
         public decimal TotalPrice { get; set; } 
         public PaymentMethod PaymentMethod { get; set; }
+        public PaymentStatus PaymentStatus { get; set; } = PaymentStatus.Pending;
+
         public string? AppUserId { get; set; }
         public AppUser? AppUser { get; set; }
     }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Domain.Entites;
+using Microsoft.AspNetCore.Mvc;
 using Service.Abstractions.Interfaces.IServises;
 using Shared.DTOs;
 
@@ -39,16 +40,26 @@ namespace BookApp.Controllers
             try
             {
                 var paymentFormDto = await _paymentFormService.CreatePaymentFormAsync(createPaymentFormDto, userEmail!);
-                return RedirectToAction("PaymentSuccess", new { totalPrice = paymentFormDto.TotalPrice });
+
+
+                if (paymentFormDto.PaymentMethod == PaymentMethod.Delivery)
+                {
+                    return RedirectToAction("PaymentSuccess", new { totalPrice = paymentFormDto.TotalPrice });
+                }
+                else if (paymentFormDto.PaymentMethod == PaymentMethod.Online)
+                {
+                    return RedirectToAction("OnlinePayment", new { totalPrice = paymentFormDto.TotalPrice });
+                }
+
+                return View("Error", new { message = "Invalid payment method selected." });
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError(string.Empty, "Failed to create payment form. Please try again.");
+                ModelState.AddModelError(string.Empty, $"Failed to create payment form. Please try again.{ex}");
                 return View(dto);
             }
         }
 
-        // Confirm cart payment
         [HttpPost]
         public async Task<IActionResult> ConfirmCartPayment(int cartId)
         {
@@ -57,19 +68,62 @@ namespace BookApp.Controllers
             try
             {
                 var paymentFormDto = await _paymentFormService.ConfirmCartPaymentAsync(cartId, userEmail!);
-                return RedirectToAction("PaymentSuccess", new { totalPrice = paymentFormDto.TotalPrice });
+
+                if (paymentFormDto.PaymentMethod == PaymentMethod.Delivery)
+                {
+                    return RedirectToAction("PaymentSuccess", new { totalPrice = paymentFormDto.TotalPrice });
+                }
+                else if (paymentFormDto.PaymentMethod == PaymentMethod.Online)
+                {
+                    return RedirectToAction("OnlinePayment", new { totalPrice = paymentFormDto.TotalPrice });
+                }
+
+                return View("Error", new { message = "Invalid payment method selected." });
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, "Failed to confirm cart payment. Please try again.");
-                return View("Error"); // Redirect to a suitable error page or view
+                return View($"Error {ex}"); // Redirect to a suitable error page or view
             }
         }
+
+
 
         public IActionResult PaymentSuccess(decimal totalPrice)
         {
             ViewBag.TotalPrice = totalPrice;
             return View();
         }
+
+
+        // Display online payment form
+        [HttpGet]
+        public IActionResult OnlinePayment(decimal totalPrice)
+        {
+            ViewBag.TotalPrice = totalPrice;
+            return View();
+        }
+
+        // Handle online payment submission
+        [HttpPost]
+        public async Task<IActionResult> OnlinePaymentSubmit(OnlinePaymentDto dto)
+        {
+            if (!ModelState.IsValid) return View(dto);
+
+            try
+            {
+                // Process the online payment using the payment service
+                await _paymentFormService.ProcessOnlinePaymentAsync(dto);
+
+                return RedirectToAction("PaymentSuccess", new { totalPrice = dto.TotalPrice });
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, $"{ex} Failed to process online payment. Please try again.");
+                return View(dto);
+            }
+        }
+
+
     }
 }

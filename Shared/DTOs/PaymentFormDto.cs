@@ -13,6 +13,7 @@ namespace Shared.DTOs
         public string NationalId { get; set; } = null!;
         public string PhoneNumber { get; set; } = null!;
         public PaymentMethod PaymentMethod { get; set; } 
+
         public decimal TotalPrice { get; set; } 
     }
 }

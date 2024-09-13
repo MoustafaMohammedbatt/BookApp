@@ -82,5 +82,60 @@ namespace BookApp.Repository
 
             return _mapper.Map<PaymentFormDto>(paymentForm);
         }
+
+        // Processes online payment with the provided card details
+        public async Task<PaymentFormDto> ProcessOnlinePaymentAsync(OnlinePaymentDto onlinePaymentDto)
+        {
+            var user = await _unitOfWork.ApplicationUsers.Find(u => u.Email == onlinePaymentDto.UserEmail);
+            if (user == null) throw new Exception("User not found");
+
+            // Logic to interact with a payment gateway can be implemented here
+            bool paymentSuccessful = SimulatePaymentProcessing(onlinePaymentDto);
+
+            if (!paymentSuccessful)
+            {
+                throw new Exception("Online payment failed. Please check your card details or try again.");
+            }
+
+            // Once payment is successful, we proceed to create the payment form
+            var paymentForm = new PaymentForm
+            {
+                Address = user.Address,
+                PhoneNumber = user.PhoneNumber!,
+                NationalId = "YourNationalId", // Fetch national ID here
+                PaymentMethod = PaymentMethod.Online,
+                AppUserId = user.Id,
+                TotalPrice = onlinePaymentDto.TotalPrice
+            };
+
+            await _unitOfWork.PaymentForms.Add(paymentForm);
+
+            try
+            {
+                _unitOfWork.Complete();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Failed to save payment form after online payment", ex);
+            }
+
+            return _mapper.Map<PaymentFormDto>(paymentForm);
+        }
+
+        // Simulates the payment processing with a third-party payment gateway (you can replace this with actual gateway integration)
+        private bool SimulatePaymentProcessing(OnlinePaymentDto onlinePaymentDto)
+        {
+            // Simulate card validation and payment processing
+            // This is where you would integrate with Stripe, PayPal, or any other payment gateway
+            if (string.IsNullOrEmpty(onlinePaymentDto.CardNumber) ||
+                string.IsNullOrEmpty(onlinePaymentDto.CVV) ||
+                string.IsNullOrEmpty(onlinePaymentDto.ExpiryDate))
+            {
+                return false;
+            }
+
+            // Assume the payment is successful for this simulation
+            return true;
+        }
     }
 }

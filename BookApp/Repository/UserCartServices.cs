@@ -133,7 +133,7 @@ namespace BookApp.Repository
                 return false;
             }
 
-            userCart.PaymentStatus = PaymentStatus.Completed;
+            //userCart.PaymentStatus = PaymentStatus.Completed;
 
             _unitOfWork.UserCarts.Update(userCart);
             _unitOfWork.Complete();

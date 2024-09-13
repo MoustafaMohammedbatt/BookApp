@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Entites
 {
-	public enum PaymentStatus { Pending, Completed, Failed }
     public class UserCart : BaseModel
     {
         public int Id { get; set; }
@@ -15,7 +14,6 @@ namespace Domain.Entites
         public AppUser? User { get; set; }
 
         [Required(ErrorMessage = Errors.RequiredField)]
-        public PaymentStatus PaymentStatus { get; set; } = PaymentStatus.Pending;
         public virtual ICollection<Sold>? Sold { get; set; }
     }
 }

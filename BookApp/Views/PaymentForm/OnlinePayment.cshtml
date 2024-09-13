@@ -1,0 +1,46 @@
+﻿@model OnlinePaymentDto
+@{
+    ViewBag.Title = "Online Payment";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg">
+                <div class="card-header text-center bg-white">
+                    <h4 class="card-title">Online Payment</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="OnlinePaymentSubmit" method="post">
+                        <div class="form-group mb-3">
+                            <label for="CardNumber" class="form-label">Card Number</label>
+                            <input asp-for="CardNumber" class="form-control" placeholder="1234 5678 9101 1121" />
+                            <span asp-validation-for="CardNumber" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="ExpiryDate" class="form-label">Expiry Date</label>
+                            <input asp-for="ExpiryDate" class="form-control" placeholder="MM/YY" />
+                            <span asp-validation-for="ExpiryDate" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="CVV" class="form-label">CVV</label>
+                            <input asp-for="CVV" class="form-control" placeholder="123" />
+                            <span asp-validation-for="CVV" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="TotalPrice" class="form-label">Total Price</label>
+                            <input asp-for="TotalPrice" class="form-control" value="@ViewBag.TotalPrice" readonly />
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary" style="background-color: #c3ae85;">Pay Now</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
