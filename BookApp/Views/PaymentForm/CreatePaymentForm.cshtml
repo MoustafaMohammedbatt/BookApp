@@ -3,41 +3,59 @@
     ViewBag.Title = "Create Payment Form";
 }
 
-<h2>Create Payment Form</h2>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg">
+                <div class="card-header text-center bg-white">
+                    <h2>Create Payment Form</h2>
+                </div>
+                <div class="card-body">
+                    <form asp-action="CreatePaymentForm" method="post">
+                        <div class="form-group mb-3">
+                            <label asp-for="Address" class="control-label">
+                                <i class="bi bi-geo-alt-fill"></i> Address
+                            </label>
+                            <input asp-for="Address" class="form-control" placeholder="Enter your address" />
+                            <span asp-validation-for="Address" class="text-danger"></span>
+                        </div>
 
-<form asp-action="CreatePaymentForm" method="post">
-    <div class="form-group">
-        <label asp-for="Address"></label>
-        <input asp-for="Address" class="form-control" />
-        <span asp-validation-for="Address" class="text-danger"></span>
+                        <div class="form-group mb-3">
+                            <label asp-for="NationalId" class="control-label">
+                                <i class="bi bi-person-vcard"></i> National ID
+                            </label>
+                            <input asp-for="NationalId" class="form-control" placeholder="Enter your national ID" />
+                            <span asp-validation-for="NationalId" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="PhoneNumber" class="control-label">
+                                <i class="bi bi-telephone-fill"></i> Phone Number
+                            </label>
+                            <input asp-for="PhoneNumber" class="form-control" placeholder="Enter your phone number" />
+                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="PaymentMethod" class="control-label">
+                                <i class="bi bi-wallet-fill"></i> Payment Method
+                            </label>
+                            <select asp-for="PaymentMethod" class="form-control">
+                                <option value="Delivery">Delivery</option>
+                                <option value="Online">Online</option>
+                            </select>
+                            <span asp-validation-for="PaymentMethod" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn w-100" style="background-color: #c3ae85; color: white;">
+                                <i class="bi bi-credit-card"></i> Submit Payment
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
 
-    <div class="form-group">
-        <label asp-for="NationalId"></label>
-        <input asp-for="NationalId" class="form-control" />
-        <span asp-validation-for="NationalId" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="PhoneNumber"></label>
-        <input asp-for="PhoneNumber" class="form-control" />
-        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="PaymentMethod"></label>
-        <select asp-for="PaymentMethod" class="form-control">
-            <option value="Delivery">Delivery</option>
-            <option value="Online">Online</option>
-        </select>
-        <span asp-validation-for="PaymentMethod" class="text-danger"></span>
-    </div>
-
-@*     <div class="form-group">
-        <label asp-for="TotalPrice"></label>
-        <input asp-for="TotalPrice" class="form-control" disabled />
-        <span asp-validation-for="TotalPrice" class="text-danger"></span>
-    </div> *@
-
-    <button type="submit" class="btn btn-primary">Submit Payment</button>
-</form>

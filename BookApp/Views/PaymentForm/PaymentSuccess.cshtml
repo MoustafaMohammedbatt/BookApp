@@ -2,5 +2,21 @@
     ViewBag.Title = "Payment Success";
 }
 
-<h2>Payment Successful!</h2>
-<p>Your total payment: $@ViewBag.TotalPrice</p>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg text-center">
+                <div class="card-header bg-white">
+                    <h2 class="text-success"><i class="bi bi-check-circle-fill"></i> Payment Successful!</h2>
+                </div>
+                <div class="card-body">
+                    <p class="lead">Thank you for your payment.</p>
+                    <p>Your total payment: <strong>$@ViewBag.TotalPrice</strong></p>
+                    <p class="mt-4">You will receive a confirmation email shortly with the details of your transaction.</p>
+                    <a href="/" class="btn w-100" style="background-color: #c3ae85; color: white;">Return to Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
