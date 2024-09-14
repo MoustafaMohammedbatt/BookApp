@@ -108,20 +108,23 @@ namespace BookApp.Controllers
         [HttpPost]
         public async Task<IActionResult> OnlinePaymentSubmit(OnlinePaymentDto dto)
         {
-            if (!ModelState.IsValid) return View(dto);
+            //if (!ModelState.IsValid) return View(dto);
 
-            try
-            {
-                // Process the online payment using the payment service
-                await _paymentFormService.ProcessOnlinePaymentAsync(dto);
+            //try
+            //{
+            //    // Process the online payment using the payment service
+            //    await _paymentFormService.ProcessOnlinePaymentAsync(dto);
 
-                return RedirectToAction("PaymentSuccess", new { totalPrice = dto.TotalPrice });
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError(string.Empty, $"{ex} Failed to process online payment. Please try again.");
-                return View(dto);
-            }
+            //    return RedirectToAction("PaymentSuccess", new { totalPrice = dto.TotalPrice });
+            //}
+            //catch (Exception ex)
+            //{
+            //    ModelState.AddModelError(string.Empty, $"{ex} Failed to process online payment. Please try again.");
+            //    return View(dto);
+            //}
+
+            return  RedirectToAction("PaymentSuccess", new { totalPrice = dto.TotalPrice });
+
         }
 
 
