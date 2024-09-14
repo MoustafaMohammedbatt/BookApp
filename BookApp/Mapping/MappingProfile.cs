@@ -59,6 +59,7 @@ namespace BookApp.Mapping
 
             CreateMap<PaymentFormCreateDto, PaymentForm>().ReverseMap();
             CreateMap<PaymentForm, PaymentFormDto>().ReverseMap();
+            CreateMap<PaymentForm, PaymentEditDTO>().ReverseMap();
         }
     }
     }

@@ -137,5 +137,29 @@ namespace BookApp.Repository
             // Assume the payment is successful for this simulation
             return true;
         }
+
+        // Method to get all payment forms
+        public async Task<IEnumerable<PaymentForm>> GetAllPaymentFormsAsync() => await _unitOfWork.PaymentForms.FindAll(p => p.Id > 0, include: p => p.Include(f => f.AppUser!));
+
+        public async Task<PaymentEditDTO> GetPaymentFormByIdAsync(int id)
+        {
+            var paymentForm = await _unitOfWork.PaymentForms.GetById(id);
+            if (paymentForm == null) throw new Exception("Payment form not found");
+
+            return _mapper.Map<PaymentEditDTO>(paymentForm);
+        }
+
+        public async Task UpdatePaymentStatusAsync(PaymentEditDTO paymentFormDto)
+        {
+            var paymentForm = await _unitOfWork.PaymentForms.GetById(paymentFormDto.Id);
+            if (paymentForm == null) throw new Exception("Payment form not found");
+
+            // Update the payment status
+            paymentForm.PaymentStatus = paymentFormDto.PaymentStatus;
+
+            _unitOfWork.PaymentForms.Update(paymentForm);
+            _unitOfWork.Complete();
+        }
+
     }
 }

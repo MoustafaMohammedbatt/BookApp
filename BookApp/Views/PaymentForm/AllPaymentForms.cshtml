@@ -1,0 +1,39 @@
+﻿@model IEnumerable<PaymentForm>
+
+@{
+    ViewData["Title"] = "All Payment Forms";
+}
+
+<h2>All Payment Forms</h2>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Address</th>
+            <th>National ID</th>
+            <th>Phone Number</th>
+            <th>Total Price</th>
+            <th>Payment Method</th>
+            <th>Payment Status</th>
+            <th>App User</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var paymentForm in Model)
+        {
+            <tr>
+                <td>@paymentForm.Id</td>
+                <td>@paymentForm.Address</td>
+                <td>@paymentForm.NationalId</td>
+                <td>@paymentForm.PhoneNumber</td>
+                <td>@paymentForm.TotalPrice</td>
+                <td>@paymentForm.PaymentMethod</td>
+                <td>@paymentForm.PaymentStatus</td>
+                <td>@paymentForm.AppUser.FirstName</td>
+                <td><a asp-action="EditPaymentStatus" asp-route-id="@paymentForm.Id" class="btn btn-warning">Edit Status</a></td>
+
+            </tr>
+        }
+    </tbody>
+</table>

@@ -123,10 +123,62 @@ namespace BookApp.Controllers
             //    return View(dto);
             //}
 
-            return  RedirectToAction("PaymentSuccess", new { totalPrice = dto.TotalPrice });
+            return RedirectToAction("PaymentSuccess", new { totalPrice = dto.TotalPrice });
 
         }
 
+        [HttpGet]
+        public async Task<IActionResult> AllPaymentForms()
+        {
+            try
+            {
+                var paymentForms = await _paymentFormService.GetAllPaymentFormsAsync();
+                return View(paymentForms);
+            }
+            catch (Exception ex)
+            {
+                // Handle any potential exceptions (logging can be added)
+                return View("Error", new { message = $"Error retrieving payment forms: {ex.Message}" });
+            }
+        }
+
+        // GET: PaymentForm/Edit/5
+        [HttpGet]
+        public async Task<IActionResult> EditPaymentStatus(int id)
+        {
+            try
+            {
+                var paymentForm = await _paymentFormService.GetPaymentFormByIdAsync(id);
+                if (paymentForm == null)
+                    return NotFound();
+
+                return View(paymentForm);
+            }
+            catch (Exception ex)
+            {
+                // Handle the error (logging can be added)
+                return View("Error", new { message = $"Error retrieving payment form: {ex.Message}" });
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditPaymentStatus(PaymentEditDTO paymentFormDto)
+        {
+            if (!ModelState.IsValid)
+                return View(paymentFormDto);
+
+            try
+            {
+                await _paymentFormService.UpdatePaymentStatusAsync(paymentFormDto);
+                return RedirectToAction(nameof(AllPaymentForms));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", $"Error updating payment status: {ex.Message}");
+                return View(paymentFormDto);
+            }
+        }
 
     }
 }
