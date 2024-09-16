@@ -1,80 +1,134 @@
 ﻿@model IEnumerable<Shared.DTOs.BookDetailsDTO>
-
+@using Microsoft.AspNetCore.Identity
 @{
-    ViewData["Title"] = "Books";
+	ViewData["Title"] = "Books";
+}
+
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+@functions {
+	public async Task<bool> IsUserAdmin()
+	{
+		try
+		{
+			var user = await UserManager.GetUserAsync(User);
+			return await UserManager.IsInRoleAsync(user!, UserRole.Admin);
+		}
+		catch (Exception)
+		{
+			return false;
+		}
+	}
+	public async Task<bool> IsUserReciptionist()
+	{
+		try
+		{
+			var user = await UserManager.GetUserAsync(User);
+			return await UserManager.IsInRoleAsync(user!, UserRole.Reciptionist);
+		}
+		catch (Exception)
+		{
+			return false;
+		}
+	}
 }
 
 <h1>Books</h1>
-
-<p>
-    <a asp-action="Create" style="background-color:#c3ae85" class="btn"><i class="fa-solid fa-plus"></i></a>
-</p>
-
+ @if (await IsUserAdmin())
+{
+	<p>
+		<a asp-action="Create" style="background-color:#c3ae85" class="btn"><i class="fa-solid fa-plus"></i></a>
+	</p>
+}
 <div class="table-responsive">
-    <table class="table table-striped table-hover">
-        <thead style="background-color:#c3ae85">
-            <tr>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Is Available</th>
-                <th>Cover Image</th>
-                <th>Publication Date</th>
-                <th>Author</th>
-                <th>Category</th>
-                <th>Is Deleted</th>
-                <th>Created On</th>
-                <th>Updated On</th>
-                <th style="text-align:center;">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var book in Model)
-            {
-                <tr>
-                    <td>@book.Title</td>
-                    <td>@book.Description</td>
-                    <td>@book.Price</td>
-                    <td>@book.Quantity</td>
-                    <td>@(book.IsAvailable ? "✓" : "✘")</td> <!-- Updated to show ✓ or ✘ -->
-                    <td>
-                        @if (!string.IsNullOrEmpty(book.CoverImage))
-                        {
-                            <img src="@Url.Content($"~/images/book/{book.CoverImage}")" alt="Cover Image" width="50" height="50" />
-                        }
-                    </td>
-                    <td>@book.PublicationDate.ToShortDateString()</td>
-                    <td>@book.AuthorName</td>
-                    <td>@book.CategoryName</td>
-                    <td>@(book.IsDeleted ? "✓" : "✘")</td> <!-- Updated to show ✓ or ✘ -->
-                    <td>@book.CreatedOn.ToShortDateString()</td>
-                    <td>@book.UpdatedOn?.ToShortDateString()</td>
-                    <td style="text-align:center;">
-                        <!-- Dropdown for actions -->
-                        <div class="dropdown">
-                            <button class="btn" type="button" id="dropdownMenuButton-@book.Id" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fa-solid fa-ellipsis-vertical"></i>
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton-@book.Id">
-                                <li>
-                                    <a class="dropdown-item" asp-action="Details" asp-route-id="@book.Id">Details</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" asp-action="Edit" asp-route-id="@book.Id">Edit</a>
-                                </li>
-                                <li>
-                                    <form asp-action="Delete" asp-route-id="@book.Id" method="post" style="display:inline;">
-                                        <button type="submit" class="dropdown-item text-danger">Delete</button>
-                                    </form>
-                                </li>
-                            </ul>
-                        </div>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+	<table class="table table-striped table-hover">
+		<thead style="background-color:#c3ae85">
+			<tr>
+				<th>Title</th>
+				<th>Description</th>
+				<th>Price</th>
+				<th>Quantity</th>
+				<th>Is Available</th>
+				<th>Cover Image</th>
+				<th>Publication Date</th>
+				<th>Author</th>
+				<th>Category</th>
+				<th>Is Deleted</th>
+				<th>Created On</th>
+				<th>Updated On</th>
+				@if (await IsUserAdmin())
+				{
+					<th style="text-align:center;">Actions</th>
+				}
+				@if (await IsUserReciptionist())
+				{
+					<th>Increase</th>
+				}
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var book in Model)
+			{
+				<tr>
+					<td>@book.Title</td>
+					<td>@book.Description</td>
+					<td>@book.Price</td>
+					<td>@book.Quantity</td>
+					<td>@(book.IsAvailable ? "✓" : "✘")</td> <!-- Updated to show ✓ or ✘ -->
+					<td>
+						@if (!string.IsNullOrEmpty(book.CoverImage))
+						{
+							<img src="@Url.Content($"~/images/book/{book.CoverImage}")" alt="Cover Image" width="50" height="50" />
+						}
+					</td>
+					<td>@book.PublicationDate.ToShortDateString()</td>
+					<td>@book.AuthorName</td>
+					<td>@book.CategoryName</td>
+					<td>@(book.IsDeleted ? "✓" : "✘")</td> <!-- Updated to show ✓ or ✘ -->
+					<td>@book.CreatedOn.ToShortDateString()</td>
+					<td>@book.UpdatedOn?.ToShortDateString()</td>
+
+					@if (await IsUserAdmin())
+					{
+						<td style="text-align:center;">
+							<!-- Dropdown for actions -->
+							<div class="dropdown">
+								<button class="btn" type="button" id="dropdownMenuButton-@book.Id" data-bs-toggle="dropdown" aria-expanded="false">
+									<i class="fa-solid fa-ellipsis-vertical"></i>
+								</button>
+								<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton-@book.Id">
+									<li>
+										<a class="dropdown-item" asp-action="Details" asp-route-id="@book.Id">Details</a>
+									</li>
+									<li>
+										<a class="dropdown-item" asp-action="Edit" asp-route-id="@book.Id">Edit</a>
+									</li>
+									<li>
+										<form asp-action="Delete" asp-route-id="@book.Id" method="post" style="display:inline;">
+											<button type="submit" class="dropdown-item text-danger">Delete</button>
+										</form>
+									</li>
+								</ul>
+							</div>
+						</td>
+
+					}
+					@if (await IsUserReciptionist())
+					{
+						<td>
+							<form asp-action="IncreaseBookQuantity" asp-route-id="@book.Id" method="post">
+								@Html.AntiForgeryToken() <!-- Include CSRF token -->
+								<button type="submit" style="background-color:#c3ae85" class="btn">
+									<i class="fa-solid fa-plus"></i>
+								</button>
+							</form>
+						</td>
+					}
+				</tr>
+			}
+		</tbody>
+	</table>
 </div>
 
 <!-- Required Bootstrap CSS & JS for Dropdown -->
