@@ -4,9 +4,10 @@
     ViewData["Title"] = "Edit Book";
 }
 
-<h1>Edit Book</h1>
+<h1 style="text-align:center; background-color:#c3ae85; padding:10px; color:white; font-weight:bold; margin-bottom:20px;">Edit Book</h1>
 
-<form asp-action="Edit" method="post" enctype="multipart/form-data">
+<!-- Form with border, padding, and rounded corners -->
+<form asp-action="Edit" method="post" enctype="multipart/form-data" style="border:1px solid #c3ae85; padding:20px; border-radius:8px;">
     <div class="form-group">
         <label asp-for="Title" class="control-label"></label>
         <input asp-for="Title" class="form-control" />
@@ -55,18 +56,18 @@
         <span asp-validation-for="CategoryId" class="text-danger"></span>
     </div>
 
-    
-
     <input type="hidden" asp-for="IsDeleted" />
     <input type="hidden" asp-for="CreatedOn" />
     <input type="hidden" asp-for="UpdatedOn" />
 
-    <div class="form-group mt-2">
-        <button type="submit" class="btn btn-outline-primary">Save</button>
-        <a asp-action="Index" class="btn btn-outline-info">Back to List</a>
+    <!-- Centered buttons with margins for spacing -->
+    <div class="form-group mt-4 text-center">
+        <button type="submit" class="btn btn-outline-primary" style="width:150px; margin-right:10px;">Save</button>
+        <a asp-action="Index" class="btn btn-outline-info" style="width:150px;">Back to List</a>
     </div>
 </form>
 
+<!-- Render validation scripts -->
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");

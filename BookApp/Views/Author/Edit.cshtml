@@ -4,30 +4,40 @@
     ViewData["Title"] = "Edit Author";
 }
 
-<h1>Edit Author</h1>
+<h1 style="text-align:center; background-color:#c3ae85; padding:10px; color:white; font-weight:bold; margin-bottom:20px;">Edit Author</h1>
 
-<form asp-action="Edit" enctype="multipart/form-data">
+<!-- Form section with border and padding -->
+<form asp-action="Edit" enctype="multipart/form-data" style="border:1px solid #c3ae85; padding:20px; border-radius:8px;">
     <input type="hidden" asp-for="Id" />
+
+    <!-- Full Name input field -->
     <div class="form-group">
         <label asp-for="FullName" class="control-label"></label>
         <input asp-for="FullName" class="form-control" />
         <span asp-validation-for="FullName" class="text-danger"></span>
     </div>
+
+    <!-- Bio input field -->
     <div class="form-group">
         <label asp-for="Bio" class="control-label"></label>
         <textarea asp-for="Bio" class="form-control"></textarea>
         <span asp-validation-for="Bio" class="text-danger"></span>
     </div>
+
+    <!-- Cover Image file input -->
     <div class="form-group">
         <label asp-for="CoverImage" class="control-label"></label>
         <input asp-for="CoverImage" type="file" class="form-control" />
         <span asp-validation-for="CoverImage" class="text-danger"></span>
     </div>
-    <div class="form-group">
-        <input type="submit" value="Save Changes" class="btn btn-outline-success" />
+
+    <!-- Submit button centered and styled -->
+    <div class="form-group text-center">
+        <input type="submit" value="Save Changes" class="btn btn-outline-success" style="width:150px;" />
     </div>
 </form>
 
-<div>
-    <a asp-action="Index" class="btn btn-outline-info">Back to List</a>
+<!-- Back to List button styled and centered -->
+<div style="text-align:center; margin-top:20px;">
+    <a asp-action="Index" class="btn btn-outline-info" style="width:150px;">Back to List</a>
 </div>
