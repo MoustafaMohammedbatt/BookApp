@@ -4,36 +4,47 @@
     ViewData["Title"] = "All Payment Forms";
 }
 
-<h2>All Payment Forms</h2>
+<!-- Centered and styled header with margin-bottom -->
+<h2 style="text-align:center; background-color:#c3ae85; padding:10px; color:white; font-weight:bold; margin-bottom:20px;">All Payment Forms</h2>
 
-<table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Address</th>
-            <th>National ID</th>
-            <th>Phone Number</th>
-            <th>Total Price</th>
-            <th>Payment Method</th>
-            <th>Payment Status</th>
-            <th>App User</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var paymentForm in Model)
-        {
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead style="background-color:#c3ae85; color:white;">
             <tr>
-                <td>@paymentForm.Id</td>
-                <td>@paymentForm.Address</td>
-                <td>@paymentForm.NationalId</td>
-                <td>@paymentForm.PhoneNumber</td>
-                <td>@paymentForm.TotalPrice</td>
-                <td>@paymentForm.PaymentMethod</td>
-                <td>@paymentForm.PaymentStatus</td>
-                <td>@paymentForm.AppUser.FirstName</td>
-                <td><a asp-action="EditPaymentStatus" asp-route-id="@paymentForm.Id" class="btn btn-warning">Edit Status</a></td>
-
+                <th>ID</th>
+                <th>Address</th>
+                <th>National ID</th>
+                <th>Phone Number</th>
+                <th>Total Price</th>
+                <th>Payment Method</th>
+                <th>Payment Status</th>
+                <th>App User</th>
+                <th style="text-align:center;">Actions</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var paymentForm in Model)
+            {
+                <tr>
+                    <td>@paymentForm.Id</td>
+                    <td>@paymentForm.Address</td>
+                    <td>@paymentForm.NationalId</td>
+                    <td>@paymentForm.PhoneNumber</td>
+                    <td>@paymentForm.TotalPrice</td>
+                    <td>@paymentForm.PaymentMethod</td>
+                    <td>@paymentForm.PaymentStatus</td>
+                    <td>@paymentForm.AppUser!.FirstName</td>
+                    <td style="text-align:center;">
+                        <!-- Updated button color to match theme -->
+                        <a asp-action="EditPaymentStatus" asp-route-id="@paymentForm.Id" class="btn" style="background-color:#c3ae85; color:white;">Edit Status</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Required Bootstrap CSS & JS for consistency -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktBnx1p7xdXO4Ck7rZjLr49Sp+0I1GfnUEN60p22A" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-mQ93DqkMZ8BYwBU7pOYF3dt5FgD5SYj26h2nIRTciU8B0Nw5dOe2t5F6YQ2oEkEz" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-yjzjU3BB5lGQSo3COCML4W0BGUFNmVamnuoJsVXQVRiYB7g6N9yG6r1jKtHZK7EcQfZsh4l0XWlrNkebrtHiIw==" crossorigin="anonymous" referrerpolicy="no-referrer" />

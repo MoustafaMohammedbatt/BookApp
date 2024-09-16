@@ -1,37 +1,45 @@
 ﻿@model IEnumerable<Rented>
 
-<h2>Rented Books</h2>
+<!-- Centered and styled header with margin-bottom -->
+<h2 style="text-align:center; background-color:#c3ae85; padding:10px; color:white; font-weight:bold; margin-bottom:20px;">Rented Books</h2>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Book</th>
-            <th>User</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Returned</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead style="background-color:#c3ae85">
             <tr>
-                <td>@item.Book!.Title</td>
-                <td>@item.User!.UserName</td>
-                <td>@item.StartDate.ToShortDateString()</td>
-                <td>@item.EndDate.ToShortDateString()</td>
-                <td>@(item.IsReturned ? "✓" : "✘")</td>
-                <td>
-                    <form asp-action="ToggleReturned" method="post">
-                        <input type="hidden" name="id" value="@item.Id" />
-                        <button type="submit" class="btn btn-sm @(item.IsReturned ? "btn-secondary" : "btn-primary")"
-                        @(item.IsReturned ? "disabled" : "")>
-                            @(item.IsReturned ? "Returned" : "Mark as Returned")
-                        </button>
-                    </form>
-                </td>
+                <th>Book</th>
+                <th>User</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Returned</th>
+                <th style="text-align:center;">Actions</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Book!.Title</td>
+                    <td>@item.User!.UserName</td>
+                    <td>@item.StartDate.ToShortDateString()</td>
+                    <td>@item.EndDate.ToShortDateString()</td>
+                    <td>@(item.IsReturned ? "✓" : "✘")</td>
+                    <td style="text-align:center;">
+                        <form asp-action="ToggleReturned" method="post">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <button type="submit" class="btn btn-sm @(item.IsReturned ? "btn-secondary" : "btn-primary")"
+                            @(item.IsReturned ? "disabled" : "")>
+                                @(item.IsReturned ? "Returned" : "Mark as Returned")
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Required Bootstrap CSS & JS for consistency -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktBnx1p7xdXO4Ck7rZjLr49Sp+0I1GfnUEN60p22A" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-mQ93DqkMZ8BYwBU7pOYF3dt5FgD5SYj26h2nIRTciU8B0Nw5dOe2t5F6YQ2oEkEz" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-yjzjU3BB5lGQSo3COCML4W0BGUFNmVamnuoJsVXQVRiYB7g6N9yG6r1jKtHZK7EcQfZsh4l0XWlrNkebrtHiIw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
