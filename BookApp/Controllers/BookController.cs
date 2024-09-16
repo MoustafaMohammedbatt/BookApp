@@ -145,8 +145,14 @@ namespace BookApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> IncreaseBookQuantity(int id)
+		{
+			await _bookService.IncreaseQuantity(id);
+			return RedirectToAction(nameof(Index));
+		}
 
 
-
-    }
+	}
 }

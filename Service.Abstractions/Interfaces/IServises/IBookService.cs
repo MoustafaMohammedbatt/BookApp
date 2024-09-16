@@ -10,8 +10,9 @@ namespace Service.Abstractions.Interfaces.IRepositories
     {
         Task<BookDTO> UploadBook(UploadBookDTO model);
         Task<BookDTO> UpdateBook(int id, UploadBookDTO model);
-        Task<Book?> ToggleDelete(int id);
-        Task<BookDetailsDTO?> GetBookById(int id);
+        Task<Book?> ToggleDelete(int id); 
+	    Task<Book?> IncreaseQuantity(int id);
+		Task<BookDetailsDTO?> GetBookById(int id);
         //Task<IEnumerable<BookDTO>> GetAllBooks();
         Task<IEnumerable<BookDetailsDTO>> GetAllBook();
         Task<IEnumerable<SelectListItem>> GetAllAuthors();

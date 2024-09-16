@@ -193,7 +193,16 @@ public class BookService : IBookService
         return books.Select(_mapper.Map<BookDetailsDTO>);
     }
 
+	public async Task<Book?> IncreaseQuantity(int id)
+	{
+		var book = await _unitOfWork.Books.GetById(id);
 
+		if (book is null) return null;
 
+		book.Quantity++;
 
+		_unitOfWork.Complete();
+
+		return book;
+	}
 }
