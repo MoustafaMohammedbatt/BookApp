@@ -3,24 +3,41 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"]  Qari ? ...</title>
+    <title>@ViewData["Title"] Qari ? ...</title>
     <link rel="icon" type="image/jpeg" href="~/images/logo/QariFavIcon.png">
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/BookApp.styles.css" asp-append-version="true" />
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500&display=swap" rel="stylesheet">
 
     <style>
+        /* Apply Oswald font globally */
+        body {
+            font-family: 'Oswald', sans-serif;
+        }
+
         /* Custom Styles for Navbar Links */
         .navbar-nav .nav-link {
             font-size: 1.25rem; /* Increase font size */
             color: #c3ae85; /* Set link color */
             margin: 0 20px; /* Add space between links */
+            font-family: 'Oswald', sans-serif; /* Apply Oswald font to navbar links */
         }
 
-            .navbar-nav .nav-link:hover {
-                color: #a8906c; /* Darker hover color */
-            }
+        .navbar-nav .nav-link:hover {
+            color: #a8906c; /* Darker hover color */
+        }
+
+        /* Transparent Navbar */
+        .navbar {
+            background-color: rgba(255, 255, 255, 0.8); /* 80% transparency */
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar:hover {
+            background-color: rgba(255, 255, 255, 1); /* Solid on hover */
+        }
     </style>
 </head>
 
@@ -28,7 +45,6 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-
                 <!-- Logo on the Left -->
                 <a class="navbar-brand" href="#">
                     <img src="~/images/logo/NoBackGround.png" alt="Logo" class="img-fluid" style="height: 80px;">
@@ -62,11 +78,13 @@
             </div>
         </nav>
     </header>
+    
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
+    
     <partial name="_FooterPartial" />
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
