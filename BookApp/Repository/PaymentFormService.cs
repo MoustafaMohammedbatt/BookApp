@@ -27,12 +27,15 @@ namespace BookApp.Repository
 
             decimal totalPrice = 0;
             var cart = await _unitOfWork.UserCarts.Find(c => c.UserId == user.Id , include: c=> c.Include(c => c.Sold!));
+
             foreach (var item in cart!.Sold!)
             {
                 var book = await _unitOfWork.Books.Find(c => c.Id == item.BookId);
+                book!.Quantity--;
                 totalPrice += book!.Price * item.Quantity;
             }
             paymentForm.TotalPrice = totalPrice ;
+
             await _unitOfWork.PaymentForms.Add(paymentForm);
             cart.TotalPrice = totalPrice;
             _unitOfWork.UserCarts.Update(cart);

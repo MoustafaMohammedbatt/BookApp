@@ -106,7 +106,7 @@ namespace BookApp.Controllers
 
         // Handle online payment submission
         [HttpPost]
-        public async Task<IActionResult> OnlinePaymentSubmit(OnlinePaymentDto dto)
+        public ActionResult OnlinePaymentSubmit(OnlinePaymentDto dto)
         {
             //if (!ModelState.IsValid) return View(dto);
 
