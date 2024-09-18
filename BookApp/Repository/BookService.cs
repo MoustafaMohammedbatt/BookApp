@@ -5,6 +5,7 @@ using Domain.Entites;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc;
+using static System.Reflection.Metadata.BlobBuilder;
 
 public class BookService : IBookService
 {
@@ -90,6 +91,10 @@ public class BookService : IBookService
     public async Task<BookDetailsDTO?> GetBookById(int id)
     {
         var book = await _unitOfWork.Books.Find(x => x.Id == id, include: query => query.Include(b => b.Category).Include(b => b.Author!));
+
+            if (book!.Quantity > 0)
+                book.IsAvailable = true;
+        
         return book == null ? null : _mapper.Map<BookDetailsDTO>(book);
     }
 
@@ -116,6 +121,14 @@ public class BookService : IBookService
     {
         var books = await _unitOfWork.Books.FindAll(r => r.Id > 0,
             include: query => query.Include(b => b.Category).Include(b => b.Author!));
+
+        foreach (var book in books)
+        {
+            if (book.Quantity > 0)
+            {
+                book.IsAvailable = true;
+            }
+        }
         return books.Select(_mapper.Map<BookDetailsDTO>);
 
     }
