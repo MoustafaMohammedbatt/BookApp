@@ -8,7 +8,6 @@ namespace Domain.Entites
         public int Id { get; set; }
 
         [Required(ErrorMessage = Errors.RequiredField)]
-        [Range(0.01, double.MaxValue, ErrorMessage = Errors.InvalidRange)]
         public decimal TotalPrice { get; set; }
 
         public string? ReceptionId { get; set; }

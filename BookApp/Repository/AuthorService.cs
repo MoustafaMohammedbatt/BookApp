@@ -17,18 +17,7 @@ namespace BookApp.Repository
             _webHostEnvironment = webHostEnvironment;
             _unitOfWork = unitOfWork;
         }
-        public async Task<Author?> ToggleDelete(int id)
-        {
-            var author = await _unitOfWork.Authors.GetById(id);
-
-            if (author is null) return null;
-
-            author.IsDeleted = !author.IsDeleted;
-
-            _unitOfWork.Complete();
-
-            return author;
-        }
+      
 
         public async Task<AuthorDTO> UpdateAuthor(int id, UploadAuthorDTO model)
         {
@@ -95,6 +84,20 @@ namespace BookApp.Repository
 
             return new AuthorDTO { Id = author.Id, FullName = author.FullName, Bio = author.Bio, CoverImage = author.CoverImage };
 
+        }
+
+
+        public async Task<Author?> ToggleDelete(int id)
+        {
+            var author = await _unitOfWork.Authors.GetById(id);
+
+            if (author is null) return null;
+
+            author.IsDeleted = !author.IsDeleted;
+
+            _unitOfWork.Complete();
+
+            return author;
         }
     }
 }

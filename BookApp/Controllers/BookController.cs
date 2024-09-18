@@ -42,7 +42,6 @@ namespace BookApp.Controllers
         }
 
 
-        // GET: Book/Details/5
         public async Task<IActionResult> Details(int id)
         {
             var book = await _bookService.GetBookById(id);
@@ -53,7 +52,6 @@ namespace BookApp.Controllers
             return View(book);
         }
 
-        // GET: Book/Create
         public async Task<IActionResult> Create()
         {
             ViewBag.Authors = await _bookService.GetAllAuthors();
@@ -61,7 +59,6 @@ namespace BookApp.Controllers
             return View();
         }
 
-        // POST: Book/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(UploadBookDTO model)
@@ -78,7 +75,6 @@ namespace BookApp.Controllers
             return View(model);
         }
 
-        // GET: Book/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
             var book = await _unitOfWork.Books.GetById(id);
@@ -93,7 +89,6 @@ namespace BookApp.Controllers
             return View(model);
         }
 
-        // POST: Book/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, UploadBookDTO model)
@@ -110,7 +105,6 @@ namespace BookApp.Controllers
             return View(model);
         }
 
-        // POST: Book/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
@@ -127,7 +121,6 @@ namespace BookApp.Controllers
         public async Task<IActionResult> CategoriesWithBooks() => View(await _bookService.GetBooksWithCategories());
         public async Task<IActionResult> BooksByCategory(int categoryId) => View(await _bookService.SeeAllBooksByCategory(categoryId));
 
-        // POST: UserCart/IncreaseQuantity
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> IncreaseQuantity(int soldId)

@@ -19,14 +19,12 @@ namespace BookApp.Controllers
             _userManager = userManager;
         }
 
-        // GET: /Cart
         public async Task<IActionResult> Index()
         {
             var carts = await _unitOfWork.Carts.FindAll(c => c.Id > 0, include: q => q.Include(c => c.Reception!));
             return View(carts);
         }
 
-        // GET: /Cart/Details/5
         public async Task<IActionResult> Details(int id)
         {
             var cart = await _unitOfWork.Carts.Find(c => c.Id == id, include: q => q.Include(c => c.Sold).Include(c => c.Rented!));
@@ -66,7 +64,6 @@ namespace BookApp.Controllers
         {
             var allUsers = await _unitOfWork.ApplicationUsers.GetAll();
 
-            // Filter users by role in memory
             var users = new List<AppUser>();
             foreach (var user in allUsers)
             {
@@ -79,7 +76,6 @@ namespace BookApp.Controllers
             return View();
         }
 
-        // POST: /Cart/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CartCreateDTO dto)
@@ -104,7 +100,6 @@ namespace BookApp.Controllers
             return View(dto);
         }
 
-        // GET: /Cart/SearchUsers
         [HttpGet]
         public async Task<IActionResult> SearchUsers(string email)
         {
@@ -121,7 +116,6 @@ namespace BookApp.Controllers
                 .Where(user => user.Email != null && user.Email.Contains(email, StringComparison.OrdinalIgnoreCase))
                 .ToList();
 
-            // Return JSON result
             return Json(filteredUsers.Select(user => new { user.Id, user.Email }));
         }
 
@@ -135,7 +129,6 @@ namespace BookApp.Controllers
 
             decimal total = 0;
 
-            // Update quantities and calculate total
             if (cart.Sold!.Any())
             {
                 foreach (var sold in cart.Sold!)
@@ -145,15 +138,14 @@ namespace BookApp.Controllers
                     {
                         var user = await _unitOfWork.ApplicationUsers.GetUserById(sold.UserId!);
                         ViewBag.User = user;
-                        total += book.Price * sold.Quantity; // Calculate total based on quantity
+                        total += book.Price * sold.Quantity; 
 
-                        // Decrease book quantity
                         book.Quantity -= sold.Quantity;
                         if (book.Quantity <= 0)
                         {
                             book.Quantity = 0;
                             book.IsAvailable = false;
-                        } // Ensure quantity doesn't go negative
+                        } 
 
                         _unitOfWork.Books.Update(book);
                     }
@@ -169,20 +161,19 @@ namespace BookApp.Controllers
                     {
                         var user = await _unitOfWork.ApplicationUsers.GetUserById(rented.UserId!);
                         ViewBag.User = user;
-                        total += book.Price; // Add book price for each rented item
+                        total += book.Price; 
 
-                        // Decrease book quantity
-                        book.Quantity -= 1; // Each rented item decreases quantity by 1
+                        book.Quantity -= 1;
                         if (book.Quantity <= 0)
-                        { book.Quantity = 0;
+                        {
+                            book.Quantity = 0;
                             book.IsAvailable = false;
-                        } // Ensure quantity doesn't go negative
+                        }
                         _unitOfWork.Books.Update(book);
                     }
                 }
             }
 
-            // Update cart's total price
             cart.TotalPrice = total;
             _unitOfWork.Carts.Update(cart);
             _unitOfWork.Complete();
@@ -191,7 +182,6 @@ namespace BookApp.Controllers
         }
 
 
-        // POST: /Cart/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ConfirmCart(Cart cart)
@@ -205,7 +195,6 @@ namespace BookApp.Controllers
                     return NotFound();
                 }
 
-                // Update the total price from the cart entity
                 existingCart.TotalPrice = cart.TotalPrice;
                 _unitOfWork.Carts.Update(existingCart);
 

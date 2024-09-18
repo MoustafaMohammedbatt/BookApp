@@ -14,14 +14,12 @@ namespace BookApp.Controllers
             _paymentFormService = paymentFormService;
         }
 
-        // Display form for new payment
         [HttpGet]
         public IActionResult CreatePaymentForm()
         {
             return View(new PaymentFormDto());
         }
 
-        // Handle form submission
         [HttpPost]
         public async Task<IActionResult> CreatePaymentForm(PaymentFormDto dto)
         {
@@ -35,7 +33,7 @@ namespace BookApp.Controllers
                 PaymentMethod = dto.PaymentMethod,
             };
 
-            var userEmail = User.Identity!.Name; // Assuming the user is authenticated
+            var userEmail = User.Identity!.Name; 
 
             try
             {
@@ -63,7 +61,7 @@ namespace BookApp.Controllers
         [HttpPost]
         public async Task<IActionResult> ConfirmCartPayment(int cartId)
         {
-            var userEmail = User.Identity!.Name; // Assuming the user is authenticated
+            var userEmail = User.Identity!.Name; 
 
             try
             {
@@ -83,7 +81,7 @@ namespace BookApp.Controllers
             catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, "Failed to confirm cart payment. Please try again.");
-                return View($"Error {ex}"); // Redirect to a suitable error page or view
+                return View($"Error {ex}"); 
             }
         }
 
@@ -96,7 +94,6 @@ namespace BookApp.Controllers
         }
 
 
-        // Display online payment form
         [HttpGet]
         public IActionResult OnlinePayment(decimal totalPrice)
         {
@@ -137,12 +134,10 @@ namespace BookApp.Controllers
             }
             catch (Exception ex)
             {
-                // Handle any potential exceptions (logging can be added)
                 return View("Error", new { message = $"Error retrieving payment forms: {ex.Message}" });
             }
         }
 
-        // GET: PaymentForm/Edit/5
         [HttpGet]
         public async Task<IActionResult> EditPaymentStatus(int id)
         {
@@ -156,7 +151,6 @@ namespace BookApp.Controllers
             }
             catch (Exception ex)
             {
-                // Handle the error (logging can be added)
                 return View("Error", new { message = $"Error retrieving payment form: {ex.Message}" });
             }
         }

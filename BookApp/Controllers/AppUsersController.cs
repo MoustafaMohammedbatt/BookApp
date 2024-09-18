@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Service.Abstractions.Interfaces.IRepositories;
 using Service.Abstractions.Interfaces.IServises;
 using Shared.DTOs;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace YourNamespace.Controllers
 {
@@ -48,9 +46,8 @@ namespace YourNamespace.Controllers
         {
             var user = await _appUserService.ToggleAdminAccepted(id);
             if (user == null)
-            {
                 return NotFound();
-            }
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -58,9 +55,8 @@ namespace YourNamespace.Controllers
         {
             var user = await _appUserService.ToggleDelete(id);
             if (user == null)
-            {
                 return NotFound();
-            }
+
             return RedirectToAction(nameof(Index));
         }
     }

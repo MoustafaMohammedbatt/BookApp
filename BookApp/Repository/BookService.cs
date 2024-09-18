@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
+using Domain.Entites;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Service.Abstractions.Interfaces.IRepositories;
 using Shared.DTOs;
-using Domain.Entites;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Mvc;
-using static System.Reflection.Metadata.BlobBuilder;
 
 public class BookService : IBookService
 {

@@ -16,14 +16,12 @@ namespace BookApp.Controllers
             _categoryService = categoryService;
         }
 
-        // GET: Category
         public async Task<IActionResult> Index()
         {
             var categories = await _categoryService.GetAll();
             return View(categories);
         }
 
-        // GET: Category/Details/5
         public async Task<IActionResult> Details(int id)
         {
             var category = await _categoryService.GetById(id);
@@ -35,13 +33,11 @@ namespace BookApp.Controllers
             return View(category);
         }
 
-        // GET: Category/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Category/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(UploadCategoryDTO model)
@@ -59,7 +55,6 @@ namespace BookApp.Controllers
             return View(model);
         }
 
-        // GET: Category/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
             var category = await _unitOfWork.Categories.GetById(id);
@@ -73,13 +68,11 @@ namespace BookApp.Controllers
                 Id = category.Id,
                 Name = category.Name,
                 Description = category.Description,
-                // Set CoverImage if needed (category.CoverImage)
             };
 
             return View(categoryDTO);
         }
 
-        // POST: Category/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, UploadCategoryDTO model)

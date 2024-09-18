@@ -45,6 +45,8 @@ builder.Services.AddScoped<ISoldService, SoldService>();
 builder.Services.AddScoped<IRentService, RentService>();
 builder.Services.AddScoped<IUserCartService, UserCartService>();
 builder.Services.AddScoped<IPaymentFormService, PaymentFormService>();
+builder.Services.AddScoped<ICartService, CartService>();
+
 
 builder.Services.AddHttpContextAccessor();
 

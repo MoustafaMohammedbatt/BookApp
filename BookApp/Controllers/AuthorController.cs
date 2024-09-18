@@ -16,14 +16,12 @@ namespace BookApp.Controllers
             _authorService = authorService;
         }
 
-        // GET: Author
         public async Task<IActionResult> Index()
         {
             var authors = await _unitOfWork.Authors.GetAll();
             return View(authors);
         }
 
-        // GET: Author/Details/5
         public async Task<IActionResult> Details(int id)
         {
             var author = await _unitOfWork.Authors.GetById(id);
@@ -34,13 +32,11 @@ namespace BookApp.Controllers
             return View(author);
         }
 
-        // GET: Author/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Author/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(UploadAuthorDTO model)
@@ -58,7 +54,6 @@ namespace BookApp.Controllers
             return View(model);
         }
 
-        // GET: Author/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
             var author = await _unitOfWork.Authors.GetById(id);
@@ -72,13 +67,11 @@ namespace BookApp.Controllers
                 Id = author.Id,
                 FullName = author.FullName,
                 Bio = author.Bio,
-                // Set CoverImage if needed (author.CoverImage)
             };
 
             return View(authorDTO);
         }
 
-        // POST: Author/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, UploadAuthorDTO model)
