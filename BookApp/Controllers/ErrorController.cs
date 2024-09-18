@@ -13,7 +13,7 @@ namespace BookApp.Controllers
 
             return statusCodeResult switch
             {
-                404 => View("NotFound"), // Make sure the view name matches
+                404 => View("NotFound"), 
                 _ => View("Error")
             };
         }
@@ -25,7 +25,6 @@ namespace BookApp.Controllers
             var exception = HttpContext.Features.Get<IExceptionHandlerFeature>();
             if (exception != null)
             {
-                // Log the exception here or send it to an external logging service
                 Debug.WriteLine(exception.Error);
             }
             return View();
