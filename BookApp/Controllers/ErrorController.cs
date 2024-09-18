@@ -13,11 +13,10 @@ namespace BookApp.Controllers
 
             return statusCodeResult switch
             {
-                404 => View("NotFound"), 
+                404 => View("NotFound"),
                 _ => View("Error")
             };
         }
-
 
         [Route("Error")]
         public IActionResult Error()
@@ -25,9 +24,16 @@ namespace BookApp.Controllers
             var exception = HttpContext.Features.Get<IExceptionHandlerFeature>();
             if (exception != null)
             {
+                // Log the exception here or send it to an external logging service
                 Debug.WriteLine(exception.Error);
             }
             return View();
+        }
+
+        [Route("InvalidUrl")]
+        public IActionResult InvalidUrl()
+        {
+            return View(); // Custom view for invalid URL
         }
     }
 }

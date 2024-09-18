@@ -56,18 +56,18 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Error handling and status code pages
 if (!app.Environment.IsDevelopment())
 {
-    // Use a global exception handler
-    app.UseExceptionHandler("/Error");
+    app.UseExceptionHandler("/Error"); // Global error handling, redirects to /Error
+    app.UseStatusCodePagesWithReExecute("/Error/{0}"); // Handles status codes (e.g., 404)
     app.UseHsts();
 }
 else
 {
-    // Development environment-specific exception handling
-    app.UseDeveloperExceptionPage();
+    app.UseDeveloperExceptionPage(); // For development environment
 }
+
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
@@ -86,7 +86,10 @@ var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}" 
+    );
+
+app.MapFallbackToController("InvalidUrl", "Error");
 
 app.MapRazorPages();
 
