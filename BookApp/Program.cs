@@ -1,7 +1,6 @@
 using BookApp.Mapping;
 using BookApp.Repository;
 using BookApp.Services;
-using Domain.Consts;
 using Domain.Entites;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -12,7 +11,6 @@ using Persistence.Repositories;
 using Service.Abstractions.Interfaces.IRepositories;
 using Service.Abstractions.Interfaces.IServices;
 using Service.Abstractions.Interfaces.IServises;
-using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,7 +38,6 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IAuthorService, AuthorService>();
 builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<IAppUserService, AppUserService>();
-builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<ISoldService, SoldService>();
 builder.Services.AddScoped<IRentService, RentService>();
 builder.Services.AddScoped<IUserCartService, UserCartService>();
@@ -62,8 +59,14 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
+    // Use a global exception handler
+    app.UseExceptionHandler("/Error");
     app.UseHsts();
+}
+else
+{
+    // Development environment-specific exception handling
+    app.UseDeveloperExceptionPage();
 }
 
 app.UseHttpsRedirection();
