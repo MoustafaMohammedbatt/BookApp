@@ -27,10 +27,7 @@ namespace BookApp.Repository
                 uc => uc.UserId == userId,
                 include: query => query.Include(b => b.Sold!));
 
-            if (userCart == null)
-            {
-                return null!;
-            }
+          
             return _mapper.Map<UserCartDto>(userCart);
         }
 
